@@ -14,7 +14,7 @@ fun main() {
     lines
         .map { it.digits() }
         .map { "" + (it.firstOrNull() ?: "") + (it.lastOrNull() ?: "") }
-        .also { println("Part one: ${it.sumOf(String::toInt)}") }
+        .also { println("Part two: ${it.sumOf(String::toInt)}") }
 }
 
 
