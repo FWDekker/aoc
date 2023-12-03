@@ -1,5 +1,7 @@
 package com.fwdekker.aoc.y2023
 
+import kotlin.math.max
+
 
 fun main() {
     val lines = readResource("/y2023/Day3.txt").lines().filter(String::isNotBlank)
@@ -7,23 +9,18 @@ fun main() {
     // Part 1
     lines
         .flatMapIndexed { lineIndex, line ->
-            val partNumbers = mutableListOf<Int>()
-
-            var remaining = line.mapIndexed { index, char -> Pair(index, char) }
-            while (remaining.isNotEmpty()) {
-                remaining = remaining.dropWhile { (_, char) -> !char.isDigit() }
-                val number = remaining.takeWhile { (_, char) -> char.isDigit() }
-                if (number.isEmpty())
-                    continue
-
-                remaining = remaining.drop(number.size)
-                val numberIndices = number.first().first..number.last().first
-                val isPartNumber = numberIndices.any { lines.isNextToSymbol(lineIndex, it) }
-                if (isPartNumber)
-                    partNumbers += number.map { it.second }.joinToString(separator = "").toInt()
+            line.toList().skipFoldIndexed(emptyList<Int>()) { index, acc, _ ->
+                line
+                    .drop(index)
+                    .takeWhile { it.isDigit() }
+                    .let { number ->
+                        Pair(
+                            max(1, number.length),
+                            if (number.indices.any { lines.isNextToSymbol(lineIndex, index + it) }) acc + number.toInt()
+                            else acc
+                        )
+                    }
             }
-
-            partNumbers
         }
         .also { println("Part one: ${it.sum()}") }
 
@@ -41,49 +38,47 @@ fun main() {
 }
 
 
-fun Char.isSymbol(): Boolean = this != '.' && !this.isDigit()
+fun <T, R> List<T>.skipFoldIndexed(init: R, action: (Int, R, T) -> Pair<Int, R>): R {
+    // Like `foldIndexed` except you can also return an `Int` saying how many subsequent iterations to skip
 
-fun List<String>.isNextToSymbol(row: Int, col: Int): Boolean =
-    listOf(-1, 0, 1).fold(false) { rowAcc, rowDiff ->
-        rowAcc || listOf(-1, 0, 1).fold(false) { colAcc, colDiff ->
-            colAcc || this.getOrNull(row + rowDiff)?.getOrNull(col + colDiff)?.isSymbol() ?: false
+    val lastIndex = this.lastIndex
+
+    var index = 0
+    var accumulator = init
+    while (index < lastIndex) {
+        val out = action(index, accumulator, this[index])
+        index += out.first
+        accumulator = out.second
+    }
+
+    return accumulator
+}
+
+fun List<String>.getChar(rowIdx: Int, colIdx: Int): Char? = this.getOrNull(rowIdx)?.getOrNull(colIdx)
+
+fun List<String>.isNextToSymbol(rowIdx: Int, colIdx: Int): Boolean =
+    listOf(-1, 0, 1).any { rowDiff ->
+        listOf(-1, 0, 1).any { colDiff ->
+            this.getChar(rowIdx + rowDiff, colIdx + colDiff)?.let { it != '.' && !it.isDigit() } == true
         }
     }
 
-fun String.getNumberAt(col: Int): Int? {
-    if (col !in this.indices || !this[col].isDigit()) return null
+fun List<String>.getNumber(rowIdx: Int, colIdx: Int): Int? {
+    if (this.getChar(rowIdx, colIdx)?.isDigit() == false) return null
 
-    return this.reversed().drop(this.length - 1 - col).takeWhile { it.isDigit() }.drop(1).reversed()
-        .plus(this.drop(col).takeWhile { it.isDigit() })
+    val row = this[rowIdx]
+    return row.reversed().drop(row.length - 1 - colIdx).takeWhile { it.isDigit() }.drop(1).reversed()
+        .plus(row.drop(colIdx).takeWhile { it.isDigit() })
         .toInt()
 }
 
-fun List<String>.getSurroundingNumbers(row: Int, col: Int): List<Int> {
-    val surroundingNumbers = mutableListOf<Int?>()
+fun List<String>.getSurroundingNumbers(row: Int, col: Int): List<Int> =
+    listOf(-1, 0, 1)
+        .flatMap { rowDiff ->
+            val char = this.getChar(row + rowDiff, col)
 
-    if (this[row][col].isDigit()) {
-        surroundingNumbers += this[row].getNumberAt(col)
-    } else {
-        surroundingNumbers += this[row].getNumberAt(col - 1)
-        surroundingNumbers += this[row].getNumberAt(col + 1)
-    }
-
-    if (row > 0) {
-        if (this[row - 1][col].isDigit()) {
-            surroundingNumbers += this[row - 1].getNumberAt(col)
-        } else {
-            surroundingNumbers += this[row - 1].getNumberAt(col - 1)
-            surroundingNumbers += this[row - 1].getNumberAt(col + 1)
+            if (char == null) emptyList()
+            else if (char.isDigit()) listOf(this.getNumber(row + rowDiff, col))
+            else listOf(this.getNumber(row + rowDiff, col - 1), this.getNumber(row + rowDiff, col + 1))
         }
-    }
-    if (row < this.lastIndex) {
-        if (this[row + 1][col].isDigit()) {
-            surroundingNumbers += this[row + 1].getNumberAt(col)
-        } else {
-            surroundingNumbers += this[row + 1].getNumberAt(col - 1)
-            surroundingNumbers += this[row + 1].getNumberAt(col + 1)
-        }
-    }
-
-    return surroundingNumbers.filterNotNull()
-}
+        .filterNotNull()
