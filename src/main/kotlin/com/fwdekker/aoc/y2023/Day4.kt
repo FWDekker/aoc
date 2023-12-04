@@ -14,5 +14,5 @@ fun main() {
 
     // Part 2
     val cards = ArrayDeque(lines.indices.toList())
-    println("Part two: ${cards.map { cards.addAll((it + 1)..(it + winsByLine[it])) }.size}")
+    println("Part two: ${cards.onEach { cards.addAll((it + 1)..(it + winsByLine[it])) }.size}")
 }
