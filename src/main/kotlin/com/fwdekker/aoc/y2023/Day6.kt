@@ -5,12 +5,12 @@ fun main() {
     val lines = readResource("/y2023/Day6.txt").lines().filter(String::isNotBlank)
 
     // Part 1
-    lines[0].parseInts().zip(lines[1].parseInts())
+    lines.map(String::parseInts).let { it[0].zip(it[1]) }
         .map { (time, distance) -> (0..<time).count { (time - it) * it > distance } }
         .also { println("Part one: ${it.fold(1, Int::times)}") }
 
     // Part 2
-    lines[0].parseBadlyKernedInts().zip(lines[1].parseBadlyKernedInts())
+    lines.map(String::parseBadlyKernedInts).let { it[0].zip(it[1]) }
         .map { (time, distance) -> (0..<time).count { (time - it) * it > distance } }
         .also { println("Part two: ${it.fold(1, Int::times)}") }
 }
