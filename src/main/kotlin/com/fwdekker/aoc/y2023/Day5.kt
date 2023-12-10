@@ -27,13 +27,13 @@ fun main() {
 }
 
 
-fun String.asMapper(): (Map.Entry<Long, Long>) -> Long {
+private fun String.asMapper(): (Map.Entry<Long, Long>) -> Long {
     val (to, from, length) = this.parseLongs()
 
     return { (key, oldTarget) -> if (key - from in 0..<length) key - from + to else oldTarget }
 }
 
-fun String.asRangeMapper(): (Map.Entry<LongRange, LongRange>) -> Map<LongRange, LongRange> {
+private fun String.asRangeMapper(): (Map.Entry<LongRange, LongRange>) -> Map<LongRange, LongRange> {
     val (to, from, length) = this.parseLongs()
 
     return { (range, oldTarget) ->
@@ -51,14 +51,14 @@ fun String.asRangeMapper(): (Map.Entry<LongRange, LongRange>) -> Map<LongRange, 
 }
 
 
-fun String.parseLongs(): List<Long> = this.split(' ').map { it.toLong() }
+private fun String.parseLongs(): List<Long> = this.split(' ').map { it.toLong() }
 
-fun LongRange.intersect(that: LongRange): LongRange =
+private fun LongRange.intersect(that: LongRange): LongRange =
     (max(this.first, that.first)..min(this.last, that.last))
         .let { if (it.isEmpty()) LongRange.EMPTY else it }
 
-fun LongRange.diff(that: LongRange): List<LongRange> =
+private fun LongRange.diff(that: LongRange): List<LongRange> =
     listOf(this.first..min(this.last, that.first - 1), max(this.first, that.last + 1)..this.last)
         .filterNot { it.isEmpty() }
 
-fun LongRange.shift(by: Long): LongRange = this.first + by..this.last + by
+private fun LongRange.shift(by: Long): LongRange = this.first + by..this.last + by

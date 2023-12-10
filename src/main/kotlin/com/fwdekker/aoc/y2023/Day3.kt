@@ -38,7 +38,7 @@ fun main() {
 }
 
 
-fun <T, R> List<T>.skipFoldIndexed(init: R, action: (Int, R, T) -> Pair<Int, R>): R {
+private fun <T, R> List<T>.skipFoldIndexed(init: R, action: (Int, R, T) -> Pair<Int, R>): R {
     // Like `foldIndexed` except you can also return an `Int` saying how many subsequent iterations to skip
 
     val lastIndex = this.lastIndex
@@ -54,16 +54,16 @@ fun <T, R> List<T>.skipFoldIndexed(init: R, action: (Int, R, T) -> Pair<Int, R>)
     return accumulator
 }
 
-fun List<String>.getChar(rowIdx: Int, colIdx: Int): Char? = this.getOrNull(rowIdx)?.getOrNull(colIdx)
+private fun List<String>.getChar(rowIdx: Int, colIdx: Int): Char? = this.getOrNull(rowIdx)?.getOrNull(colIdx)
 
-fun List<String>.isNextToSymbol(rowIdx: Int, colIdx: Int): Boolean =
+private fun List<String>.isNextToSymbol(rowIdx: Int, colIdx: Int): Boolean =
     listOf(-1, 0, 1).any { rowDiff ->
         listOf(-1, 0, 1).any { colDiff ->
             this.getChar(rowIdx + rowDiff, colIdx + colDiff)?.let { it != '.' && !it.isDigit() } == true
         }
     }
 
-fun List<String>.getNumber(rowIdx: Int, colIdx: Int): Int? {
+private fun List<String>.getNumber(rowIdx: Int, colIdx: Int): Int? {
     if (this.getChar(rowIdx, colIdx)?.isDigit() == false) return null
 
     val row = this[rowIdx]
@@ -72,7 +72,7 @@ fun List<String>.getNumber(rowIdx: Int, colIdx: Int): Int? {
         .toInt()
 }
 
-fun List<String>.getSurroundingNumbers(row: Int, col: Int): List<Int> =
+private fun List<String>.getSurroundingNumbers(row: Int, col: Int): List<Int> =
     listOf(-1, 0, 1)
         .flatMap { rowDiff ->
             val char = this.getChar(row + rowDiff, col)
