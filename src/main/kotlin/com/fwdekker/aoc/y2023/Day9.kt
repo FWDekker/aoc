@@ -5,12 +5,10 @@ fun main() {
     val lines = readResource("/y2023/Day9.txt").lines().filter(String::isNotBlank)
 
     // Part 1
-    lines.map { it.split(' ').map(String::toInt).next() }
-        .also { println("Part one: ${it.sum()}") }
+    println("Part one: ${lines.sumOf { it.split(' ').map(String::toInt).next() }}")
 
     // Part 2
-    lines.map { it.split(' ').map(String::toInt).reversed().next() }
-        .also { println("Part two: ${it.sum()}") }
+    println("Part two: ${lines.sumOf { it.split(' ').map(String::toInt).reversed().next() }}")
 }
 
 
