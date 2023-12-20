@@ -1,8 +1,12 @@
 package com.fwdekker.aoc.y2023
 
+import com.fwdekker.aoc.std.cyclic
+import com.fwdekker.aoc.std.lcm
+import com.fwdekker.aoc.std.readLines
+
 
 fun main() {
-    val lines = readResource("/y2023/Day8.txt").lines().filter(String::isNotBlank)
+    val lines = readLines("/y2023/Day8.txt")
 
     val steps = lines.first().toList()
     val map = lines.drop(1)
@@ -16,11 +20,9 @@ fun main() {
     // Part 2
     map.keys.filter { it.endsWith('A') }
         .map { ghost -> map.distance(steps, from = ghost, to = { it.endsWith('Z') }) }
-        .also { println("Part two: ${it.reduce(::lcm)}") }
+        .also { println("Part two: ${it.lcm()}") }
 }
 
-
-private fun <T> Collection<T>.cyclic() = sequence { while (true) yieldAll(this@cyclic) }
 
 private fun <T, R> Sequence<T>.foldUntil(initial: R, condition: (R, T) -> Boolean, operation: (R, T) -> R): R {
     var current = initial
@@ -37,14 +39,9 @@ private fun <T, R> Sequence<T>.foldUntil(initial: R, condition: (R, T) -> Boolea
     return current
 }
 
-
 private fun Map<String, Map<Char, String>>.distance(steps: List<Char>, from: String, to: (String) -> Boolean): Long =
     steps.cyclic()
         .foldUntil(Pair(0L, from), { it, _ -> to(it.second) }) { (steps, location), instruction ->
             Pair(steps + 1L, this[location]!![instruction]!!)
         }
         .first
-
-tailrec fun gcd(a: Long, b: Long): Long = if (b == 0L) a else gcd(b, a % b)
-
-fun lcm(a: Long, b: Long): Long = a * (b / gcd(a, b))

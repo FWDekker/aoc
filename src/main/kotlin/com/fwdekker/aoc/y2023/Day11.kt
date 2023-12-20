@@ -1,11 +1,12 @@
 package com.fwdekker.aoc.y2023
 
+import com.fwdekker.aoc.std.readLines
 import kotlin.math.max
 import kotlin.math.min
 
 
 fun main() {
-    val lines = readResource("/y2023/Day11.txt").lines().filter(String::isNotBlank)
+    val lines = readLines("/y2023/Day11.txt")
 
     val expandX = lines.indices.filter { x -> lines[x].all { it == '.' } }
     val expandY = lines[0].indices.filter { y -> lines.all { it[y] == '.' } }

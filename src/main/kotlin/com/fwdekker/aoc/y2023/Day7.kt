@@ -1,10 +1,11 @@
 package com.fwdekker.aoc.y2023
 
+import com.fwdekker.aoc.std.readLines
 import kotlin.math.min
 
 
 fun main() {
-    val lines = readResource("/y2023/Day7.txt").lines().filter(String::isNotBlank)
+    val lines = readLines("/y2023/Day7.txt")
 
     val hands = lines.map { it.split(' ') }.map { Pair(it[0], it[1].toInt()) }
 

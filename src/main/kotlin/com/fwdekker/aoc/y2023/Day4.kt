@@ -1,10 +1,11 @@
 package com.fwdekker.aoc.y2023
 
+import com.fwdekker.aoc.std.readLines
 import kotlin.math.pow
 
 
 fun main() {
-    val lines = readResource("/y2023/Day4.txt").lines().filter(String::isNotBlank)
+    val lines = readLines("/y2023/Day4.txt")
 
     // Part 1
     val winsByLine = lines

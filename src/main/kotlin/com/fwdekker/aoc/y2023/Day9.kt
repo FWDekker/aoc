@@ -1,14 +1,17 @@
 package com.fwdekker.aoc.y2023
 
+import com.fwdekker.aoc.std.ints
+import com.fwdekker.aoc.std.readLines
+
 
 fun main() {
-    val lines = readResource("/y2023/Day9.txt").lines().filter(String::isNotBlank)
+    val lines = readLines("/y2023/Day9.txt")
 
     // Part 1
-    println("Part one: ${lines.sumOf { it.split(' ').map(String::toInt).next() }}")
+    println("Part one: ${lines.sumOf { it.ints(' ').next() }}")
 
     // Part 2
-    println("Part two: ${lines.sumOf { it.split(' ').map(String::toInt).reversed().next() }}")
+    println("Part two: ${lines.sumOf { it.ints(' ').reversed().next() }}")
 }
 
 

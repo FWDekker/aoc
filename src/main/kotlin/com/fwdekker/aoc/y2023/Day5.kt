@@ -1,11 +1,12 @@
 package com.fwdekker.aoc.y2023
 
+import com.fwdekker.aoc.std.readLines
 import kotlin.math.max
 import kotlin.math.min
 
 
 fun main() {
-    val lines = readResource("/y2023/Day5.txt").lines().filter(String::isNotBlank)
+    val lines = readLines("/y2023/Day5.txt")
 
     // Part 1
     val seeds = lines[0].split(": ")[1].parseLongs()

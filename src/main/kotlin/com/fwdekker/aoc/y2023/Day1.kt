@@ -1,8 +1,10 @@
 package com.fwdekker.aoc.y2023
 
+import com.fwdekker.aoc.std.readLines
+
 
 fun main() {
-    val lines = readResource("/y2023/Day1.txt").lines().filter(String::isNotBlank)
+    val lines = readLines("/y2023/Day1.txt")
 
     // Part 1
     lines

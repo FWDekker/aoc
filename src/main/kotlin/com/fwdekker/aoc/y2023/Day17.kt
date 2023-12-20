@@ -1,10 +1,11 @@
 package com.fwdekker.aoc.y2023
 
+import com.fwdekker.aoc.std.readLines
 import java.util.PriorityQueue
 
 
 fun main() {
-    val lines = readResource("/y2023/Day17.txt").lines().filter(String::isNotBlank)
+    val lines = readLines("/y2023/Day17.txt")
 
     // Part 1
     println("Part one: ${lines.smallestLoss(EdsgerStep::neighbors)}")

@@ -1,12 +1,15 @@
 package com.fwdekker.aoc.y2023
 
+import com.fwdekker.aoc.std.distance
+import com.fwdekker.aoc.std.getMod
+import com.fwdekker.aoc.std.readLines
 import kotlin.math.abs
 import kotlin.math.roundToLong
 
 
 @OptIn(ExperimentalStdlibApi::class)
 fun main() {
-    val lines = readResource("/y2023/Day18.txt").lines().filter(String::isNotBlank)
+    val lines = readLines("/y2023/Day18.txt")
 
     // Part 1
     lines
@@ -35,17 +38,13 @@ private fun Pair<Long, Long>.move(direction: Char, distance: Long): Pair<Long, L
 
 private fun Int.toDirection(): Char = listOf('R', 'D', 'L', 'U')[this]
 
-private fun Pair<Long, Long>.distance(that: Pair<Long, Long>): Long =
-    abs(this.first - that.first) + abs(this.second - that.second)
-
-private fun <T> List<T>.getMod(index: Int): T = this[(index + size) % size]
-
 private fun List<Pair<Long, Long>>.area(): Long {
     val area = indices
         .map { idx -> Triple(getMod(idx - 1), getMod(idx), getMod(idx + 1)) }
         .sumOf { (prev, cur, next) -> cur.second * (next.first - prev.first) }
         .let { abs(it).toDouble() / 2 }
-    val boundaryLength = indices.map { idx -> Pair(getMod(idx - 1), getMod(idx)) }
+    val boundaryLength = indices
+        .map { idx -> Pair(getMod(idx - 1), getMod(idx)) }
         .sumOf { (prev, cur) -> prev.distance(cur) }
     val interiorPoints = (area + 1 - boundaryLength / 2).roundToLong()
     return interiorPoints + boundaryLength

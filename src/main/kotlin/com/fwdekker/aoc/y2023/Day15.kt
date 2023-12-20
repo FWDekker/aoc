@@ -1,8 +1,10 @@
 package com.fwdekker.aoc.y2023
 
+import com.fwdekker.aoc.std.readResource
+
 
 fun main() {
-    val instructions = readResource("/y2023/Day15.txt").trim().split(',')
+    val instructions = readResource("/y2023/Day15.txt").split(',')
 
     // Part 1
     println("Part one: ${instructions.sumOf { Label(it).hashCode() }}")
@@ -29,5 +31,5 @@ private fun MutableMap<Label, MutableMap<String, Int>>.perform(instruction: Stri
 
 private fun Map<Label, MutableMap<String, Int>>.power(): Int =
     entries.sumOf { (label, box) ->
-        (label.hashCode() + 1) * box.values.mapIndexed { slot, focal -> (slot + 1) * focal }.sum()
+        (label.hashCode() + 1) * box.values.withIndex().sumOf { (slot, focal) -> (slot + 1) * focal }
     }

@@ -1,10 +1,15 @@
 package com.fwdekker.aoc.y2023
 
+import com.fwdekker.aoc.std.map
+import com.fwdekker.aoc.std.readSections
+import com.fwdekker.aoc.std.splitGEQ
+import com.fwdekker.aoc.std.splitLEQ
+
 
 fun main() {
-    val lineSets = readResource("/y2023/Day19.txt").dropLastWhile { it == '\n' }.split("\n\n")
-    val workflows = lineSets[0].lines().map { Workflow.fromString(it) }.associateBy { it.name }
-    val parts = lineSets[1].lines().map { partFromString(it) }
+    val lineSets = readSections("/y2023/Day19.txt")
+    val workflows = lineSets[0].map { Workflow.fromString(it) }.associateBy { it.name }
+    val parts = lineSets[1].map { partFromString(it) }
 
     // Part 1
     println("Part one: ${workflows.filter(parts).sumOf { it.value() }}")
@@ -12,19 +17,6 @@ fun main() {
     // Part 2
     println("Part two: ${workflows.filter(listOf("xmas".associateWith { 1..4000 })).sumOf { it.combos() }}")
 }
-
-
-private fun IntRange.splitLEQ(value: Int): Pair<IntRange, IntRange> =
-    when {
-        value > last -> Pair(this, IntRange.EMPTY)
-        value <= first -> Pair(IntRange.EMPTY, this)
-        else -> Pair(first..<value, value..last)
-    }
-
-private fun IntRange.splitGEQ(value: Int): Pair<IntRange, IntRange> =
-    splitLEQ(value + 1).let { Pair(it.second, it.first) }
-
-private fun <A, B> Pair<A, A>.map(operation: (A) -> B): Pair<B, B> = toList().map(operation).let { Pair(it[0], it[1]) }
 
 
 private typealias Part = Map<Char, IntRange>

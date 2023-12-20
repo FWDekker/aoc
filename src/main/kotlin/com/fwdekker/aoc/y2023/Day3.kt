@@ -1,10 +1,12 @@
 package com.fwdekker.aoc.y2023
 
+import com.fwdekker.aoc.std.product
+import com.fwdekker.aoc.std.readLines
 import kotlin.math.max
 
 
 fun main() {
-    val lines = readResource("/y2023/Day3.txt").lines().filter(String::isNotBlank)
+    val lines = readLines("/y2023/Day3.txt")
 
     // Part 1
     lines
@@ -32,7 +34,7 @@ fun main() {
                 .filter { (_, char) -> char == '*' }
                 .map { (index, _) -> lines.getSurroundingNumbers(lineIndex, index) }
                 .filter { it.size == 2 }
-                .map { it.reduce(Int::times) }
+                .map { it.product() }
         }
         .also { println("Part two: ${it.sum()}") }
 }

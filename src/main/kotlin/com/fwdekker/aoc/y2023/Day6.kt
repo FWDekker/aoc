@@ -1,23 +1,25 @@
 package com.fwdekker.aoc.y2023
 
+import com.fwdekker.aoc.std.ints
+import com.fwdekker.aoc.std.product
+import com.fwdekker.aoc.std.readLines
+
 
 fun main() {
-    val lines = readResource("/y2023/Day6.txt").lines().filter(String::isNotBlank)
+    val lines = readLines("/y2023/Day6.txt")
 
     // Part 1
     lines.map(String::parseInts).let { it[0].zip(it[1]) }
         .map { (time, distance) -> (0..<time).count { (time - it) * it > distance } }
-        .also { println("Part one: ${it.fold(1, Int::times)}") }
+        .also { println("Part one: ${it.product()}") }
 
     // Part 2
     lines.map(String::parseBadlyKernedInts).let { it[0].zip(it[1]) }
         .map { (time, distance) -> (0..<time).count { (time - it) * it > distance } }
-        .also { println("Part two: ${it.fold(1, Int::times)}") }
+        .also { println("Part two: ${it.product()}") }
 }
 
 
-private fun String.parseInts(): List<Int> =
-    this.split(": ")[1].split(Regex("\\s+")).filter { it.isNotBlank() }.map { it.toInt() }
+private fun String.parseInts(): List<Int> = split(": ")[1].ints(Regex("\\s+"))
 
-private fun String.parseBadlyKernedInts(): List<Long> =
-    listOf(this.split(": ")[1].filter { it.isDigit() }.toLong())
+private fun String.parseBadlyKernedInts(): List<Long> = listOf(split(": ")[1].filter { it.isDigit() }.toLong())

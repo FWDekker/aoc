@@ -1,17 +1,21 @@
 package com.fwdekker.aoc.y2023
 
+import com.fwdekker.aoc.std.lcm
+import com.fwdekker.aoc.std.plus
+import com.fwdekker.aoc.std.readLines
+
 
 fun main() {
-    val lines = readResource("/y2023/Day20.txt").lines().filter(String::isNotBlank)
+    val lines = readLines("/y2023/Day20.txt")
     val machine = Machine.fromStrings(lines)
 
     // Part 1
-    val (low, high) = (1..1000).fold(Pair(0L, 0L)) { counts, _ -> counts + machine.pressButton().countSignals() }
+    val (low, high) = (1..1000).fold(Pair(0, 0)) { counts, _ -> counts + machine.pressButton().countSignals() }
     println("Part one: ${low * high}")
 
     // Part 2
     val joiner = machine.modules.values.single { it.targets == listOf("rx") }
-    println("Part two: ${joiner.predecessors.map { machine.findPeriod(it) }.reduce(::lcm)}")
+    println("Part two: ${joiner.predecessors.map { machine.findPeriod(it) }.lcm()}")
 }
 
 
@@ -108,7 +112,3 @@ private class Conjunction(name: String, targets: Collection<String>) : Module(na
         return targets.map { Signal(name, it, send) }
     }
 }
-
-
-private operator fun Pair<Long, Long>.plus(that: Pair<Number, Number>): Pair<Long, Long> =
-    Pair(this.first + that.first.toLong(), this.second + that.second.toLong())
