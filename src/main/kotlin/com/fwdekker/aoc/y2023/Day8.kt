@@ -45,6 +45,6 @@ private fun Map<String, Map<Char, String>>.distance(steps: List<Char>, from: Str
         }
         .first
 
-private tailrec fun gcd(a: Long, b: Long): Long = if (b == 0L) a else gcd(b, a % b)
+tailrec fun gcd(a: Long, b: Long): Long = if (b == 0L) a else gcd(b, a % b)
 
-private fun lcm(a: Long, b: Long): Long = a * (b / gcd(a, b))
+fun lcm(a: Long, b: Long): Long = a * (b / gcd(a, b))
