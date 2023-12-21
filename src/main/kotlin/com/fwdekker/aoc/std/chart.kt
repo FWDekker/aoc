@@ -4,7 +4,7 @@ package com.fwdekker.aoc.std
 /**
  * A 2-dimensional chart (or map), represented by a list of strings all with the same length.
  */
-private typealias Chart = List<String>
+typealias Chart = List<String>
 
 
 /**
