@@ -1,7 +1,13 @@
 package com.fwdekker.aoc.std
 
 import kotlin.math.abs
+import kotlin.math.pow
 
+
+/**
+ * Converts [this] to an [Int], or throws an exception if over- or underflow would occur.
+ */
+fun Long.toIntExact(): Int = Math.toIntExact(this)
 
 /**
  * Converts all numbers to [Long]s.
@@ -12,6 +18,37 @@ fun Collection<Number>.longs(): List<Long> = map(Number::toLong)
  * Converts to a pair of [Long]s.
  */
 fun Pair<Number, Number>.longs(): Pair<Long, Long> = map(Number::toLong)
+
+
+/**
+ * Calculates [this] modulo [mod] such that if [this] is `-1` the output is `mod - 1`.
+ */
+fun Int.wrapMod(mod: Int): Int = ((this % mod) + mod) % mod
+
+/**
+ * Calculates [this] modulo [mod] such that if [this] is `-1` the output is `mod - 1`.
+ */
+fun Int.wrapMod(mod: Long): Long = ((this % mod) + mod) % mod
+
+/**
+ * Calculates [this] modulo [mod] such that if [this] is `-1` the output is `mod - 1`.
+ */
+fun Long.wrapMod(mod: Int): Int = (((this % mod) + mod) % mod).toInt()
+
+/**
+ * Calculates [this] modulo [mod] such that if [this] is `-1` the output is `mod - 1`.
+ */
+fun Long.wrapMod(mod: Long): Long = ((this % mod) + mod) % mod
+
+
+/**
+ * Calculates [this] to the power of some non-negative [exponent].
+ */
+fun Long.pow(exponent: Int): Long {
+    require(exponent >= 0) { "Cannot calculate negative exponent on integer number." }
+
+    return toDouble().pow(exponent.toDouble()).toLong()
+}
 
 
 /**
@@ -54,6 +91,62 @@ operator fun Pair<Int, Int>.minus(that: Pair<Int, Int>): Pair<Int, Int> =
 @JvmName("longMinus")
 operator fun Pair<Long, Long>.minus(that: Pair<Long, Long>): Pair<Long, Long> =
     Pair(this.first - that.first, this.second - that.second)
+
+/**
+ * Returns the product of the respective components with [that].
+ */
+@JvmName("intTimes")
+operator fun Pair<Int, Int>.times(that: Int): Pair<Int, Int> =
+    Pair(this.first * that, this.second * that)
+
+/**
+ * Returns the component-wise multiplication of [this] and [that].
+ */
+@JvmName("intTimes")
+operator fun Pair<Int, Int>.times(that: Pair<Int, Int>): Pair<Int, Int> =
+    Pair(this.first * that.first, this.second * that.second)
+
+/**
+ * Returns the product of the respective components with [that].
+ */
+@JvmName("longTimes")
+operator fun Pair<Long, Long>.times(that: Long): Pair<Long, Long> =
+    Pair(this.first * that, this.second * that)
+
+/**
+ * Returns the component-wise multiplication of [this] and [that].
+ */
+@JvmName("longTimes")
+operator fun Pair<Long, Long>.times(that: Pair<Long, Long>): Pair<Long, Long> =
+    Pair(this.first * that.first, this.second * that.second)
+
+/**
+ * Returns the division of the respective components with [that].
+ */
+@JvmName("intDiv")
+operator fun Pair<Int, Int>.div(that: Int): Pair<Int, Int> =
+    Pair(this.first / that, this.second / that)
+
+/**
+ * Returns the component-wise division of [this] and [that].
+ */
+@JvmName("intDiv")
+operator fun Pair<Int, Int>.div(that: Pair<Int, Int>): Pair<Int, Int> =
+    Pair(this.first / that.first, this.second / that.second)
+
+/**
+ * Returns the division of the respective components with [that].
+ */
+@JvmName("longDiv")
+operator fun Pair<Long, Long>.div(that: Long): Pair<Long, Long> =
+    Pair(this.first / that, this.second / that)
+
+/**
+ * Returns the component-wise division of [this] and [that].
+ */
+@JvmName("longDiv")
+operator fun Pair<Long, Long>.div(that: Pair<Long, Long>): Pair<Long, Long> =
+    Pair(this.first / that.first, this.second / that.second)
 
 
 /**

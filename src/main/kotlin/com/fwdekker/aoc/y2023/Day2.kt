@@ -12,7 +12,7 @@ fun main() {
     val lines = readLines("/y2023/Day2.txt")
 
     // Part 1
-    val limits = mapOf("red" to 12, "green" to 13, "blue" to 14);
+    val limits = mapOf("red" to 12, "green" to 13, "blue" to 14)
     lines
         .associate { line -> line.split(": ").asPair().mapFirst { it.drop(5).toInt() }.mapSecond { it.parseDraws() } }
         .filterValues { draws -> draws.all { draw -> limits.all { (color, amount) -> (draw[color] ?: 0) <= amount } } }

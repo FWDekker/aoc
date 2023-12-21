@@ -6,6 +6,7 @@ import com.fwdekker.aoc.std.Heading
 import com.fwdekker.aoc.std.cell
 import com.fwdekker.aoc.std.coordsOf
 import com.fwdekker.aoc.std.has
+import com.fwdekker.aoc.std.neighbors
 import com.fwdekker.aoc.std.readLines
 
 

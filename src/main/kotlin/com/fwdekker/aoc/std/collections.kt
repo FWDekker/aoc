@@ -4,7 +4,12 @@ package com.fwdekker.aoc.std
 /**
  * Returns the element at wrapped [index], so `this.getMod(-1)` is equivalent to `this.last()`.
  */
-fun <T> List<T>.getMod(index: Int): T = this[((index % size) + size) % size]
+fun <T> List<T>.getMod(index: Number): T = this[index.toLong().wrapMod(size)]
+
+/**
+ * Returns the character at wrapped [index], so `this.getMod(-1)` is equivalent to `this.last()`.
+ */
+fun String.getMod(index: Number): Char = this[index.toLong().wrapMod(length)]
 
 
 /**
