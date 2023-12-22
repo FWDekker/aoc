@@ -145,27 +145,6 @@ enum class Direction {
 
 
     /**
-     * Absolute north.
-     */
-    val north: Direction get() = NORTH
-
-    /**
-     * Absolute east.
-     */
-    val east: Direction get() = EAST
-
-    /**
-     * Absolute south.
-     */
-    val south: Direction get() = SOUTH
-
-    /**
-     * Absolute west.
-     */
-    val west: Direction get() = WEST
-
-
-    /**
      * Left relative to the current direction.
      */
     val left: Direction get() = LEFT.getValue(this)
@@ -252,18 +231,13 @@ enum class Direction {
         private val CONVERT = mapOf('N' to NORTH, 'E' to EAST, 'S' to SOUTH, 'W' to WEST)
 
 
-        /**
-         * Converts [char] to a [Direction] using the given [converter] as a lookup table.
-         *
-         * Using the default [converter], [char] must be one of `'N'`, `'E'`, `'S'`, and `'W'`, otherwise an exception
-         * is thrown.
-         */
-        fun fromChar(char: Char, converter: Map<Char, Direction> = CONVERT): Direction = converter.getValue(char)
+        fun <T> from(item: T, converter: List<T>): Direction = entries[converter.indexOf(item)]
 
-        /**
-         * Does the same as [fromChar], except that this method returns `null` instead of throwing an exception.
-         */
-        fun fromCharOrNull(char: Char, converter: Map<Char, Direction> = CONVERT): Direction? = converter[char]
+        fun fromInt(int: Int, converter: IntRange = 0..3): Direction = entries[converter.indexOf(int)]
+
+        fun fromChar(char: Char, converter: CharRange): Direction = entries[converter.indexOf(char)]
+
+        fun fromChar(char: Char, converter: String = "NESW"): Direction = entries[converter.indexOf(char)]
     }
 }
 
@@ -286,12 +260,6 @@ fun Coords(row: Int, col: Int) = Pair(row.toLong(), col.toLong())
 fun Coords(row: Long, col: Int) = Pair(row, col)
 
 /**
- * Utility method for copying [Coords] with named parameters.
- */
-@Suppress("EXTENSION_SHADOWED_BY_MEMBER")
-fun Coords.copy(row: Long = first, col: Long = second) = Pair(row, col)
-
-/**
  * The vertical coordinate.
  */
 val Coords.row: Long get() = first
@@ -304,22 +272,22 @@ val Coords.col: Long get() = second
 /**
  * Returns the coordinates directly [Direction.NORTH] of `this`.
  */
-val Coords.north: Coords get() = neighbor(Direction.NORTH)
+val Coords.north: Coords get() = move(Direction.NORTH)
 
 /**
  * Returns the coordinates directly [Direction.SOUTH] of `this`.
  */
-val Coords.east: Coords get() = neighbor(Direction.EAST)
+val Coords.east: Coords get() = move(Direction.EAST)
 
 /**
  * Returns the coordinates directly [Direction.EAST] of `this`.
  */
-val Coords.south: Coords get() = neighbor(Direction.SOUTH)
+val Coords.south: Coords get() = move(Direction.SOUTH)
 
 /**
  * Returns the coordinates directly [Direction.WEST] of `this`.
  */
-val Coords.west: Coords get() = neighbor(Direction.WEST)
+val Coords.west: Coords get() = move(Direction.WEST)
 
 /**
  * Returns the neighboring coordinates in all four [Direction]s.
@@ -329,21 +297,13 @@ val Coords.neighbors: Collection<Coords> get() = listOf(north, east, south, west
 /**
  * Returns the coordinates in position [direction] relative to `this`.
  */
-fun Coords.neighbor(direction: Direction): Coords =
+fun Coords.move(direction: Direction, distance: Long = 1L): Coords =
     when (direction) {
-        Direction.NORTH -> Coords(row - 1, col)
-        Direction.EAST -> Coords(row, col + 1)
-        Direction.SOUTH -> Coords(row + 1, col)
-        Direction.WEST -> Coords(row, col - 1)
+        Direction.NORTH -> Coords(row - distance, col)
+        Direction.EAST -> Coords(row, col + distance)
+        Direction.SOUTH -> Coords(row + distance, col)
+        Direction.WEST -> Coords(row, col - distance)
     }
-
-/**
- * Returns the coordinates in position [direction] relative to `this`.
- *
- * @see Direction.fromChar
- */
-fun Coords.neighbor(direction: Char, converter: (Char) -> Direction = { Direction.fromChar(it) }): Coords =
-    neighbor(converter(direction))
 
 
 /**
@@ -373,7 +333,7 @@ data class Heading(val coords: Coords, val direction: Direction) {
      * Turns and moves to [direction].
      */
     fun go(direction: Direction): Heading =
-        Heading(coords.neighbor(direction), direction)
+        Heading(coords.move(direction), direction)
 
     /**
      * Turns and moves to the result of applying [transform] to [direction].
