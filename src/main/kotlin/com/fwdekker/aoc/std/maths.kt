@@ -1,5 +1,6 @@
 package com.fwdekker.aoc.std
 
+import kotlin.experimental.ExperimentalTypeInference
 import kotlin.math.abs
 import kotlin.math.pow
 
@@ -12,7 +13,7 @@ fun Long.toIntExact(): Int = Math.toIntExact(this)
 /**
  * Converts all numbers to [Long]s.
  */
-fun Collection<Number>.longs(): List<Long> = map(Number::toLong)
+fun Iterable<Number>.longs(): List<Long> = map(Number::toLong)
 
 /**
  * Converts to a pair of [Long]s.
@@ -55,13 +56,29 @@ fun Long.pow(exponent: Int): Long {
  * Returns the product of multiplying all entries (as [Long]s).
  */
 @JvmName("intProduct")
-fun Collection<Int>.product(): Long = longs().product()
+fun Iterable<Int>.product(): Long = longs().product()
 
 /**
  * Returns the product of multiplying all entries.
  */
 @JvmName("longProduct")
-fun Collection<Long>.product(): Long = reduce(Long::times)
+fun Iterable<Long>.product(): Long = reduce(Long::times)
+
+/**
+ * Shorthand for invoking [map] and then [product].
+ */
+@JvmName("intProductOf")
+@OptIn(ExperimentalTypeInference::class)
+@OverloadResolutionByLambdaReturnType
+fun <T> Iterable<T>.productOf(transform: (T) -> Int): Long = map(transform).product()
+
+/**
+ * Shorthand for invoking [map] and then [product].
+ */
+@JvmName("longProductOf")
+@OptIn(ExperimentalTypeInference::class)
+@OverloadResolutionByLambdaReturnType
+fun <T> Iterable<T>.productOf(transform: (T) -> Long): Long = map(transform).product()
 
 
 /**
@@ -157,7 +174,7 @@ tailrec fun gcd(a: Long, b: Long): Long = if (b == 0L) a else gcd(b, a % b)
 /**
  * @see gcd
  */
-fun Collection<Long>.gcd(): Long = reduce(::gcd)
+fun Iterable<Long>.gcd(): Long = reduce(::gcd)
 
 
 /**
@@ -168,56 +185,56 @@ fun lcm(a: Long, b: Long): Long = a * (b / gcd(a, b))
 /**
  * @see lcm
  */
-fun Collection<Long>.lcm(): Long = reduce(::lcm)
+fun Iterable<Long>.lcm(): Long = reduce(::lcm)
 
 
 /**
  * Returns the L1 norm.
  */
 @JvmName("intNorm1")
-fun Collection<Int>.norm1(): Int = sumOf { abs(it) }
+fun Iterable<Int>.norm1(): Int = sumOf { abs(it) }
 
 /**
  * Returns the L1 norm.
  */
 @JvmName("longNorm1")
-fun Collection<Long>.norm1(): Long = sumOf { abs(it) }
+fun Iterable<Long>.norm1(): Long = sumOf { abs(it) }
 
 /**
  * Invokes [zip] on [this] and [that], but requires that the sizes of [this] and [that] are equal.
  */
-private fun <S, T> Collection<S>.matchedZip(that: Collection<T>): Collection<Pair<S, T>> {
+private fun <S, T> Collection<S>.matchedZip(that: Collection<T>): List<Pair<S, T>> {
     require(this.size == that.size) { "Expected equal sizes, but sizes were ${this.size} and ${that.size}." }
 
-    return this.zip(that)
+    return this zip that
 }
 
 /**
  * Returns the [norm]-distance between [this] and [that], calculated as `norm(this - that)`.
  */
 @JvmName("intDistance")
-fun Collection<Int>.distance(that: Collection<Int>, norm: (Collection<Int>) -> Int = { it.norm1() }): Int =
+fun Collection<Int>.distance(that: Collection<Int>, norm: (Iterable<Int>) -> Int = { it.norm1() }): Int =
     norm(this.matchedZip(that).map { (a, b) -> a - b })
 
 /**
  * Returns the [norm]-distance between [this] and [that], calculated as `norm(this - that)`.
  */
 @JvmName("intDistance")
-fun Pair<Int, Int>.distance(that: Pair<Int, Int>, norm: (Collection<Int>) -> Int = { it.norm1() }): Int =
+fun Pair<Int, Int>.distance(that: Pair<Int, Int>, norm: (Iterable<Int>) -> Int = { it.norm1() }): Int =
     norm((this - that).toList())
 
 /**
  * Returns the [norm]-distance between [this] and [that], calculated as `norm(this - that)`.
  */
 @JvmName("longDistance")
-fun Collection<Long>.distance(that: Collection<Long>, norm: (Collection<Long>) -> Long = { it.norm1() }): Long =
+fun Collection<Long>.distance(that: Collection<Long>, norm: (Iterable<Long>) -> Long = { it.norm1() }): Long =
     norm(this.matchedZip(that).map { (a, b) -> a - b })
 
 /**
  * Returns the [norm]-distance between [this] and [that], calculated as `norm(this - that)`.
  */
 @JvmName("longDistance")
-fun Pair<Long, Long>.distance(that: Pair<Long, Long>, norm: (Collection<Long>) -> Long = { it.norm1() }): Long =
+fun Pair<Long, Long>.distance(that: Pair<Long, Long>, norm: (Iterable<Long>) -> Long = { it.norm1() }): Long =
     norm((this - that).toList())
 
 

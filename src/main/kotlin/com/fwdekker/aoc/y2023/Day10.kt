@@ -1,44 +1,37 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.std.Coords
+import com.fwdekker.aoc.std.Day
 import com.fwdekker.aoc.std.Direction
 import com.fwdekker.aoc.std.Heading
+import com.fwdekker.aoc.std.asPair
+import com.fwdekker.aoc.std.cardinals
 import com.fwdekker.aoc.std.cell
 import com.fwdekker.aoc.std.coordsOf
 import com.fwdekker.aoc.std.has
-import com.fwdekker.aoc.std.neighbors
+import com.fwdekker.aoc.std.mapFirst
+import com.fwdekker.aoc.std.mapSecond
+import com.fwdekker.aoc.std.move
+import com.fwdekker.aoc.std.product
 import com.fwdekker.aoc.std.readLines
 
 
-fun main() {
-    val maze = readLines("/y2023/Day10.txt")
 
-    val start = maze.coordsOf('S')
-    val cycle = Direction.entries.asSequence()
+class Day10(resource: String = resource(2023, 10)) : Day(resource) {
+    private val maze = readLines(resource)
+
+    private val start = maze.coordsOf('S')
+    private val cycle = Direction.entries.asSequence()
+        .filter { maze.has(start.move(it)) }
         .map { Raccoon(maze, Heading(start, it)) }
         .onEach { it.scurry() }
         .first { it.isCycle() }
 
-    // Part 1
-    println("Part one: ${cycle.distance / 2}")
 
-    // Part 2
-    println("Part two: ${cycle.getEnclosedSpace()}")
+    override fun part1(): Int = cycle.distance / 2
+
+    override fun part2(): Int = cycle.getEnclosedSpace()
 }
-
-
-private fun Char.traverse(from: Heading): Heading? {
-    val table: Map<Char, Direction.() -> Direction> =
-        when (from.direction) {
-            Direction.NORTH -> mapOf('S' to { ahead }, '|' to { ahead }, '7' to { left }, 'F' to { right })
-            Direction.EAST -> mapOf('S' to { ahead }, '-' to { ahead }, 'J' to { left }, '7' to { right })
-            Direction.SOUTH -> mapOf('S' to { ahead }, '|' to { ahead }, 'J' to { right }, 'L' to { left })
-            Direction.WEST -> mapOf('S' to { ahead }, '-' to { ahead }, 'L' to { right }, 'F' to { left })
-        }
-
-    return table[this]?.invoke(from.direction)?.let(from::go)
-}
-
 
 private class Raccoon(val maze: List<String>, heading: Heading) {
     private val path: MutableSet<Coords> = mutableSetOf(heading.coords)
@@ -101,10 +94,26 @@ private class Raccoon(val maze: List<String>, heading: Heading) {
         var enclosed = 0
         while (encloses.size > enclosed) {
             enclosed = encloses.size
-            encloses.addAll(encloses.flatMap { it.neighbors }.toSet().subtract(path))
+            encloses.addAll(encloses.flatMap { it.cardinals }.toSet().subtract(path))
             encloses.retainAll { maze.has(it) }
         }
 
         return encloses.size
     }
+
+
+    private fun Char.traverse(from: Heading): Heading? {
+        val table: Map<Char, Direction.() -> Direction> =
+            when (from.direction) {
+                Direction.NORTH -> mapOf('S' to { ahead }, '|' to { ahead }, '7' to { left }, 'F' to { right })
+                Direction.EAST -> mapOf('S' to { ahead }, '-' to { ahead }, 'J' to { left }, '7' to { right })
+                Direction.SOUTH -> mapOf('S' to { ahead }, '|' to { ahead }, 'J' to { right }, 'L' to { left })
+                Direction.WEST -> mapOf('S' to { ahead }, '-' to { ahead }, 'L' to { right }, 'F' to { left })
+            }
+
+        return table[this]?.invoke(from.direction)?.let(from::go)
+    }
 }
+
+
+fun main() = Day10().run()

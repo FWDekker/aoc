@@ -1,35 +1,41 @@
 package com.fwdekker.aoc.y2023
 
+import com.fwdekker.aoc.std.Day
 import com.fwdekker.aoc.std.readResource
+import com.fwdekker.aoc.std.sumOfIndexed
 
 
-fun main() {
-    val instructions = readResource("/y2023/Day15.txt").split(',')
-
-    // Part 1
-    println("Part one: ${instructions.sumOf { Label(it).hashCode() }}")
-
-    // Part 2
-    val boxes = mutableMapOf<Label, MutableMap<String, Int>>()  // Kotlin maps preserve insertion order
-    instructions.forEach { boxes.perform(it) }
-    println("Part two: ${boxes.power()}")
-}
+class Day15(resource: String = resource(2023, 15)) : Day(resource) {
+    private val instructions = readResource(resource).split(',')
 
 
-private class Label(private val label: String) {
-    override fun hashCode(): Int = label.fold(0) { hash, char -> ((hash + char.code) * 17) % 256 }
+    override fun part1(): Int =
+        instructions.sumOf { Label(it).hashCode() }
 
-    override fun equals(other: Any?) = other is Label && this.hashCode() == other.hashCode()
-}
+    override fun part2(): Int =
+        instructions.fold(emptyMap<Label, Map<String, Int>>()) { boxes, it -> boxes.perform(it) }.power()
 
-private fun MutableMap<Label, MutableMap<String, Int>>.perform(instruction: String) {
-    val (label, focal) = instruction.split('-', '=')
 
-    getOrPut(Label(label)) { mutableMapOf() }
-        .also { if ('-' in instruction) it.remove(label) else it[label] = focal.toInt() }
-}
+    private class Label(private val label: String) {
+        override fun hashCode(): Int = label.fold(0) { hash, char -> ((hash + char.code) * 17) % 256 }
 
-private fun Map<Label, MutableMap<String, Int>>.power(): Int =
-    entries.sumOf { (label, box) ->
-        (label.hashCode() + 1) * box.values.withIndex().sumOf { (slot, focal) -> (slot + 1) * focal }
+        override fun equals(other: Any?) = other is Label && this.hashCode() == other.hashCode()
     }
+
+    private fun Map<Label, Map<String, Int>>.perform(instruction: String): Map<Label, Map<String, Int>> {
+        val (text, focal) = instruction.split('-', '=')
+
+        val label = Label(text)
+        val box = getOrDefault(label, emptyMap())
+
+        return this + Pair(label, if ('-' in instruction) box - text else box + Pair(text, focal.toInt()))
+    }
+
+    private fun Map<Label, Map<String, Int>>.power(): Int =
+        entries.sumOf { (label, box) ->
+            (label.hashCode() + 1) * box.values.sumOfIndexed { slot, focal -> (slot + 1) * focal }
+        }
+}
+
+
+fun main() = Day15().run()

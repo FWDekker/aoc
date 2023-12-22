@@ -1,31 +1,33 @@
 package com.fwdekker.aoc.y2023
 
+import com.fwdekker.aoc.std.Day
 import com.fwdekker.aoc.std.asPair
-import com.fwdekker.aoc.std.product
 import com.fwdekker.aoc.std.mapFirst
 import com.fwdekker.aoc.std.mapSecond
+import com.fwdekker.aoc.std.product
 import com.fwdekker.aoc.std.readLines
-import com.fwdekker.aoc.std.swap
 
 
-fun main() {
-    val lines = readLines("/y2023/Day2.txt")
+class Day2(resource: String = resource(2023, 2)) : Day(resource) {
+    private val lines = readLines(resource)
+    private val limits = mapOf("red" to 12, "green" to 13, "blue" to 14)
+    private val colors = limits.keys
 
-    // Part 1
-    val limits = mapOf("red" to 12, "green" to 13, "blue" to 14)
-    lines
+
+    override fun part1(): Int = lines
         .associate { line -> line.split(": ").asPair().mapFirst { it.drop(5).toInt() }.mapSecond { it.parseDraws() } }
         .filterValues { draws -> draws.all { draw -> limits.all { (color, amount) -> (draw[color] ?: 0) <= amount } } }
-        .also { println("Part one: ${it.keys.sum()}") }
+        .keys.sum()
 
-    // Part 2
-    val colors = limits.keys
-    lines
-        .map { it.split(": ")[1].parseDraws() }
-        .sumOf { draws -> colors.map { color -> draws.maxOf { it[color] ?: 0 } }.product() }
-        .also { println("Part two: $it") }
+    override fun part2(): Long =
+        lines
+            .map { it.substringAfter(": ").parseDraws() }
+            .sumOf { draws -> colors.map { color -> draws.maxOf { it[color] ?: 0 } }.product() }
+
+
+    private fun String.parseDraws(): List<Map<String, Int>> =
+        split("; ").map { draw -> draw.split(", ").associate { set -> set.split(' ').let { it[1] to it[0].toInt() } } }
 }
 
 
-private fun String.parseDraws(): List<Map<String, Int>> =
-    split("; ").map { draw -> draw.split(", ").associate { it.split(' ').asPair().swap().mapSecond(String::toInt) } }
+fun main() = Day2().run()

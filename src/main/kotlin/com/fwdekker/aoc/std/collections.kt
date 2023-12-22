@@ -1,5 +1,7 @@
 package com.fwdekker.aoc.std
 
+import kotlin.experimental.ExperimentalTypeInference
+
 
 /**
  * Returns the element at wrapped [index], so `this.getMod(-1)` is equivalent to `this.last()`.
@@ -13,14 +15,33 @@ fun String.getMod(index: Number): Char = this[index.toLong().wrapMod(length)]
 
 
 /**
+ * Shorthand for invoking [withIndex] and then [sumOf].
+ */
+@JvmName("intSumOfIndexed")
+@OptIn(ExperimentalTypeInference::class)
+@OverloadResolutionByLambdaReturnType
+fun <T> Collection<T>.sumOfIndexed(transform: (Int, T) -> Int): Int =
+    withIndex().sumOf { (idx, element) -> transform(idx, element) }
+
+/**
+ * Shorthand for invoking [withIndex] and then [sumOf].
+ */
+@JvmName("longSumOfIndexed")
+@OptIn(ExperimentalTypeInference::class)
+@OverloadResolutionByLambdaReturnType
+fun <T> Collection<T>.sumOfIndexed(transform: (Int, T) -> Long): Long =
+    withIndex().sumOf { (idx, element) -> transform(idx, element) }
+
+
+/**
  * Repeats [this] sequence [amount] times.
  */
 fun <T> Sequence<T>.repeat(amount: Int): Sequence<T> = sequence { for (i in 1..amount) yieldAll(this@repeat) }
 
 /**
- * Repeats [this] collection [amount] times.
+ * Repeats [this] iterable [amount] times.
  */
-fun <T> Collection<T>.repeat(amount: Int): List<T> = asSequence().repeat(amount).toList()
+fun <T> Iterable<T>.repeat(amount: Int): List<T> = asSequence().repeat(amount).toList()
 
 
 /**
@@ -31,7 +52,14 @@ fun <T> Sequence<T>.cyclic(): Sequence<T> = sequence { while (true) yieldAll(thi
 /**
  * Returns a (lazy) [Sequence] which repeats [this] infinitely many times.
  */
-fun <T> Collection<T>.cyclic(): Sequence<T> = asSequence().cyclic()
+fun <T> Iterable<T>.cyclic(): Sequence<T> = asSequence().cyclic()
+
+
+/**
+ * Returns all possible combinations of elements in [this] and [that].
+ */
+fun <T, U> Iterable<T>.cartesian(that: Iterable<U>): List<Pair<T, U>> =
+    this.flatMap { a -> that.map { b -> Pair(a, b) } }
 
 
 /**
@@ -52,7 +80,7 @@ fun <A, B, T> Pair<A, B>.mapFirst(transform: (A) -> T): Pair<T, B> = Pair(transf
 /**
  * Maps the first entry in each pair using [transform].
  */
-fun <A, B, T> Collection<Pair<A, B>>.mapFirsts(transform: (A) -> T): List<Pair<T, B>> = map { it.mapFirst(transform) }
+fun <A, B, T> Iterable<Pair<A, B>>.mapFirsts(transform: (A) -> T): List<Pair<T, B>> = map { it.mapFirst(transform) }
 
 /**
  * Maps only the second entry using [transform].
@@ -62,9 +90,14 @@ fun <A, B, T> Pair<A, B>.mapSecond(transform: (B) -> T): Pair<A, T> = Pair(first
 /**
  * Maps the second entry in each pair using [transform].
  */
-fun <A, B, T> Collection<Pair<A, B>>.mapSeconds(transform: (B) -> T): List<Pair<A, T>> = map { it.mapSecond(transform) }
+fun <A, B, T> Iterable<Pair<A, B>>.mapSeconds(transform: (B) -> T): List<Pair<A, T>> = map { it.mapSecond(transform) }
 
 /**
  * Returns a pair containing the first two elements.
  */
 fun <T> List<T>.asPair(): Pair<T, T> = Pair(this[0], this[1])
+
+/**
+ * Zips [first] with [second].
+ */
+fun <A, B> Pair<Iterable<A>, Iterable<B>>.zipped(): List<Pair<A, B>> = first zip second

@@ -28,9 +28,9 @@ fun String.ints(separator: Char): List<Int> = ints(separator.toString())
 fun String.ints(separator: String): List<Int> = split(separator).filterNotBlank().map(String::toInt)
 
 /**
- * Splits by [regex] and converts each entry to an [Int].
+ * Splits by [separator] and converts each entry to an [Int].
  */
-fun String.ints(regex: Regex): List<Int> = split(regex).filterNotBlank().map(String::toInt)
+fun String.ints(separator: Regex): List<Int> = split(separator).filterNotBlank().map(String::toInt)
 
 /**
  * Splits by [separator] and converts each entry to a [Long].
@@ -43,9 +43,9 @@ fun String.longs(separator: Char): List<Long> = longs(separator.toString())
 fun String.longs(separator: String): List<Long> = split(separator).filterNotBlank().map(String::toLong)
 
 /**
- * Splits by [regex] and converts each entry to a [Long].
+ * Splits by [separator] and converts each entry to a [Long].
  */
-fun String.longs(regex: Regex): List<Long> = split(regex).filterNotBlank().map(String::toLong)
+fun String.longs(separator: Regex): List<Long> = split(separator).filterNotBlank().map(String::toLong)
 
 
 /**
@@ -64,4 +64,4 @@ fun String.sortedDescending(): String =
  * Repeats this string [amount] times and joins the repetitions with [separator].
  */
 fun String.repeat(amount: Int, separator: String = ""): String =
-    asSequence().repeat(amount).joinToString(separator = separator)
+    listOf(this).repeat(amount).joinToString(separator = separator)

@@ -1,20 +1,23 @@
 package com.fwdekker.aoc.y2023
 
+import com.fwdekker.aoc.std.Day
 import com.fwdekker.aoc.std.ints
 import com.fwdekker.aoc.std.readLines
 
 
-fun main() {
-    val lines = readLines("/y2023/Day9.txt")
+class Day9(resource: String = resource(2023, 9)) : Day(resource) {
+    private val lines = readLines(resource)
 
-    // Part 1
-    println("Part one: ${lines.sumOf { it.ints(' ').next() }}")
 
-    // Part 2
-    println("Part two: ${lines.sumOf { it.ints(' ').reversed().next() }}")
+    override fun part1(): Int = lines.sumOf { it.ints(' ').next() }
+
+    override fun part2(): Int = lines.sumOf { it.ints(' ').reversed().next() }
+
+
+    private tailrec fun List<Int>.next(plus: Int = 0): Int =
+        if (all { it == 0 }) plus
+        else zipWithNext().map { it.second - it.first }.next(plus + last())
 }
 
 
-private tailrec fun List<Int>.next(plus: Int = 0): Int =
-    if (all { it == 0 }) plus
-    else zipWithNext().map { it.second - it.first }.next(plus + last())
+fun main() = Day9().run()

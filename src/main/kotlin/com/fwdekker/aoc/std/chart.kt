@@ -29,8 +29,30 @@ val Chart.cols: IntRange get() = this[0].indices
 
 
 /**
+ * Returns the [row]th row.
+ */
+fun Chart.row(row: Int): String = this[row]
+
+/**
+ * Returns the row in which [coords] is located.
+ */
+fun Chart.rowOf(coords: Coords): String = row(coords.row.toIntExact())
+
+/**
+ * Returns the [col]th column.
+ */
+fun Chart.col(col: Int): String = map { it[col] }.joinToString(separator = "")
+
+/**
+ * Returns the column in which [coords] is located.
+ */
+fun Chart.colOf(coords: Coords): String = col(coords.col.toIntExact())
+
+
+/**
  * Returns `true` if and only if this chart contains a character at coordinates [row], [col].
  */
+// TODO: Rename to operator fun `contains`?
 fun Chart.has(row: Int, col: Int): Boolean = row in rows && col in cols
 
 /**
@@ -74,11 +96,17 @@ fun Chart.cellMod(coords: Coords): Char = cellMod(coords.row, coords.col)
 fun Chart.coordsOf(char: Char): Coords =
     withIndex().asSequence().map { Coords(it.index, it.value.indexOf(char)) }.first { it.col >= 0 }
 
+/**
+ * Returns all [Coords] at which [char] is found.
+ */
+fun Chart.allCoordsOf(char: Char): List<Coords> =
+    rows.flatMap { row -> this[row].withIndex().filter { (_, it) -> it == char }.map { (col, _) -> Coords(row, col) } }
+
 
 /**
  * Transposes, flipping semantics of rows and columns.
  */
-fun Chart.transpose(): Chart = cols.map { col -> joinToString(separator = "") { line -> "${line[col]}" } }
+fun Chart.transpose(): Chart = cols.map(::col)
 
 /**
  * Reverses the order of rows.
@@ -225,18 +253,29 @@ enum class Direction {
          */
         private val FLIP_NE = mapOf(NORTH to EAST, EAST to NORTH, SOUTH to WEST, WEST to SOUTH)
 
+
         /**
-         * Lookup table for [fromChar].
+         * Converts [item] to a [Direction] by matching the first entry in [converter] with [NORTH], the second with
+         * [EAST], the third with [SOUTH], and the fourth with [WEST].
          */
-        private val CONVERT = mapOf('N' to NORTH, 'E' to EAST, 'S' to SOUTH, 'W' to WEST)
-
-
         fun <T> from(item: T, converter: List<T>): Direction = entries[converter.indexOf(item)]
 
+        /**
+         * Converts [int] to a [Direction] by matching the first entry in [converter] with [NORTH], the second with
+         * [EAST], the third with [SOUTH], and the fourth with [WEST].
+         */
         fun fromInt(int: Int, converter: IntRange = 0..3): Direction = entries[converter.indexOf(int)]
 
+        /**
+         * Converts [char] to a [Direction] by matching the first entry in [converter] with [NORTH], the second with
+         * [EAST], the third with [SOUTH], and the fourth with [WEST].
+         */
         fun fromChar(char: Char, converter: CharRange): Direction = entries[converter.indexOf(char)]
 
+        /**
+         * Converts [char] to a [Direction] by matching the first entry in [converter] with [NORTH], the second with
+         * [EAST], the third with [SOUTH], and the fourth with [WEST].
+         */
         fun fromChar(char: Char, converter: String = "NESW"): Direction = entries[converter.indexOf(char)]
     }
 }
@@ -272,27 +311,57 @@ val Coords.col: Long get() = second
 /**
  * Returns the coordinates directly [Direction.NORTH] of `this`.
  */
-val Coords.north: Coords get() = move(Direction.NORTH)
+val Coords.north: Coords get() = move(rows = -1L)
+
+/**
+ * Returns the coordinates directly [Direction.NORTH] and then [Direction.EAST] of `this`.
+ */
+val Coords.northEast: Coords get() = move(rows = -1L, cols = 1L)
 
 /**
  * Returns the coordinates directly [Direction.SOUTH] of `this`.
  */
-val Coords.east: Coords get() = move(Direction.EAST)
+val Coords.east: Coords get() = move(cols = 1L)
+
+/**
+ * Returns the coordinates directly [Direction.SOUTH] and then [Direction.EAST] of `this`.
+ */
+val Coords.southEast: Coords get() = move(rows = 1L, cols = 1L)
 
 /**
  * Returns the coordinates directly [Direction.EAST] of `this`.
  */
-val Coords.south: Coords get() = move(Direction.SOUTH)
+val Coords.south: Coords get() = move(rows = 1L)
+
+/**
+ * Returns the coordinates directly [Direction.SOUTH] and then [Direction.WEST] of `this`.
+ */
+val Coords.southWest: Coords get() = move(rows = 1L, cols = -1L)
 
 /**
  * Returns the coordinates directly [Direction.WEST] of `this`.
  */
-val Coords.west: Coords get() = move(Direction.WEST)
+val Coords.west: Coords get() = move(cols = -1L)
 
 /**
- * Returns the neighboring coordinates in all four [Direction]s.
+ * Returns the coordinates directly [Direction.NORTH] and then [Direction.WEST] of `this`.
  */
-val Coords.neighbors: Collection<Coords> get() = listOf(north, east, south, west)
+val Coords.northWest: Coords get() = move(rows = -1L, cols = -1L)
+
+/**
+ * Returns the neighboring coordinates in all four cardinal [Direction]s.
+ */
+val Coords.cardinals: Collection<Coords> get() = listOf(north, east, south, west)
+
+/**
+ * Returns the neighboring coordinates in all four ordinal directions.
+ */
+val Coords.ordinals: Collection<Coords> get() = listOf(northEast, southEast, southWest, northWest)
+
+/**
+ * Returns the neighboring coordinates in all four cardinal and ordinal directions.
+ */
+val Coords.principals: Collection<Coords> get() = cardinals + ordinals
 
 /**
  * Returns the coordinates in position [direction] relative to `this`.
@@ -304,6 +373,11 @@ fun Coords.move(direction: Direction, distance: Long = 1L): Coords =
         Direction.SOUTH -> Coords(row + distance, col)
         Direction.WEST -> Coords(row, col - distance)
     }
+
+/**
+ * Returns the coordinates located [rows] to the south and [cols] to the east.
+ */
+fun Coords.move(rows: Long = 0L, cols: Long = 0L): Coords = Coords(row + rows, col + cols)
 
 
 /**
@@ -332,8 +406,7 @@ data class Heading(val coords: Coords, val direction: Direction) {
     /**
      * Turns and moves to [direction].
      */
-    fun go(direction: Direction): Heading =
-        Heading(coords.move(direction), direction)
+    fun go(direction: Direction): Heading = Heading(coords.move(direction), direction)
 
     /**
      * Turns and moves to the result of applying [transform] to [direction].
@@ -341,10 +414,12 @@ data class Heading(val coords: Coords, val direction: Direction) {
     fun go(transform: Direction.() -> Direction): Heading = go(transform(direction))
 
     /**
-     * Turns and moves to [direction].
-     *
-     * @see Direction.fromChar
+     * Turns and moves to each of the [directions].
      */
-    fun go(direction: Char, converter: (Char) -> Direction = { Direction.fromChar(it) }): Heading =
-        go(converter(direction))
+    fun go(vararg directions: Direction): List<Heading> = directions.map { go(it) }
+
+    /**
+     * Turns and moves to each result of applying the [transforms] to [direction].
+     */
+    fun go(vararg transforms: Direction.() -> Direction): List<Heading> = transforms.map { go(it) }
 }

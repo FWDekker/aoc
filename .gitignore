@@ -1,6 +1,6 @@
 ## Custom
-**/resources/*/Day*.txt
-!**/resources/*/DayX.txt
+**/main/resources/*/Day*.txt
+!**/main/resources/*/DayX.txt
 
 
 ## Java

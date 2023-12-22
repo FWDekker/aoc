@@ -2,12 +2,12 @@ package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.std.Chart
 import com.fwdekker.aoc.std.Coords
+import com.fwdekker.aoc.std.cardinals
 import com.fwdekker.aoc.std.cell
 import com.fwdekker.aoc.std.cellMod
 import com.fwdekker.aoc.std.coordsOf
 import com.fwdekker.aoc.std.foldSelf
 import com.fwdekker.aoc.std.has
-import com.fwdekker.aoc.std.neighbors
 import com.fwdekker.aoc.std.readLines
 import com.fwdekker.aoc.std.width
 
@@ -31,4 +31,4 @@ fun main() {
 
 
 fun Chart.flood(start: Set<Coords>, steps: Int, filter: Chart.(Coords) -> Boolean): Set<Coords> =
-    start.foldSelf(steps) { places -> places.flatMap { place -> place.neighbors.filter { this.filter(it) } }.toSet() }
+    start.foldSelf(steps) { places -> places.flatMap { place -> place.cardinals.filter { this.filter(it) } }.toSet() }

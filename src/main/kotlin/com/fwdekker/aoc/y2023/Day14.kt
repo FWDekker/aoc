@@ -1,40 +1,44 @@
 package com.fwdekker.aoc.y2023
 
+import com.fwdekker.aoc.std.Day
 import com.fwdekker.aoc.std.foldSelf
 import com.fwdekker.aoc.std.readLines
 import com.fwdekker.aoc.std.rotateCCW
 import com.fwdekker.aoc.std.rotateCW
 import com.fwdekker.aoc.std.sortedDescending
+import com.fwdekker.aoc.std.sumOfIndexed
 
 
-fun main() {
-    val lines = readLines("/y2023/Day14.txt")
-
-    // Part 1
-    println("Part one: ${lines.rotateCCW().tiltWest().rotateCW().calcLoad()}")
-
-    // Part 2
-    println("Part two: ${lines.rotateCCW().cycle(1_000_000_000).rotateCW().calcLoad()}")
-}
+class Day14(resource: String = resource(2023, 14)) : Day(resource) {
+    private val lines = readLines(resource)
 
 
-private fun List<String>.tiltWest(): List<String> =
-    map { line -> line.split('#').joinToString("#") { it.sortedDescending() } }
+    override fun part1(): Int = lines.rotateCCW().tiltWest().rotateCW().calcLoad()
 
-private fun List<String>.cycle(repetitions: Int = 1): List<String> {
-    val history = mutableMapOf(this to 0)
+    override fun part2(): Int = lines.rotateCCW().cycle(1_000_000_000).rotateCW().calcLoad()
 
-    var platform = this
-    repeat(repetitions) { repetition ->
-        platform = platform.foldSelf(repeats = 4) { it.tiltWest().rotateCW() }
 
-        if (platform in history)
-            return platform.cycle((repetitions - repetition) % (repetition - history.getValue(platform)))
+    private fun List<String>.tiltWest(): List<String> =
+        map { line -> line.split('#').joinToString("#") { it.sortedDescending() } }
 
-        history[platform] = repetition
+    private fun List<String>.cycle(repetitions: Int = 1): List<String> {
+        val history = mutableMapOf(this to 0)
+
+        var platform = this
+        for (repetition in 1..repetitions) {
+            platform = platform.foldSelf(repeats = 4) { it.tiltWest().rotateCW() }
+
+            if (platform in history)
+                return platform.cycle((repetitions - repetition) % (repetition - history.getValue(platform)))
+
+            history[platform] = repetition
+        }
+
+        return platform
     }
 
-    return platform
+    private fun List<String>.calcLoad(): Int = sumOfIndexed { idx, line -> (size - idx) * line.count { it == 'O' } }
 }
 
-private fun List<String>.calcLoad(): Int = mapIndexed { idx, line -> (size - idx) * line.count { it == 'O' } }.sum()
+
+fun main() = Day14().run()

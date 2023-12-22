@@ -9,7 +9,7 @@ fun main() {
     val lines = readLines("/y2023/Day22.txt")
     val bricks = lines
         .map { line -> line.split('~').map { coords -> coords.split(',') } }
-        .map { coords -> coords[0].zip(coords[1]).map { it.first.toInt()..it.second.toInt() } }
+        .map { coords -> (coords[0] zip coords[1]).map { it.first.toInt()..it.second.toInt() } }
         .map { Brick(it[0], it[1], it[2]) }
         .sortedBy { it.third.first }
 

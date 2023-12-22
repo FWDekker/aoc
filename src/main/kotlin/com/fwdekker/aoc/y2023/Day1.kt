@@ -1,32 +1,41 @@
 package com.fwdekker.aoc.y2023
 
+import com.fwdekker.aoc.std.Day
 import com.fwdekker.aoc.std.readLines
 
 
-fun main() {
-    val lines = readLines("/y2023/Day1.txt")
+class Day1(resource: String = resource(2023, 1)) : Day(resource) {
+    private val lines = readLines(resource)
 
-    // Part 1
-    lines
-        .map { it.toCharArray().filter(Char::isDigit) }
-        .map { "" + (it.firstOrNull() ?: "") + (it.lastOrNull() ?: "") }
-        .also { println("Part one: ${it.sumOf(String::toInt)}") }
 
-    // Part 2
-    lines
-        .map { it.digits() }
-        .map { "" + (it.firstOrNull() ?: "") + (it.lastOrNull() ?: "") }
-        .also { println("Part two: ${it.sumOf(String::toInt)}") }
+    override fun part1(): Int =
+        lines
+            .map { it.filter(Char::isDigit) }
+            .map { "${it.firstOrNull()}${it.lastOrNull()}" }
+            .sumOf { it.toIntOrNull() ?: 0 }
+
+    override fun part2(): Int =
+        lines
+            .map { it.numbers() }
+            .map { "${it.firstOrNull()}${it.lastOrNull()}" }
+            .sumOf { it.toIntOrNull() ?: 0 }
+
+
+    private fun String.numbers(): List<Char> =
+        withIndex().mapNotNull { (idx, char) ->
+            if (char.isDigit()) char
+            else DIGITS.entries.firstOrNull { (text, _) -> drop(idx).startsWith(text) }?.value
+        }
+
+
+    companion object {
+        private val DIGITS =
+            mapOf(
+                "one" to '1', "two" to '2', "three" to '3', "four" to '4', "five" to '5', "six" to '6', "seven" to '7',
+                "eight" to '8', "nine" to '9',
+            )
+    }
 }
 
 
-private val digits = mapOf(
-    "one" to '1', "two" to '2', "three" to '3', "four" to '4', "five" to '5', "six" to '6', "seven" to '7',
-    "eight" to '8', "nine" to '9',
-)
-
-private fun String.digits(): List<Char> =
-    this.indices.mapNotNull { idx ->
-        if (this[idx].isDigit()) this[idx]
-        else digits.keys.firstOrNull { this.drop(idx).startsWith(it) }?.let { digits[it] }
-    }
+fun main() = Day1().run()
