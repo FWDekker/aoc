@@ -4,7 +4,7 @@ import com.fwdekker.aoc.std.Day
 import com.fwdekker.aoc.std.Heading
 import com.fwdekker.aoc.std.cell
 import com.fwdekker.aoc.std.cols
-import com.fwdekker.aoc.std.has
+import com.fwdekker.aoc.std.contains
 import com.fwdekker.aoc.std.height
 import com.fwdekker.aoc.std.readLines
 import com.fwdekker.aoc.std.rows
@@ -40,7 +40,7 @@ class Day16(resource: String = resource(2023, 16)) : Day(resource) {
         while (heads.isNotEmpty()) {
             heads = heads
                 .flatMap { map.cell(it.coords).traverse(it) }
-                .filter { map.has(it.coords) && it !in history }
+                .filter { map.contains(it.coords) && it !in history }
                 .also { history.addAll(it) }
         }
 

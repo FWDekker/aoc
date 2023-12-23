@@ -6,7 +6,7 @@ import com.fwdekker.aoc.std.Day
 import com.fwdekker.aoc.std.Direction
 import com.fwdekker.aoc.std.Heading
 import com.fwdekker.aoc.std.cell
-import com.fwdekker.aoc.std.has
+import com.fwdekker.aoc.std.contains
 import com.fwdekker.aoc.std.lastColIndex
 import com.fwdekker.aoc.std.lastRowIndex
 import com.fwdekker.aoc.std.readLines
@@ -59,7 +59,7 @@ class Day17(resource: String = resource(2023, 17)) : Day(resource) {
 
             val distance = distances.getValue(current)
             getNeighbors(current)
-                .filter { has(it.coords) && it !in distances }
+                .filter { contains(it.coords) && it !in distances }
                 .forEach { next ->
                     val weight = cell(next.coords).digitToInt()
                     if (distance + weight < distances.getValue(next)) {

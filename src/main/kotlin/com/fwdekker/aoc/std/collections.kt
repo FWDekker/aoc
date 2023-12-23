@@ -113,3 +113,6 @@ fun <T> List<T>.asPair(): Pair<T, T> = Pair(this[0], this[1])
  * Zips [first] with [second].
  */
 fun <A, B> Pair<Iterable<A>, Iterable<B>>.zipped(): List<Pair<A, B>> = first zip second
+
+
+fun <K, V> Iterable<Map<K, V>>.sum() = fold(emptyMap<K, V>()) { acc, it -> acc + it }

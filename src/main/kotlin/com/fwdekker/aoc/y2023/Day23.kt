@@ -7,9 +7,9 @@ import com.fwdekker.aoc.std.cardinals
 import com.fwdekker.aoc.std.cartesian
 import com.fwdekker.aoc.std.cell
 import com.fwdekker.aoc.std.cols
+import com.fwdekker.aoc.std.contains
 import com.fwdekker.aoc.std.east
 import com.fwdekker.aoc.std.firstRow
-import com.fwdekker.aoc.std.has
 import com.fwdekker.aoc.std.lastRow
 import com.fwdekker.aoc.std.lastRowIndex
 import com.fwdekker.aoc.std.north
@@ -28,8 +28,9 @@ class Day23(resource: String = resource(2023, 23)) : Day(resource) {
     private val junctions =
         chart.rows.cartesian(chart.cols)
             .map { (row, col) -> Coords(row, col) }
-            .filter { chart.has(it) && chart.cell(it) != '#' }
-            .filter { chart.dryNeighborsOf(it).size > 2 } + listOf(start, end)
+            .filter { chart.contains(it) && chart.cell(it) != '#' }
+            .filter { chart.dryNeighborsOf(it).size > 2 }
+            .let { it + listOf(start, end) }
 
 
     override fun part1(): Int = chart.longestDistance(start, end) { chart.slipperyNeighborsOf(it) }
@@ -45,13 +46,13 @@ class Day23(resource: String = resource(2023, 23)) : Day(resource) {
             'v' -> listOf(coords.south)
             '<' -> listOf(coords.west)
             else -> coords.cardinals
-        }.filter { has(it) && cell(it) != '#' }
+        }.filter { contains(it) && cell(it) != '#' }
 
     private fun Chart.dryNeighborsOf(coords: Coords): List<Coords> =
         when (cell(coords)) {
             '#' -> emptyList()
             else -> coords.cardinals
-        }.filter { has(it) && cell(it) != '#' }
+        }.filter { contains(it) && cell(it) != '#' }
 
     private fun Chart.longestDistance(from: Coords, to: Coords, getNeighbors: (Coords) -> Iterable<Coords>): Int =
         longestDistance(from, to, junctions.associateWith { findShortestDistances(it, junctions, getNeighbors) })

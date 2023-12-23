@@ -4,17 +4,12 @@ import com.fwdekker.aoc.std.Coords
 import com.fwdekker.aoc.std.Day
 import com.fwdekker.aoc.std.Direction
 import com.fwdekker.aoc.std.Heading
-import com.fwdekker.aoc.std.asPair
 import com.fwdekker.aoc.std.cardinals
 import com.fwdekker.aoc.std.cell
+import com.fwdekker.aoc.std.contains
 import com.fwdekker.aoc.std.coordsOf
-import com.fwdekker.aoc.std.has
-import com.fwdekker.aoc.std.mapFirst
-import com.fwdekker.aoc.std.mapSecond
 import com.fwdekker.aoc.std.move
-import com.fwdekker.aoc.std.product
 import com.fwdekker.aoc.std.readLines
-
 
 
 class Day10(resource: String = resource(2023, 10)) : Day(resource) {
@@ -22,7 +17,7 @@ class Day10(resource: String = resource(2023, 10)) : Day(resource) {
 
     private val start = maze.coordsOf('S')
     private val cycle = Direction.entries.asSequence()
-        .filter { maze.has(start.move(it)) }
+        .filter { maze.contains(start.move(it)) }
         .map { Raccoon(maze, Heading(start, it)) }
         .onEach { it.scurry() }
         .first { it.isCycle() }
@@ -89,13 +84,13 @@ private class Raccoon(val maze: List<String>, heading: Heading) {
         val encloses = (if (rightPipes.size > leftPipes.size) leftPipes else rightPipes).toMutableSet()
 
         encloses.removeAll(path)
-        encloses.retainAll { maze.has(it) }
+        encloses.retainAll { maze.contains(it) }
 
         var enclosed = 0
         while (encloses.size > enclosed) {
             enclosed = encloses.size
             encloses.addAll(encloses.flatMap { it.cardinals }.toSet().subtract(path))
-            encloses.retainAll { maze.has(it) }
+            encloses.retainAll { maze.contains(it) }
         }
 
         return encloses.size

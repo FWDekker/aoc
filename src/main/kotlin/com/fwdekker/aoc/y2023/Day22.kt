@@ -2,9 +2,8 @@ package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.std.Day
 import com.fwdekker.aoc.std.ints
+import com.fwdekker.aoc.std.overlaps
 import com.fwdekker.aoc.std.readLines
-import kotlin.math.max
-import kotlin.math.min
 
 
 class Day22(resource: String = resource(2023, 22)) : Day(resource) {
@@ -28,11 +27,7 @@ class Day22(resource: String = resource(2023, 22)) : Day(resource) {
         fun onGround(): Boolean = 1 in zs
 
         fun supports(that: Brick): Boolean =
-            that.zs.first - 1 in this.zs && this.xs.intersects(that.xs) && this.ys.intersects(that.ys)
-
-
-        private fun IntRange.intersects(that: IntRange): Boolean = // TODO: Move this to maths module
-            !(max(this.first, that.first)..min(this.last, that.last)).isEmpty()
+            that.zs.first - 1 in this.zs && this.xs.overlaps(that.xs) && this.ys.overlaps(that.ys)
     }
 
     private class Stack(val bricks: Collection<Brick> = emptyList()) : Collection<Brick> by bricks {

@@ -2,70 +2,63 @@ package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.std.Day
 import com.fwdekker.aoc.std.longs
-import com.fwdekker.aoc.std.readLines
-import kotlin.math.max
-import kotlin.math.min
+import com.fwdekker.aoc.std.overlap
+import com.fwdekker.aoc.std.readSections
+import com.fwdekker.aoc.std.shift
+import com.fwdekker.aoc.std.sum
+import com.fwdekker.aoc.std.without
 
 
 class Day5(resource: String = resource(2023, 5)) : Day(resource) {
-    // TODO: Parse nicer, using [readSections]
-    private val lines = readLines(resource)
-    private val seeds = lines[0].substringAfter(": ").longs(' ')
-    private val seedRanges = seeds.chunked(2).map { it[0]..<it[0] + it[1] }
+    private val sections = readSections(resource)
+
+    private val seeds: Collection<Long> = sections[0][0].substringAfter(": ").longs(' ')
+    private val seedRanges: Collection<LongRange> = seeds.chunked(2).map { it[0]..<it[0] + it[1] }
 
 
     override fun part1(): Long =
-        lines
-            .drop(1)
-            .fold(seeds.associateWith { it }) { results, line ->
-                if (!line[0].isDigit()) results.values.associateWith { it }
-                else results.mapValues(line.asMapper())
+        sections.drop(1)
+            .fold(seeds) { categories, lines ->
+                lines.drop(1)
+                    .map { it.asMapper() }
+                    .fold(categories.associateWith { it }) { acc, mapper -> acc.mapValues(mapper) }
+                    .values
             }
-            .minOf { it.value }
+            .min()
 
     override fun part2(): Long =
-        lines
-            .drop(1)
-            .fold(seedRanges.associateWith { it }) { results, line ->
-                if (!line[0].isDigit()) results.values.associateWith { it }
-                else results.map(line.asRangeMapper()).reduce(Map<LongRange, LongRange>::plus)
+        sections.drop(1)
+            .fold(seedRanges) { categories, lines ->
+                lines.drop(1)
+                    .map { it.asRangeMapper() }
+                    .fold(categories.associateWith { it }) { acc, mapper -> acc.map(mapper).sum() }
+                    .values
             }
-            .minOf { it.value.first }
+            .minOf { it.first }
 
 
     private fun String.asMapper(): (Map.Entry<Long, Long>) -> Long {
-        val (to, from, length) = longs(' ')
-        return { (key, oldTarget) -> if (key - from in 0..<length) key - from + to else oldTarget }
+        val (dstStart, srcStart, length) = longs(' ')
+        return { (src, oldDst) -> if (src - srcStart in 0..<length) src - srcStart + dstStart else oldDst }
     }
 
     private fun String.asRangeMapper(): (Map.Entry<LongRange, LongRange>) -> Map<LongRange, LongRange> {
-        val (to, from, length) = longs(' ')
+        val (dstStart, srcStart, length) = longs(' ')
 
-        return { (range, oldTarget) ->
-            if (range.first != oldTarget.first) {
-                mapOf(range to oldTarget)
+        return { (src, oldDst) ->
+            if (src.first != oldDst.first) {
+                mapOf(src to oldDst)
             } else {
-                val fromRange = (from..<from + length)
-                val applicable = range.intersect(fromRange)
-                val inapplicable = range.diff(fromRange)
+                val srcRange = (srcStart..<srcStart + length)
+                val applicable = src.overlap(srcRange)
+                val inapplicable = src.without(srcRange)
 
-                inapplicable.associateWith { it }.toMutableMap()
-                    .also { if (!applicable.isEmpty()) it[applicable] = applicable.shift(to - from) }
+                val newDst = inapplicable.associateWith { it }
+                if (applicable.isEmpty()) newDst
+                else newDst + Pair(applicable, applicable.shift(dstStart - srcStart))
             }
         }
     }
-
-
-    // TODO: Move all of the following to the maths library
-    private fun LongRange.intersect(that: LongRange): LongRange =
-        (max(this.first, that.first)..min(this.last, that.last))
-            .let { if (it.isEmpty()) LongRange.EMPTY else it }
-
-    private fun LongRange.diff(that: LongRange): List<LongRange> =
-        listOf(this.first..min(this.last, that.first - 1), max(this.first, that.last + 1)..this.last)
-            .filterNot { it.isEmpty() }
-
-    private fun LongRange.shift(by: Long): LongRange = this.first + by..this.last + by
 }
 
 

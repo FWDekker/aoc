@@ -82,13 +82,12 @@ fun Chart.rowOf(coords: Coords): String = row(coords.row.toIntExact())
 /**
  * Returns `true` if and only if this chart contains a character at coordinates [row], [col].
  */
-// TODO: Rename to operator fun `contains`?
-fun Chart.has(row: Int, col: Int): Boolean = row in rows && col in cols
+fun Chart.contains(row: Int, col: Int): Boolean = row in rows && col in cols
 
 /**
  * Returns `true` if and only if this chart contains a character at [coords].
  */
-fun Chart.has(coords: Coords): Boolean = has(coords.row.toIntExact(), coords.col.toIntExact())
+operator fun Chart.contains(coords: Coords): Boolean = contains(coords.row.toIntExact(), coords.col.toIntExact())
 
 /**
  * Returns the cell at coordinates [row], [col].
