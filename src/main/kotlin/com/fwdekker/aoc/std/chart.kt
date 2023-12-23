@@ -27,16 +27,41 @@ val Chart.rows: IntRange get() = indices
  */
 val Chart.cols: IntRange get() = this[0].indices
 
+/**
+ * The index of the last row.
+ */
+val Chart.lastRowIndex: Int get() = lastIndex
+
+/**
+ * The index of the last column.
+ */
+val Chart.lastColIndex: Int get() = this[0].lastIndex
+
+
+/**
+ * Returns the first row.
+ */
+val Chart.firstRow: String get() = this[0]
+
+/**
+ * Returns the first column.
+ */
+val Chart.firstCol: String get() = col(0)
+
+/**
+ * Returns the last row.
+ */
+val Chart.lastRow: String get() = last()
+
+/**
+ * Returns the last column.
+ */
+val Chart.lastCol: String get() = col(lastColIndex)
 
 /**
  * Returns the [row]th row.
  */
 fun Chart.row(row: Int): String = this[row]
-
-/**
- * Returns the row in which [coords] is located.
- */
-fun Chart.rowOf(coords: Coords): String = row(coords.row.toIntExact())
 
 /**
  * Returns the [col]th column.
@@ -47,6 +72,11 @@ fun Chart.col(col: Int): String = map { it[col] }.joinToString(separator = "")
  * Returns the column in which [coords] is located.
  */
 fun Chart.colOf(coords: Coords): String = col(coords.col.toIntExact())
+
+/**
+ * Returns the row in which [coords] is located.
+ */
+fun Chart.rowOf(coords: Coords): String = row(coords.row.toIntExact())
 
 
 /**
@@ -351,17 +381,17 @@ val Coords.northWest: Coords get() = move(rows = -1L, cols = -1L)
 /**
  * Returns the neighboring coordinates in all four cardinal [Direction]s.
  */
-val Coords.cardinals: Collection<Coords> get() = listOf(north, east, south, west)
+val Coords.cardinals: List<Coords> get() = listOf(north, east, south, west)
 
 /**
  * Returns the neighboring coordinates in all four ordinal directions.
  */
-val Coords.ordinals: Collection<Coords> get() = listOf(northEast, southEast, southWest, northWest)
+val Coords.ordinals: List<Coords> get() = listOf(northEast, southEast, southWest, northWest)
 
 /**
  * Returns the neighboring coordinates in all four cardinal and ordinal directions.
  */
-val Coords.principals: Collection<Coords> get() = cardinals + ordinals
+val Coords.principals: List<Coords> get() = cardinals + ordinals
 
 /**
  * Returns the coordinates in position [direction] relative to `this`.
