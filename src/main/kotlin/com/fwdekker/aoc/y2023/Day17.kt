@@ -1,76 +1,77 @@
 package com.fwdekker.aoc.y2023
 
+import com.fwdekker.aoc.std.Chart
+import com.fwdekker.aoc.std.Coords
+import com.fwdekker.aoc.std.Day
+import com.fwdekker.aoc.std.Direction
+import com.fwdekker.aoc.std.Heading
+import com.fwdekker.aoc.std.cell
+import com.fwdekker.aoc.std.has
+import com.fwdekker.aoc.std.lastColIndex
+import com.fwdekker.aoc.std.lastRowIndex
 import com.fwdekker.aoc.std.readLines
 import java.util.PriorityQueue
 
 
-fun main() {
-    val lines = readLines("/y2023/Day17.txt")
-
-    // Part 1
-    println("Part one: ${lines.smallestLoss(EdsgerStep::neighbors)}")
-
-    // Part 2
-    println("Part one: ${lines.smallestLoss(EdsgerStep::ultraNeighbors)}")
-}
+class Day17(resource: String = resource(2023, 17)) : Day(resource) {
+    private val lines = readLines(resource)
 
 
-private fun Char?.opposite(): Char? = mapOf('N' to 'S', 'S' to 'N', 'W' to 'E', 'E' to 'W')[this]
+    override fun part1(): Int = lines.smallestLoss({ it.neighbors() }, { true })
 
-private data class EdsgerStep(val coords: Pair<Int, Int>, val direction: Char, val times: Int) {
-    private fun move(newDirection: Char): EdsgerStep =
-        EdsgerStep(
-            coords = when (newDirection) {
-                'N' -> Pair(coords.first - 1, coords.second)
-                'E' -> Pair(coords.first, coords.second + 1)
-                'S' -> Pair(coords.first + 1, coords.second)
-                'W' -> Pair(coords.first, coords.second - 1)
-                else -> error("Unknown direction '$newDirection'.")
-            },
-            direction = newDirection,
-            times = if (newDirection == direction) times + 1 else 1,
-        )
+    override fun part2(): Int = lines.smallestLoss({ it.ultraNeighbors() }, { it.times >= 4 })
 
-    fun neighbors(): Collection<EdsgerStep> =
-        "NESW"
-            .filter { it != direction && it != direction.opposite() || it == direction && times < 3 }
-            .map { move(it) }
 
-    fun ultraNeighbors(): Collection<EdsgerStep> =
-        "NESW"
-            .filter { it != direction && it != direction.opposite() && times >= 4 || it == direction && times < 10 }
-            .map { move(it) }
-}
+    private data class Step(val heading: Heading, val times: Int) {
+        val coords: Coords get() = heading.coords
+        val direction: Direction get() = heading.direction
 
-private fun List<String>.getLoss(coords: Pair<Int, Int>): Int = this[coords.first][coords.second].digitToInt()
+        private fun move(direction: Direction): Step =
+            Step(heading.go { direction }, if (direction == this.direction) times + 1 else 1)
 
-private fun List<String>.smallestLoss(getNeighbors: (EdsgerStep) -> Collection<EdsgerStep>): Int {
-    val distances = mutableMapOf<EdsgerStep, Int>().withDefault { Integer.MAX_VALUE }
-    val queue = PriorityQueue<EdsgerStep> { o1, o2 -> distances.getValue(o1) - distances.getValue(o2) }
+        fun neighbors(): List<Step> =
+            Direction.entries
+                .filter { (it != direction || times < 3) && it != direction.behind }
+                .map { move(it) }
 
-    val end = Pair(this.lastIndex, this[0].lastIndex)
-
-    "SE".forEach {
-        val start = EdsgerStep(Pair(0, 0), it, 0)
-        distances[start] = 0
-        queue.add(start)
+        fun ultraNeighbors(): List<Step> =
+            Direction.entries
+                .filter { (if (it == direction) times < 10 else times >= 4) && it != direction.behind }
+                .map { move(it) }
     }
 
-    while (queue.isNotEmpty()) {
-        val current = queue.remove()
-        if (current.coords == end) break
+    private fun Chart.smallestLoss(getNeighbors: (Step) -> Iterable<Step>, validEnd: (Step) -> Boolean): Int {
+        val distances = mutableMapOf<Step, Int>().withDefault { Integer.MAX_VALUE }
+        val queue = PriorityQueue<Step> { o1, o2 -> distances.getValue(o1) - distances.getValue(o2) }
 
-        val distance = distances.getValue(current)
-        getNeighbors(current)
-            .filter { it.coords.first in this.indices && it.coords.second in this[0].indices && it !in distances }
-            .forEach { nextStep ->
-                val nextDistance = distance + getLoss(nextStep.coords)
-                if (nextDistance < distances.getValue(nextStep)) {
-                    distances[nextStep] = nextDistance
-                    queue.add(nextStep)
-                }
+        val end = Coords(lastRowIndex, lastColIndex)
+
+        listOf(Direction.SOUTH, Direction.EAST)
+            .map { Step(Heading(0, 0, it), 0) }
+            .forEach {
+                distances[it] = 0
+                queue.add(it)
             }
-    }
 
-    return distances.filter { it.key.coords == end }.values.min()
+        while (queue.isNotEmpty()) {
+            val current = queue.remove()
+            if (current.coords == end) continue
+
+            val distance = distances.getValue(current)
+            getNeighbors(current)
+                .filter { has(it.coords) && it !in distances }
+                .forEach { next ->
+                    val weight = cell(next.coords).digitToInt()
+                    if (distance + weight < distances.getValue(next)) {
+                        distances[next] = distance + weight
+                        queue.add(next)
+                    }
+                }
+        }
+
+        return distances.filter { it.key.coords == end && validEnd(it.key) }.values.min()
+    }
 }
+
+
+fun main() = Day17().run()

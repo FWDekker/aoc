@@ -64,6 +64,12 @@ fun Iterable<Int>.product(): Long = longs().product()
 @JvmName("longProduct")
 fun Iterable<Long>.product(): Long = reduce(Long::times)
 
+@JvmName("intProduct")
+fun Pair<Int, Int>.product(): Long = first.toLong() * second
+
+@JvmName("longProduct")
+fun Pair<Long, Long>.product(): Long = first * second
+
 /**
  * Shorthand for invoking [map] and then [product].
  */

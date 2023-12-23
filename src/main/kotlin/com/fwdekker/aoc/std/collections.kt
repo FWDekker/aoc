@@ -32,6 +32,18 @@ fun <T> Collection<T>.sumOfIndexed(transform: (Int, T) -> Int): Int =
 fun <T> Collection<T>.sumOfIndexed(transform: (Int, T) -> Long): Long =
     withIndex().sumOf { (idx, element) -> transform(idx, element) }
 
+/**
+ * Takes the component-wise sum of all elements.
+ */
+@JvmName("intPairSum")
+fun Iterable<Pair<Int, Int>>.sum(): Pair<Int, Int> = fold(Pair(0, 0)) { acc, it -> acc + it }
+
+/**
+ * Takes the component-wise sum of all elements.
+ */
+@JvmName("longPairSum")
+fun Iterable<Pair<Long, Long>>.sum(): Pair<Long, Long> = fold(Pair(0L, 0L)) { acc, it -> acc + it }
+
 
 /**
  * Repeats [this] sequence [amount] times.

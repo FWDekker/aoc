@@ -1,114 +1,118 @@
 package com.fwdekker.aoc.y2023
 
+import com.fwdekker.aoc.std.Day
 import com.fwdekker.aoc.std.lcm
-import com.fwdekker.aoc.std.plus
+import com.fwdekker.aoc.std.map
+import com.fwdekker.aoc.std.product
 import com.fwdekker.aoc.std.readLines
+import com.fwdekker.aoc.std.sum
 
 
-fun main() {
-    val lines = readLines("/y2023/Day20.txt")
-    val machine = Machine.fromStrings(lines)
-
-    // Part 1
-    val (low, high) = (1..1000).fold(Pair(0, 0)) { counts, _ -> counts + machine.pressButton().countSignals() }
-    println("Part one: ${low * high}")
-
-    // Part 2
-    val joiner = machine.modules.values.single { it.targets == listOf("rx") }
-    println("Part two: ${joiner.predecessors.map { machine.findPeriod(it) }.lcm()}")
-}
+class Day20(resource: String = resource(2023, 20)) : Day(resource) {
+    private val lines = readLines(resource)
+    private val machine = Machine.fromStrings(lines)
 
 
-private data class Signal(val src: String, val dst: String, val isHigh: Boolean)
+    override fun part1(): Long =
+        (1..1000).map { machine.pressButton().partition { it.isHigh }.map { it.size } }.sum().product()
 
-private fun Collection<Signal>.countSignals(): Pair<Int, Int> =
-    partition { it.isHigh }.let { (high, low) -> Pair(low.size, high.size) }
-
-
-private class Machine(modules: Collection<Module>) {
-    val modules: Map<String, Module> = modules.associateBy { it.name }
-
-
-    fun pressButton(): Collection<Signal> =
-        ArrayDeque(listOf(Signal(src = "button", dst = "broadcaster", isHigh = false)))
-            .also { queue -> queue.onEach { queue += modules[it.dst]?.trigger(it.src, it.isHigh) ?: emptyList() } }
-            .toList()
-
-    fun findPeriod(moduleName: String): Long =
-        (1..10000)
-            .map { pressButton().count { it.src == moduleName } }
-            .let { counts ->
-                val max = counts.max()
-                counts.withIndex().filter { it.value == max }
-            }
-            .let { it[1].index - it[0].index }
-            .toLong()
+    override fun part2(): Long =
+        machine.modules.values
+            .single { it.targets == listOf("rx") }
+            .predecessors.map { machine.findPeriod(it) }
+            .lcm()
 
 
-    companion object {
-        fun fromStrings(strings: List<String>): Machine =
-            strings
-                .map { Module.fromString(it) }
-                .also { modules -> modules.onEach { it.loadPredecessors(modules) } }
-                .let { Machine(it) }
-    }
-}
+    private data class Signal(val src: String, val dst: String, val isHigh: Boolean)
+
+    private class Machine(modules: Collection<Module>) {
+        val modules: Map<String, Module> = modules.associateBy { it.name }
 
 
-private abstract class Module(val name: String, val targets: Collection<String>) {
-    var predecessors: List<String> = listOf()
-        protected set
+        fun pressButton(): Collection<Signal> =
+            ArrayDeque(listOf(Signal(src = "button", dst = "broadcaster", isHigh = false)))
+                .also { queue -> queue.onEach { queue += modules[it.dst]?.trigger(it.src, it.isHigh) ?: emptyList() } }
+                .toList()
+
+        fun findPeriod(moduleName: String): Long =
+            (1..10000)
+                .map { pressButton().count { it.src == moduleName } }
+                .let { counts ->
+                    val max = counts.max()
+                    counts.withIndex().filter { it.value == max }
+                }
+                .let { it[1].index - it[0].index }
+                .toLong()
 
 
-    fun loadPredecessors(modules: Collection<Module>) {
-        predecessors = modules.filter { this.name in it.targets }.map { it.name }.sorted()
+        companion object {
+            fun fromStrings(strings: List<String>): Machine =
+                strings
+                    .map { Module.fromString(it) }
+                    .also { modules -> modules.onEach { it.loadPredecessors(modules) } }
+                    .let { Machine(it) }
+        }
     }
 
-    abstract fun trigger(source: String, inputIsHigh: Boolean): Collection<Signal>
+
+    private abstract class Module(val name: String, val targets: Collection<String>) {
+        var predecessors: List<String> = listOf()
+            protected set
 
 
-    companion object {
-        fun fromString(string: String): Module {
-            val parts = string.split(" -> ")
-            val targets = parts[1].split(", ")
+        fun loadPredecessors(modules: Collection<Module>) {
+            predecessors = modules.filter { this.name in it.targets }.map { it.name }.sorted()
+        }
 
-            return when (parts[0][0]) {
-                'b' -> Broadcaster(targets)
-                '%' -> FlipFlop(parts[0].drop(1), targets)
-                '&' -> Conjunction(parts[0].drop(1), targets)
-                else -> error("Unknown module type '${parts[0][0]}'.")
+        abstract fun trigger(source: String, inputIsHigh: Boolean): Collection<Signal>
+
+
+        companion object {
+            fun fromString(string: String): Module {
+                val parts = string.split(" -> ")
+                val targets = parts[1].split(", ")
+
+                return when (parts[0][0]) {
+                    'b' -> Broadcaster(targets)
+                    '%' -> FlipFlop(parts[0].drop(1), targets)
+                    '&' -> Conjunction(parts[0].drop(1), targets)
+                    else -> error("Unknown module type '${parts[0][0]}'.")
+                }
             }
+        }
+    }
+
+    private class Broadcaster(targets: Collection<String>) : Module("broadcaster", targets) {
+        override fun trigger(source: String, inputIsHigh: Boolean): Collection<Signal> =
+            targets.map { Signal(name, it, inputIsHigh) }
+    }
+
+    private class FlipFlop(name: String, targets: Collection<String>) : Module(name, targets) {
+        private var isHigh = false
+
+
+        override fun trigger(source: String, inputIsHigh: Boolean): Collection<Signal> {
+            if (inputIsHigh) {
+                return emptyList()
+            } else {
+                isHigh = !isHigh
+                return targets.map { Signal(name, it, isHigh) }
+            }
+        }
+    }
+
+    private class Conjunction(name: String, targets: Collection<String>) : Module(name, targets) {
+        private val history = mutableMapOf<String, Boolean>()
+
+
+        override fun trigger(source: String, inputIsHigh: Boolean): Collection<Signal> {
+            history[source] = inputIsHigh
+
+            val send = predecessors.any { history[it] != true }
+            return targets.map { Signal(name, it, send) }
         }
     }
 }
 
-private class Broadcaster(targets: Collection<String>) : Module("broadcaster", targets) {
-    override fun trigger(source: String, inputIsHigh: Boolean): Collection<Signal> =
-        targets.map { Signal(name, it, inputIsHigh) }
-}
 
-private class FlipFlop(name: String, targets: Collection<String>) : Module(name, targets) {
-    private var isHigh = false
-
-
-    override fun trigger(source: String, inputIsHigh: Boolean): Collection<Signal> {
-        if (inputIsHigh) {
-            return emptyList()
-        } else {
-            isHigh = !isHigh
-            return targets.map { Signal(name, it, isHigh) }
-        }
-    }
-}
-
-private class Conjunction(name: String, targets: Collection<String>) : Module(name, targets) {
-    private val history = mutableMapOf<String, Boolean>()
-
-
-    override fun trigger(source: String, inputIsHigh: Boolean): Collection<Signal> {
-        history[source] = inputIsHigh
-
-        val send = predecessors.any { history[it] != true }
-        return targets.map { Signal(name, it, send) }
-    }
-}
+fun main() = Day20().run()

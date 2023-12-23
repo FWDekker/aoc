@@ -1,54 +1,60 @@
 package com.fwdekker.aoc.y2023
 
+import com.fwdekker.aoc.std.Day
+import com.fwdekker.aoc.std.ints
 import com.fwdekker.aoc.std.readLines
 import kotlin.math.max
 import kotlin.math.min
 
 
-fun main() {
-    val lines = readLines("/y2023/Day22.txt")
-    val bricks = lines
-        .map { line -> line.split('~').map { coords -> coords.split(',') } }
-        .map { coords -> (coords[0] zip coords[1]).map { it.first.toInt()..it.second.toInt() } }
-        .map { Brick(it[0], it[1], it[2]) }
-        .sortedBy { it.third.first }
+class Day22(resource: String = resource(2023, 22)) : Day(resource) {
+    private val lines = readLines(resource)
+    private val stack = lines.asSequence()
+        .map { line -> line.split('~').map { coords -> coords.ints(',') } }
+        .map { (from, to) -> (from zip to).map { it.first..it.second } }
+        .map { (xs, ys, zs) -> Brick(xs, ys, zs) }
+        .sortedBy { it.zs.first }
+        .fold(Stack()) { caught, brick -> Stack(caught + caught.catch(brick)) }
 
-    val caught = bricks.fold(emptyList<Brick>()) { caught, brick -> caught + caught.catch(brick) }
 
-    // Part 1
-    println("Part one: ${caught.filter { caught.canDisintegrate(it) }.size}")
+    override fun part1(): Int = stack.filter { stack.canDisintegrate(it) }.size
 
-    // Part 2
-    println("Part one: ${caught.sumOf { caught.size - caught.disintegrate(setOf(it)).size - 1 }}")
+    override fun part2(): Int = stack.sumOf { stack.size - stack.disintegrate(setOf(it)).size - 1 }
+
+
+    private class Brick(val xs: IntRange, val ys: IntRange, val zs: IntRange) {
+        fun fall(): Brick = Brick(xs, ys, zs.first - 1..<zs.last)
+
+        fun onGround(): Boolean = 1 in zs
+
+        fun supports(that: Brick): Boolean =
+            that.zs.first - 1 in this.zs && this.xs.intersects(that.xs) && this.ys.intersects(that.ys)
+
+
+        private fun IntRange.intersects(that: IntRange): Boolean = // TODO: Move this to maths module
+            !(max(this.first, that.first)..min(this.last, that.last)).isEmpty()
+    }
+
+    private class Stack(val bricks: Collection<Brick> = emptyList()) : Collection<Brick> by bricks {
+        fun catch(brick: Brick): Brick {
+            var dropped = brick
+            while (!dropped.onGround() && !any { it.supports(dropped) })
+                dropped = dropped.fall()
+            return dropped
+        }
+
+        fun supportOf(brick: Brick): Set<Brick> = filter { it.supports(brick) }.toSet()
+
+        fun supportedBy(brick: Brick): Set<Brick> = filter { brick.supports(it) }.toSet()
+
+        fun canDisintegrate(brick: Brick): Boolean = supportedBy(brick).all { supportOf(it).size > 1 }
+
+        fun disintegrate(bricks: Set<Brick>): Stack =
+            if (bricks.isEmpty()) this
+            else Stack(this - bricks)
+                .disintegrate(bricks.flatMap { supportedBy(it) }.filter { (supportOf(it) - bricks).isEmpty() }.toSet())
+    }
 }
 
 
-private typealias Brick = Triple<IntRange, IntRange, IntRange>
-
-private fun Brick.fall(): Brick = Brick(first, second, third.first - 1..<third.last)
-
-private fun Brick.onGround(): Boolean = 1 in third
-
-private fun Brick.supports(that: Brick): Boolean =
-    that.third.first - 1 in this.third && this.first.intersects(that.first) && this.second.intersects(that.second)
-
-private fun Collection<Brick>.supportOf(brick: Brick): List<Brick> = filter { it.supports(brick) }
-
-private fun Collection<Brick>.supportBy(brick: Brick): List<Brick> = filter { brick.supports(it) }
-
-private fun Collection<Brick>.canDisintegrate(brick: Brick): Boolean = supportBy(brick).all { supportOf(it).size > 1 }
-
-private fun Collection<Brick>.disintegrate(bricks: Set<Brick>): List<Brick> {
-    val candidates = bricks.flatMap { supportBy(it) }.filter { (supportOf(it).toSet() - bricks).isEmpty() }.toSet()
-    return (this - bricks).let { if (candidates.isEmpty()) it else it.disintegrate(candidates) }
-}
-
-private fun Collection<Brick>.catch(brick: Brick): Brick {
-    var dropped = brick
-    while (!dropped.onGround() && !any { it.supports(dropped) })
-        dropped = dropped.fall()
-    return dropped
-}
-
-private fun IntRange.intersects(that: IntRange): Boolean =
-    !(max(this.first, that.first)..min(this.last, that.last)).isEmpty()
+fun main() = Day22().run()

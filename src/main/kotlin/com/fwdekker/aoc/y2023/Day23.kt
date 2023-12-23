@@ -82,12 +82,12 @@ class Day23(resource: String = resource(2023, 23)) : Day(resource) {
             val current = queue.remove()
             if (current != from && current in to) continue
 
+            val distance = distances.getValue(current)
             getNeighbors(current)
                 .filter { it !in distances }
                 .forEach { nextStep ->
-                    val newDistance = distances.getValue(current) + 1
-                    if (newDistance < distances.getValue(nextStep)) {
-                        distances[nextStep] = newDistance
+                    if (distance + 1 < distances.getValue(nextStep)) {
+                        distances[nextStep] = distance + 1
                         queue.add(nextStep)
                     }
                 }
