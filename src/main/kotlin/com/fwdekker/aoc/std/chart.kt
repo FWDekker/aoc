@@ -318,14 +318,7 @@ typealias Coords = Pair<Long,Long>
 /**
  * Utility "constructor" for creating [Coords] from integers.
  */
-@Suppress("FunctionName")
-fun Coords(row: Int, col: Int) = Pair(row.toLong(), col.toLong())
-
-/**
- * Utility "constructor" for creating [Coords] with named parameters.
- */
-@Suppress("FunctionName")
-fun Coords(row: Long, col: Int) = Pair(row, col)
+fun Coords(row: Int, col: Int): Coords = Pair(row.toLong(), col.toLong())
 
 /**
  * The vertical coordinate.

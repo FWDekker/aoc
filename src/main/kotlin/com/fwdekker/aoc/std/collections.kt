@@ -85,6 +85,12 @@ fun <A, B> Pair<A, B>.swap(): Pair<B, A> = Pair(second, first)
 fun <A, T> Pair<A, A>.map(transform: (A) -> T): Pair<T, T> = Pair(transform(first), transform(second))
 
 /**
+ * Maps all entries using [transform].
+ */
+fun <A, T> Triple<A, A, A>.map(transform: (A) -> T): Triple<T, T, T> =
+    Triple(transform(first), transform(second), transform(third))
+
+/**
  * Maps only the first entry using [transform].
  */
 fun <A, B, T> Pair<A, B>.mapFirst(transform: (A) -> T): Pair<T, B> = Pair(transform(first), second)
@@ -110,9 +116,17 @@ fun <A, B, T> Iterable<Pair<A, B>>.mapSeconds(transform: (B) -> T): List<Pair<A,
 fun <T> List<T>.asPair(): Pair<T, T> = Pair(this[0], this[1])
 
 /**
+ * Returns a pair containing the first three elements.
+ */
+fun <T> List<T>.asTriple(): Triple<T, T, T> = Triple(this[0], this[1], this[2])
+
+/**
  * Zips [first] with [second].
  */
 fun <A, B> Pair<Iterable<A>, Iterable<B>>.zipped(): List<Pair<A, B>> = first zip second
 
 
+/**
+ * Returns the left-folded addition of all contained maps.
+ */
 fun <K, V> Iterable<Map<K, V>>.sum() = fold(emptyMap<K, V>()) { acc, it -> acc + it }
