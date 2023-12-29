@@ -38,10 +38,8 @@ class Day25(resource: String = resource(2023, 25)) : Day(resource) {
     )
 
 
-    override fun part1(): Long =
-        Graph.minCut(graph).map { it.size }.product()
+    override fun part1(): Long = Graph.minCut(graph).map { it.size }.product()
 //    override fun part1(): Long = Graph.minCut(graph2).map { it.size }.product()
-    // 20072 is incorrect
 
     override fun part2(): Long = 3L
 
@@ -60,20 +58,6 @@ class Day25(resource: String = resource(2023, 25)) : Day(resource) {
         }
 
 
-        fun edgesBetween(nodes1: Set<String>, nodes2: Set<String>): Set<Edge> {
-            require(nodes1.intersect(nodes2).isEmpty())
-
-            return nodes1.flatMap { edgesFrom(it) }.filter { it.second in nodes2 }.toSet()
-        }
-
-        fun edgeWeight(edge: Edge): Int = edges.getValue(edge)
-
-        fun edgesFrom(node: String): Set<Edge> = neighborsByNode.getValue(node).map { Pair(node, it) }.toSet()
-
-        fun neighbors(of: String): Set<String> = neighborsByNode.getValue(of)
-
-        fun remove(edges: Iterable<Edge>): Graph = Graph(this.edges.minus(edges.toSet()))
-
         fun combine(a: String, b: String, ab: String): Graph {
             val mapNode = { it: String -> if (it == a || it == b) ab else it }
             val mapEdge = { it: Pair<String, String> -> it.map(mapNode) }
@@ -87,57 +71,52 @@ class Day25(resource: String = resource(2023, 25)) : Day(resource) {
                 .let { Graph(it.toMap()) }
         }
 
-        fun components(): List<Set<String>> {
-            val history = mutableSetOf<String>()
-            val components = mutableListOf<MutableSet<String>>()
-
-            val queue = ArrayDeque<String>()
-            while (true) {
-                val node: String
-                if (queue.isEmpty()) {
-                    val candidates = nodes.minus(history)
-                    if (candidates.isEmpty())
-                        return components
-
-                    node = candidates.first()
-                    components.add(mutableSetOf(node))
-                } else {
-                    node = queue.removeFirst()
-                    components.last().add(node)
-                }
-
-                history.add(node)
-                queue.addAll(neighborsByNode.getValue(node).minus(history))
-            }
-        }
-
         companion object {
-            fun minCutPhase(G: Graph, a: String): Pair<Edge, Int> {
-                require(a in G.nodes)
+            fun minCutPhase(G: Graph): Pair<Edge, Int> {
+                val start = G.nodes.first()
 
-                val A = mutableListOf(a)
-                while (G.nodes.minus(A.toSet()).isNotEmpty()) {
-                    val frontier = A.flatMap { G.neighbors(it) }.filter { it !in A }
-                    A.add(frontier.maxBy { f -> G.edgesFrom(f).sumOf { G.edgeWeight(it) } })
+                val foundSet = mutableSetOf(start)
+                val foundSetEdges = G.edges.keys.filter { it.first == start }.toMutableSet()
+                var cutWeight: Int? = null
+
+                while (foundSet.size != G.nodes.size) {
+                    val (maxNextVertex, maxWeight) =
+                        G.nodes.minus(foundSet)
+                            .map { next -> Pair(next, G.edges.keys.minus(foundSetEdges).filter { it.first == next }.sumOf { G.edges[it]!! }) }
+                            .maxBy { it.second }
+
+                    foundSet.add(maxNextVertex)
+                    foundSetEdges.addAll(G.edges.keys.filter { it.first == maxNextVertex })
+                    foundSetEdges.removeIf { (u, v) -> u in foundSet && v in foundSet }
+                    cutWeight = maxWeight
                 }
 
-                val cut = A.takeLast(2).asPair()
-                val cutWeight = G.edgesFrom(A.last()).sumOf { G.edgeWeight(it) }
-                return Pair(cut, cutWeight)
+                return Pair(foundSet.toList().takeLast(2).asPair(), cutWeight!!)
             }
 
             fun minCut(start: Graph): Pair<Set<String>, Set<String>> {
-                var G = start
-                var (minCut, minCutWeight) = Pair(Pair(emptySet<String>(), emptySet<String>()), Integer.MAX_VALUE)
-                val a = G.nodes.random()
-                while (G.nodes.size > 1) {
-                    val (cut, cutWeight) = minCutPhase(G, a)
-                    G = G.combine(cut.first, cut.second, "${cut.first}|${cut.second}")
-                    if (cutWeight < minCutWeight)
-                        minCut = cut.map { it.split('|').toSet() }
+                var g = start
+
+                val currentPartition = mutableSetOf<String>()
+                var currentBestPartition: MutableSet<String> = mutableSetOf()
+                var currentBestCut: Pair<Edge, Int>? = null
+                while (g.nodes.size > 1) {
+                    val cutOfThePhase = minCutPhase(g)
+                    if (currentBestCut == null || cutOfThePhase.second < currentBestCut.second) {
+                        currentBestCut = cutOfThePhase
+                        currentBestPartition = currentPartition.toMutableSet()
+                        currentBestPartition.addAll(cutOfThePhase.first.second.split('|'))
+                    }
+                    currentPartition.addAll(cutOfThePhase.first.second.split('|'))
+
+                    g = g.combine(
+                        cutOfThePhase.first.first, cutOfThePhase.first.second,
+                        "${cutOfThePhase.first.first}|${cutOfThePhase.first.second}"
+                    )
                 }
 
-                return minCut
+                val dinges = currentBestCut!!.first.second.split('|').toSet()
+                return Pair(dinges, start.nodes.minus(dinges))
             }
         }
     }
