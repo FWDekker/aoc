@@ -73,6 +73,17 @@ fun <T> Iterable<T>.cyclic(): Sequence<T> = asSequence().cyclic()
 fun <T, U> Iterable<T>.cartesian(that: Iterable<U>): List<Pair<T, U>> =
     this.flatMap { a -> that.map { b -> Pair(a, b) } }
 
+/**
+ * Returns all (not necessarily proper) subsets of [this].
+ */
+fun <T> Collection<T>.powerSet(): Collection<Collection<T>> = powerSet(this)
+
+private tailrec fun <T> powerSet(rem: Collection<T>, acc: List<List<T>> = listOf(emptyList())): List<List<T>> =
+    when {
+        rem.isEmpty() -> acc
+        else -> powerSet(rem.drop(1), acc + acc.map { it + rem.first() })
+    }
+
 
 /**
  * Swaps the first and second entry.

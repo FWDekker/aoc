@@ -1,5 +1,7 @@
 package com.fwdekker.std
 
+import java.math.BigDecimal
+import java.math.BigInteger
 import kotlin.experimental.ExperimentalTypeInference
 import kotlin.math.abs
 import kotlin.math.max
@@ -28,19 +30,10 @@ fun Pair<Number, Number>.longs(): Pair<Long, Long> = map(Number::toLong)
  */
 fun Int.wrapMod(mod: Int): Int = ((this % mod) + mod) % mod
 
-/**
- * Calculates [this] modulo [mod] such that if [this] is `-1` the output is `mod - 1`.
- */
 fun Int.wrapMod(mod: Long): Long = ((this % mod) + mod) % mod
 
-/**
- * Calculates [this] modulo [mod] such that if [this] is `-1` the output is `mod - 1`.
- */
 fun Long.wrapMod(mod: Int): Int = (((this % mod) + mod) % mod).toInt()
 
-/**
- * Calculates [this] modulo [mod] such that if [this] is `-1` the output is `mod - 1`.
- */
 fun Long.wrapMod(mod: Long): Long = ((this % mod) + mod) % mod
 
 
@@ -55,22 +48,43 @@ fun Long.pow(exponent: Int): Long {
 
 
 /**
- * Returns the product of multiplying all entries (as [Long]s).
+ * Takes the sum of all elements.
+ */
+@JvmName("bigIntSum")
+fun Iterable<BigInteger>.sum(): BigInteger = fold(BigInteger.ZERO) { acc, it -> acc + it }
+
+@JvmName("bigDecSum")
+fun Iterable<BigDecimal>.sum(): BigDecimal = fold(BigDecimal.ZERO) { acc, it -> acc + it }
+
+/**
+ * Takes the product of all elements.
  */
 @JvmName("intProduct")
 fun Iterable<Int>.product(): Long = longs().product()
 
-/**
- * Returns the product of multiplying all entries.
- */
 @JvmName("longProduct")
 fun Iterable<Long>.product(): Long = reduce(Long::times)
 
+@JvmName("bigIntProduct")
+fun Iterable<BigInteger>.product(): BigInteger = reduce(BigInteger::times)
+
+@JvmName("bigDecProduct")
+fun Iterable<BigDecimal>.product(): BigDecimal = reduce(BigDecimal::times)
+
+/**
+ * Takes the product of both elements in the [Pair].
+ */
 @JvmName("intProduct")
 fun Pair<Int, Int>.product(): Long = first.toLong() * second
 
 @JvmName("longProduct")
 fun Pair<Long, Long>.product(): Long = first * second
+
+@JvmName("bigIntProduct")
+fun Pair<BigInteger, BigInteger>.product(): BigInteger = first * second
+
+@JvmName("bigDecProduct")
+fun Pair<BigDecimal, BigDecimal>.product(): BigDecimal = first * second
 
 /**
  * Shorthand for invoking [map] and then [product].
@@ -80,13 +94,20 @@ fun Pair<Long, Long>.product(): Long = first * second
 @OverloadResolutionByLambdaReturnType
 fun <T> Iterable<T>.productOf(transform: (T) -> Int): Long = map(transform).product()
 
-/**
- * Shorthand for invoking [map] and then [product].
- */
 @JvmName("longProductOf")
 @OptIn(ExperimentalTypeInference::class)
 @OverloadResolutionByLambdaReturnType
 fun <T> Iterable<T>.productOf(transform: (T) -> Long): Long = map(transform).product()
+
+@JvmName("bigIntProductOf")
+@OptIn(ExperimentalTypeInference::class)
+@OverloadResolutionByLambdaReturnType
+fun <T> Iterable<T>.productOf(transform: (T) -> BigInteger): BigInteger = map(transform).product()
+
+@JvmName("bigDecProductOf")
+@OptIn(ExperimentalTypeInference::class)
+@OverloadResolutionByLambdaReturnType
+fun <T> Iterable<T>.productOf(transform: (T) -> BigDecimal): BigDecimal = map(transform).product()
 
 
 /**
@@ -96,9 +117,6 @@ fun <T> Iterable<T>.productOf(transform: (T) -> Long): Long = map(transform).pro
 operator fun Pair<Int, Int>.plus(that: Pair<Int, Int>): Pair<Int, Int> =
     Pair(this.first + that.first, this.second + that.second)
 
-/**
- * Returns the component-wise addition of [this] and [that].
- */
 @JvmName("longPlus")
 operator fun Pair<Long, Long>.plus(that: Pair<Long, Long>): Pair<Long, Long> =
     Pair(this.first + that.first, this.second + that.second)
@@ -110,9 +128,6 @@ operator fun Pair<Long, Long>.plus(that: Pair<Long, Long>): Pair<Long, Long> =
 operator fun Pair<Int, Int>.minus(that: Pair<Int, Int>): Pair<Int, Int> =
     Pair(this.first - that.first, this.second - that.second)
 
-/**
- * Returns the component-wise addition of [this] and [that].
- */
 @JvmName("longMinus")
 operator fun Pair<Long, Long>.minus(that: Pair<Long, Long>): Pair<Long, Long> =
     Pair(this.first - that.first, this.second - that.second)
@@ -124,16 +139,6 @@ operator fun Pair<Long, Long>.minus(that: Pair<Long, Long>): Pair<Long, Long> =
 operator fun Pair<Int, Int>.times(that: Int): Pair<Int, Int> =
     Pair(this.first * that, this.second * that)
 
-/**
- * Returns the component-wise multiplication of [this] and [that].
- */
-@JvmName("intTimes")
-operator fun Pair<Int, Int>.times(that: Pair<Int, Int>): Pair<Int, Int> =
-    Pair(this.first * that.first, this.second * that.second)
-
-/**
- * Returns the product of the respective components with [that].
- */
 @JvmName("longTimes")
 operator fun Pair<Long, Long>.times(that: Long): Pair<Long, Long> =
     Pair(this.first * that, this.second * that)
@@ -141,6 +146,10 @@ operator fun Pair<Long, Long>.times(that: Long): Pair<Long, Long> =
 /**
  * Returns the component-wise multiplication of [this] and [that].
  */
+@JvmName("intTimes")
+operator fun Pair<Int, Int>.times(that: Pair<Int, Int>): Pair<Int, Int> =
+    Pair(this.first * that.first, this.second * that.second)
+
 @JvmName("longTimes")
 operator fun Pair<Long, Long>.times(that: Pair<Long, Long>): Pair<Long, Long> =
     Pair(this.first * that.first, this.second * that.second)
@@ -152,16 +161,6 @@ operator fun Pair<Long, Long>.times(that: Pair<Long, Long>): Pair<Long, Long> =
 operator fun Pair<Int, Int>.div(that: Int): Pair<Int, Int> =
     Pair(this.first / that, this.second / that)
 
-/**
- * Returns the component-wise division of [this] and [that].
- */
-@JvmName("intDiv")
-operator fun Pair<Int, Int>.div(that: Pair<Int, Int>): Pair<Int, Int> =
-    Pair(this.first / that.first, this.second / that.second)
-
-/**
- * Returns the division of the respective components with [that].
- */
 @JvmName("longDiv")
 operator fun Pair<Long, Long>.div(that: Long): Pair<Long, Long> =
     Pair(this.first / that, this.second / that)
@@ -169,6 +168,10 @@ operator fun Pair<Long, Long>.div(that: Long): Pair<Long, Long> =
 /**
  * Returns the component-wise division of [this] and [that].
  */
+@JvmName("intDiv")
+operator fun Pair<Int, Int>.div(that: Pair<Int, Int>): Pair<Int, Int> =
+    Pair(this.first / that.first, this.second / that.second)
+
 @JvmName("longDiv")
 operator fun Pair<Long, Long>.div(that: Pair<Long, Long>): Pair<Long, Long> =
     Pair(this.first / that.first, this.second / that.second)
@@ -341,3 +344,25 @@ fun IntRange.shift(by: Int): IntRange = this.first + by..this.last + by
  * Increases the start and end of the range by [by].
  */
 fun LongRange.shift(by: Long): LongRange = this.first + by..this.last + by
+
+
+/**
+ * Returns an infinite sequence of all natural numbers, starting at 0.
+ */
+fun naturalNumbers(): Sequence<Long> = generateSequence(0L) { it + 1L }
+
+/**
+ * Returns an infinite sequence of all triangle numbers, starting at 1.
+ *
+ * The i-th triangle number is 1 + 2 + ... + i.
+ */
+fun triangleNumbers(): Sequence<Long> =
+    sequence {
+        var sum = 0L
+        var inc = 1L
+        while (true) {
+            sum += inc
+            inc++
+            yield(sum)
+        }
+    }

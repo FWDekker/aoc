@@ -50,3 +50,9 @@ fun Long.factorize(): List<Long> =
                 }
             }
     }.toList()
+
+/**
+ * Returns all (positive) natural numbers that divide [this].
+ */
+fun Long.divisors(): Set<Long> =
+    (listOf(1L) + this.factorize()).powerSet().filter { it.isNotEmpty() }.map { it.product() }.toSet()
