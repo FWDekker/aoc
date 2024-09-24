@@ -1,8 +1,8 @@
 package com.fwdekker.aoc.y2023
 
-import com.fwdekker.aoc.std.Day
-import com.fwdekker.aoc.std.readSections
-import com.fwdekker.aoc.std.transpose
+import com.fwdekker.aoc.Day
+import com.fwdekker.std.readSections
+import com.fwdekker.std.transpose
 
 
 class Day13(resource: String = resource(2023, 13)) : Day(resource) {

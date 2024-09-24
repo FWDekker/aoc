@@ -1,17 +1,17 @@
 package com.fwdekker.aoc.y2023
 
-import com.fwdekker.aoc.std.Coords
-import com.fwdekker.aoc.std.Day
-import com.fwdekker.aoc.std.cellOrNull
-import com.fwdekker.aoc.std.col
-import com.fwdekker.aoc.std.east
-import com.fwdekker.aoc.std.north
-import com.fwdekker.aoc.std.principals
-import com.fwdekker.aoc.std.product
-import com.fwdekker.aoc.std.readLines
-import com.fwdekker.aoc.std.rowOf
-import com.fwdekker.aoc.std.south
-import com.fwdekker.aoc.std.west
+import com.fwdekker.std.Coords
+import com.fwdekker.aoc.Day
+import com.fwdekker.std.cellOrNull
+import com.fwdekker.std.col
+import com.fwdekker.std.east
+import com.fwdekker.std.north
+import com.fwdekker.std.principals
+import com.fwdekker.std.product
+import com.fwdekker.std.readLines
+import com.fwdekker.std.rowOf
+import com.fwdekker.std.south
+import com.fwdekker.std.west
 import kotlin.math.max
 
 

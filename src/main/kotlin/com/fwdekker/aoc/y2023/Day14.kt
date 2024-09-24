@@ -1,12 +1,12 @@
 package com.fwdekker.aoc.y2023
 
-import com.fwdekker.aoc.std.Day
-import com.fwdekker.aoc.std.foldSelf
-import com.fwdekker.aoc.std.readLines
-import com.fwdekker.aoc.std.rotateCCW
-import com.fwdekker.aoc.std.rotateCW
-import com.fwdekker.aoc.std.sortedDescending
-import com.fwdekker.aoc.std.sumOfIndexed
+import com.fwdekker.aoc.Day
+import com.fwdekker.std.foldSelf
+import com.fwdekker.std.readLines
+import com.fwdekker.std.rotateCCW
+import com.fwdekker.std.rotateCW
+import com.fwdekker.std.sortedDescending
+import com.fwdekker.std.sumOfIndexed
 
 
 class Day14(resource: String = resource(2023, 14)) : Day(resource) {

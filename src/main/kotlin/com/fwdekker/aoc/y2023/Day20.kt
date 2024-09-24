@@ -1,11 +1,11 @@
 package com.fwdekker.aoc.y2023
 
-import com.fwdekker.aoc.std.Day
-import com.fwdekker.aoc.std.lcm
-import com.fwdekker.aoc.std.map
-import com.fwdekker.aoc.std.product
-import com.fwdekker.aoc.std.readLines
-import com.fwdekker.aoc.std.sum
+import com.fwdekker.aoc.Day
+import com.fwdekker.std.lcm
+import com.fwdekker.std.map
+import com.fwdekker.std.product
+import com.fwdekker.std.readLines
+import com.fwdekker.std.sum
 
 
 class Day20(resource: String = resource(2023, 20)) : Day(resource) {

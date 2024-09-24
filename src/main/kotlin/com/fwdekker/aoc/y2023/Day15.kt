@@ -1,8 +1,8 @@
 package com.fwdekker.aoc.y2023
 
-import com.fwdekker.aoc.std.Day
-import com.fwdekker.aoc.std.readResource
-import com.fwdekker.aoc.std.sumOfIndexed
+import com.fwdekker.aoc.Day
+import com.fwdekker.std.readResource
+import com.fwdekker.std.sumOfIndexed
 
 
 class Day15(resource: String = resource(2023, 15)) : Day(resource) {

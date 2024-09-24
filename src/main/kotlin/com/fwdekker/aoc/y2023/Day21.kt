@@ -1,15 +1,15 @@
 package com.fwdekker.aoc.y2023
 
-import com.fwdekker.aoc.std.Coords
-import com.fwdekker.aoc.std.Day
-import com.fwdekker.aoc.std.cardinals
-import com.fwdekker.aoc.std.cell
-import com.fwdekker.aoc.std.cellMod
-import com.fwdekker.aoc.std.contains
-import com.fwdekker.aoc.std.coordsOf
-import com.fwdekker.aoc.std.foldSelf
-import com.fwdekker.aoc.std.readLines
-import com.fwdekker.aoc.std.width
+import com.fwdekker.std.Coords
+import com.fwdekker.aoc.Day
+import com.fwdekker.std.cardinals
+import com.fwdekker.std.cell
+import com.fwdekker.std.cellMod
+import com.fwdekker.std.contains
+import com.fwdekker.std.coordsOf
+import com.fwdekker.std.foldSelf
+import com.fwdekker.std.readLines
+import com.fwdekker.std.width
 
 
 class Day21(resource: String = resource(2023, 21)) : Day(resource) {

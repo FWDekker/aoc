@@ -1,22 +1,22 @@
 package com.fwdekker.aoc.y2023
 
-import com.fwdekker.aoc.std.Chart
-import com.fwdekker.aoc.std.Coords
-import com.fwdekker.aoc.std.Day
-import com.fwdekker.aoc.std.cardinals
-import com.fwdekker.aoc.std.cartesian
-import com.fwdekker.aoc.std.cell
-import com.fwdekker.aoc.std.cols
-import com.fwdekker.aoc.std.contains
-import com.fwdekker.aoc.std.east
-import com.fwdekker.aoc.std.firstRow
-import com.fwdekker.aoc.std.lastRow
-import com.fwdekker.aoc.std.lastRowIndex
-import com.fwdekker.aoc.std.north
-import com.fwdekker.aoc.std.readLines
-import com.fwdekker.aoc.std.rows
-import com.fwdekker.aoc.std.south
-import com.fwdekker.aoc.std.west
+import com.fwdekker.std.Chart
+import com.fwdekker.std.Coords
+import com.fwdekker.aoc.Day
+import com.fwdekker.std.cardinals
+import com.fwdekker.std.cartesian
+import com.fwdekker.std.cell
+import com.fwdekker.std.cols
+import com.fwdekker.std.contains
+import com.fwdekker.std.east
+import com.fwdekker.std.firstRow
+import com.fwdekker.std.lastRow
+import com.fwdekker.std.lastRowIndex
+import com.fwdekker.std.north
+import com.fwdekker.std.readLines
+import com.fwdekker.std.rows
+import com.fwdekker.std.south
+import com.fwdekker.std.west
 import java.util.PriorityQueue
 
 

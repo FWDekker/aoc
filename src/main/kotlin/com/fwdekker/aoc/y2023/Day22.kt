@@ -1,9 +1,9 @@
 package com.fwdekker.aoc.y2023
 
-import com.fwdekker.aoc.std.Day
-import com.fwdekker.aoc.std.ints
-import com.fwdekker.aoc.std.overlaps
-import com.fwdekker.aoc.std.readLines
+import com.fwdekker.aoc.Day
+import com.fwdekker.std.ints
+import com.fwdekker.std.overlaps
+import com.fwdekker.std.readLines
 
 
 class Day22(resource: String = resource(2023, 22)) : Day(resource) {

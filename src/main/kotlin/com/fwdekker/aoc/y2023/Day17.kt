@@ -1,15 +1,15 @@
 package com.fwdekker.aoc.y2023
 
-import com.fwdekker.aoc.std.Chart
-import com.fwdekker.aoc.std.Coords
-import com.fwdekker.aoc.std.Day
-import com.fwdekker.aoc.std.Direction
-import com.fwdekker.aoc.std.Heading
-import com.fwdekker.aoc.std.cell
-import com.fwdekker.aoc.std.contains
-import com.fwdekker.aoc.std.lastColIndex
-import com.fwdekker.aoc.std.lastRowIndex
-import com.fwdekker.aoc.std.readLines
+import com.fwdekker.std.Chart
+import com.fwdekker.std.Coords
+import com.fwdekker.aoc.Day
+import com.fwdekker.std.Direction
+import com.fwdekker.std.Heading
+import com.fwdekker.std.cell
+import com.fwdekker.std.contains
+import com.fwdekker.std.lastColIndex
+import com.fwdekker.std.lastRowIndex
+import com.fwdekker.std.readLines
 import java.util.PriorityQueue
 
 

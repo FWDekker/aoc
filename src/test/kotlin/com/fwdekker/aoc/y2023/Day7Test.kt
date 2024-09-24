@@ -1,8 +1,8 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.DayTest
-import com.fwdekker.aoc.std.Day
-import com.fwdekker.aoc.std.Day.Companion.resource
+import com.fwdekker.aoc.Day
+import com.fwdekker.aoc.Day.Companion.resource
 
 
 /**

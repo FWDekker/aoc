@@ -1,7 +1,7 @@
 package com.fwdekker.aoc.y2023
 
-import com.fwdekker.aoc.std.Day
-import com.fwdekker.aoc.std.readLines
+import com.fwdekker.aoc.Day
+import com.fwdekker.std.readLines
 import org.jgrapht.Graph
 import org.jgrapht.alg.StoerWagnerMinimumCut
 import org.jgrapht.graph.DefaultEdge

@@ -1,11 +1,11 @@
 package com.fwdekker.aoc.y2023
 
-import com.fwdekker.aoc.std.Day
-import com.fwdekker.aoc.std.map
-import com.fwdekker.aoc.std.productOf
-import com.fwdekker.aoc.std.readSections
-import com.fwdekker.aoc.std.splitGEQ
-import com.fwdekker.aoc.std.splitLEQ
+import com.fwdekker.aoc.Day
+import com.fwdekker.std.map
+import com.fwdekker.std.productOf
+import com.fwdekker.std.readSections
+import com.fwdekker.std.splitGEQ
+import com.fwdekker.std.splitLEQ
 
 
 class Day19(resource: String = resource(2023, 19)) : Day(resource) {

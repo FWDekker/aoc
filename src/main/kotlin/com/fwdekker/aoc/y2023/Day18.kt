@@ -1,12 +1,12 @@
 package com.fwdekker.aoc.y2023
 
-import com.fwdekker.aoc.std.Coords
-import com.fwdekker.aoc.std.Day
-import com.fwdekker.aoc.std.Direction
-import com.fwdekker.aoc.std.distance
-import com.fwdekker.aoc.std.getMod
-import com.fwdekker.aoc.std.move
-import com.fwdekker.aoc.std.readLines
+import com.fwdekker.std.Coords
+import com.fwdekker.aoc.Day
+import com.fwdekker.std.Direction
+import com.fwdekker.std.distance
+import com.fwdekker.std.getMod
+import com.fwdekker.std.move
+import com.fwdekker.std.readLines
 import kotlin.math.abs
 import kotlin.math.roundToLong
 

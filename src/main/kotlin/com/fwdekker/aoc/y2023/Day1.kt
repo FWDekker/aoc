@@ -1,7 +1,7 @@
 package com.fwdekker.aoc.y2023
 
-import com.fwdekker.aoc.std.Day
-import com.fwdekker.aoc.std.readLines
+import com.fwdekker.aoc.Day
+import com.fwdekker.std.readLines
 
 
 class Day1(resource: String = resource(2023, 1)) : Day(resource) {

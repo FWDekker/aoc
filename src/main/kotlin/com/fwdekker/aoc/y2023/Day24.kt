@@ -1,10 +1,10 @@
 package com.fwdekker.aoc.y2023
 
-import com.fwdekker.aoc.std.Day
-import com.fwdekker.aoc.std.asTriple
-import com.fwdekker.aoc.std.cartesian
-import com.fwdekker.aoc.std.longs
-import com.fwdekker.aoc.std.readLines
+import com.fwdekker.aoc.Day
+import com.fwdekker.std.asTriple
+import com.fwdekker.std.cartesian
+import com.fwdekker.std.longs
+import com.fwdekker.std.readLines
 import java.math.BigDecimal
 import java.math.MathContext
 import kotlin.math.roundToLong

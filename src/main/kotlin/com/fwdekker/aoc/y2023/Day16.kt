@@ -1,14 +1,14 @@
 package com.fwdekker.aoc.y2023
 
-import com.fwdekker.aoc.std.Day
-import com.fwdekker.aoc.std.Heading
-import com.fwdekker.aoc.std.cell
-import com.fwdekker.aoc.std.cols
-import com.fwdekker.aoc.std.contains
-import com.fwdekker.aoc.std.height
-import com.fwdekker.aoc.std.readLines
-import com.fwdekker.aoc.std.rows
-import com.fwdekker.aoc.std.width
+import com.fwdekker.aoc.Day
+import com.fwdekker.std.Heading
+import com.fwdekker.std.cell
+import com.fwdekker.std.cols
+import com.fwdekker.std.contains
+import com.fwdekker.std.height
+import com.fwdekker.std.readLines
+import com.fwdekker.std.rows
+import com.fwdekker.std.width
 
 
 class Day16(resource: String = resource(2023, 16)) : Day(resource) {

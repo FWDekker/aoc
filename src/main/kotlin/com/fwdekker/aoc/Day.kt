@@ -1,4 +1,4 @@
-package com.fwdekker.aoc.std
+package com.fwdekker.aoc
 
 
 /**

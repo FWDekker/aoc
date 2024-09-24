@@ -1,6 +1,5 @@
 package com.fwdekker.aoc
 
-import com.fwdekker.aoc.std.Day
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.datatest.withData
 import io.kotest.matchers.shouldBe
