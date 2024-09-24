@@ -2,165 +2,182 @@ package com.fwdekker.std
 
 
 /**
- * A 2-dimensional chart (or map), represented by a list of strings all with the same length.
+ * A 2-dimensional grid, represented by a list of lists, all with the same length.
  */
-typealias Chart = List<String>
+typealias Grid<T> = List<List<T>>
 
 
 /**
- * The number of rows in the chart.
+ * The number of rows.
  */
-val Chart.height: Int get() = size
+val <T> Grid<T>.height: Int get() = size
 
 /**
- * The number of columns in the chart.
+ * The number of columns.
  */
-val Chart.width: Int get() = this[0].length
+val <T> Grid<T>.width: Int get() = this[0].size
 
 /**
- * The range of row indices in the chart.
+ * The range of row indices.
  */
-val Chart.rows: IntRange get() = indices
+val <T> Grid<T>.rows: IntRange get() = indices
 
 /**
- * The range of column indices in the chart.
+ * The range of column indices.
  */
-val Chart.cols: IntRange get() = this[0].indices
+val <T> Grid<T>.cols: IntRange get() = this[0].indices
 
 /**
  * The index of the last row.
  */
-val Chart.lastRowIndex: Int get() = lastIndex
+val <T> Grid<T>.lastRowIndex: Int get() = lastIndex
 
 /**
  * The index of the last column.
  */
-val Chart.lastColIndex: Int get() = this[0].lastIndex
+val <T> Grid<T>.lastColIndex: Int get() = this[0].lastIndex
 
 
 /**
  * Returns the first row.
  */
-val Chart.firstRow: String get() = this[0]
+val <T> Grid<T>.firstRow: List<T> get() = this[0]
 
 /**
  * Returns the first column.
  */
-val Chart.firstCol: String get() = col(0)
+val <T> Grid<T>.firstCol: List<T> get() = col(0)
 
 /**
  * Returns the last row.
  */
-val Chart.lastRow: String get() = last()
+val <T> Grid<T>.lastRow: List<T> get() = last()
 
 /**
  * Returns the last column.
  */
-val Chart.lastCol: String get() = col(lastColIndex)
+val <T> Grid<T>.lastCol: List<T> get() = col(lastColIndex)
 
 /**
  * Returns the [row]th row.
  */
-fun Chart.row(row: Int): String = this[row]
+fun <T> Grid<T>.row(row: Int): List<T> = this[row]
 
 /**
  * Returns the [col]th column.
  */
-fun Chart.col(col: Int): String = map { it[col] }.joinToString(separator = "")
+fun <T> Grid<T>.col(col: Int): List<T> = map { it[col] }
 
 /**
  * Returns the column in which [coords] is located.
  */
-fun Chart.colOf(coords: Coords): String = col(coords.col.toIntExact())
+fun <T> Grid<T>.colOf(coords: Coords): List<T> = col(coords.col.toIntExact())
 
 /**
  * Returns the row in which [coords] is located.
  */
-fun Chart.rowOf(coords: Coords): String = row(coords.row.toIntExact())
+fun <T> Grid<T>.rowOf(coords: Coords): List<T> = row(coords.row.toIntExact())
 
 
 /**
- * Returns `true` if and only if this chart contains a character at coordinates [row], [col].
+ * Returns `true` if and only if the coordinates [row], [col] fall within bounds.
  */
-fun Chart.contains(row: Int, col: Int): Boolean = row in rows && col in cols
+fun <T> Grid<T>.contains(row: Int, col: Int): Boolean = row in rows && col in cols
 
 /**
- * Returns `true` if and only if this chart contains a character at [coords].
+ * Returns `true` if and only if [coords] fall within bounds.
  */
-operator fun Chart.contains(coords: Coords): Boolean = contains(coords.row.toIntExact(), coords.col.toIntExact())
+operator fun <T> Grid<T>.contains(coords: Coords): Boolean = contains(coords.row.toIntExact(), coords.col.toIntExact())
 
 /**
  * Returns the cell at coordinates [row], [col].
  */
-fun Chart.cell(row: Int, col: Int): Char = this[row][col]
+fun <T> Grid<T>.cell(row: Int, col: Int): T = this[row][col]
 
 /**
  * Returns the cell at [coords].
  */
-fun Chart.cell(coords: Coords): Char = cell(coords.row.toIntExact(), coords.col.toIntExact())
+fun <T> Grid<T>.cell(coords: Coords): T = cell(coords.row.toIntExact(), coords.col.toIntExact())
 
 /**
  * Returns the cell at coordinates [row], [col], or `null` if there is no cell at those coordinates.
  */
-fun Chart.cellOrNull(row: Int, col: Int): Char? = getOrNull(row)?.getOrNull(col)
+fun <T> Grid<T>.cellOrNull(row: Int, col: Int): T? = getOrNull(row)?.getOrNull(col)
 
 /**
  * Returns the cell at [coords], or `null` if there is no cell at those coordinates.
  */
-fun Chart.cellOrNull(coords: Coords): Char? = cellOrNull(coords.row.toIntExact(), coords.col.toIntExact())
+fun <T> Grid<T>.cellOrNull(coords: Coords): T? = cellOrNull(coords.row.toIntExact(), coords.col.toIntExact())
 
 /**
  * Returns the cell at wrapped coordinates [row], [col], so `cellMod(-1, -1)` returns the bottom-right cell.
  */
-fun Chart.cellMod(row: Number, col: Number): Char = getMod(row).getMod(col)
+fun <T> Grid<T>.cellMod(row: Number, col: Number): T = getMod(row).getMod(col)
 
 /**
  * Returns the cell at wrapped [coords], so `cellMod(Coords(-1, -1))` returns the bottom-right cell.
  */
-fun Chart.cellMod(coords: Coords): Char = cellMod(coords.row, coords.col)
+fun <T> Grid<T>.cellMod(coords: Coords): T = cellMod(coords.row, coords.col)
 
 /**
- * Returns the first [Coords] at which [char] is found.
+ * Returns the first [Coords] at which [cell] is found.
  */
-fun Chart.coordsOf(char: Char): Coords =
-    withIndex().asSequence().map { Coords(it.index, it.value.indexOf(char)) }.first { it.col >= 0 }
+fun <T> Grid<T>.coordsOf(cell: T): Coords =
+    withIndex().asSequence().map { Coords(it.index, it.value.indexOf(cell)) }.first { it.col >= 0 }
 
 /**
- * Returns all [Coords] at which [char] is found.
+ * Returns all [Coords] at which [cell] is found.
  */
-fun Chart.allCoordsOf(char: Char): List<Coords> =
-    rows.flatMap { row -> this[row].withIndex().filter { (_, it) -> it == char }.map { (col, _) -> Coords(row, col) } }
+fun <T> Grid<T>.allCoordsOf(cell: T): List<Coords> =
+    rows.flatMap { row -> this[row].withIndex().filter { (_, it) -> it == cell }.map { (col, _) -> Coords(row, col) } }
 
 
 /**
  * Transposes, flipping semantics of rows and columns.
  */
-fun Chart.transpose(): Chart = cols.map(::col)
+fun <T> Grid<T>.transpose(): Grid<T> = cols.map(::col)
 
 /**
  * Reverses the order of rows.
  */
-fun Chart.flipUD(): Chart = reversed()
+fun <T> Grid<T>.flipUD(): Grid<T> = reversed()
 
 /**
  * Reverses the order of columns.
  */
-fun Chart.flipLR(): Chart = map { it.reversed() }
+fun <T> Grid<T>.flipLR(): Grid<T> = map { it.reversed() }
 
 /**
  * Rotates clockwise.
  */
-fun Chart.rotateCW(): Chart = transpose().flipLR()
+fun <T> Grid<T>.rotateCW(): Grid<T> = transpose().flipLR()
 
 /**
  * Rotates counter-clockwise.
  */
-fun Chart.rotateCCW(): Chart = transpose().flipUD()
+fun <T> Grid<T>.rotateCCW(): Grid<T> = transpose().flipUD()
 
 /**
  * Rotates halfway around the clock.
  */
-fun Chart.rotateHalf(): Chart = flipLR().flipUD()
+fun <T> Grid<T>.rotateHalf(): Grid<T> = flipLR().flipUD()
+
+
+
+/**
+ * A 2-dimensional chart (or map), represented by a list of strings, all with the same length.
+ */
+typealias Chart = Grid<Char>
+
+/**
+ * Returns the raw [String] representation of this row.
+ */
+fun List<Char>.toRaw(): String = this.joinToString("")
+
+/**
+ * Returns the [Chart] row representation of this raw [String].
+ */
+fun String.toRow(): List<Char> = this.toList()
 
 
 /**

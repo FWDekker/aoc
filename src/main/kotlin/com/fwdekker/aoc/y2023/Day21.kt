@@ -1,19 +1,19 @@
 package com.fwdekker.aoc.y2023
 
-import com.fwdekker.std.Coords
 import com.fwdekker.aoc.Day
+import com.fwdekker.std.Coords
 import com.fwdekker.std.cardinals
 import com.fwdekker.std.cell
 import com.fwdekker.std.cellMod
 import com.fwdekker.std.contains
 import com.fwdekker.std.coordsOf
 import com.fwdekker.std.foldSelf
-import com.fwdekker.std.readLines
+import com.fwdekker.std.readChart
 import com.fwdekker.std.width
 
 
 class Day21(resource: String = resource(2023, 21)) : Day(resource) {
-    private val chart = readLines(resource)
+    private val chart = readChart(resource)
     private val start = setOf(chart.coordsOf('S'))
 
 

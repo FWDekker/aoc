@@ -2,6 +2,7 @@ package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
 import com.fwdekker.std.map
+import com.fwdekker.std.appendingFold
 import com.fwdekker.std.productOf
 import com.fwdekker.std.readSections
 import com.fwdekker.std.splitGEQ
@@ -21,17 +22,15 @@ class Day19(resource: String = resource(2023, 19)) : Day(resource) {
         workflows.filter(listOf(Part("xmas".associateWith { 1..4000 }))).sumOf { it.combos() }
 
 
-    private fun Map<String, Workflow>.filter(parts: List<Part>, start: String = "in"): List<Part> {
-        val queue = ArrayDeque(parts.map { Pair(it, start) })
-
-        return queue.fold(listOf()) { accepted, (part, workflow) ->
-            getValue(workflow).process(part)
-                .filter { it.second != "R" }
-                .partition { it.second == "A" }
-                .also { (_, forwarded) -> queue.addAll(forwarded) }
-                .let { (newlyAccepted, _) -> accepted + newlyAccepted.map { it.first } }
-        }
-    }
+    private fun Map<String, Workflow>.filter(parts: List<Part>, start: String = "in"): List<Part> =
+        parts.map { Pair(it, start) }.toMutableList()
+            .appendingFold(listOf()) { queue, accepted, (part, workflow) ->
+                getValue(workflow).process(part)
+                    .filter { it.second != "R" }
+                    .partition { it.second == "A" }
+                    .also { (_, forwarded) -> queue.addAll(forwarded) }
+                    .let { (newlyAccepted, _) -> accepted + newlyAccepted.map { it.first } }
+            }
 
 
     private class Part(val properties: Map<Char, IntRange>) : Map<Char, IntRange> by properties {

@@ -130,3 +130,36 @@ fun <A, B> Pair<Iterable<A>, Iterable<B>>.zipped(): List<Pair<A, B>> = first zip
  * Returns the left-folded addition of all contained maps.
  */
 fun <K, V> Iterable<Map<K, V>>.sum() = fold(emptyMap<K, V>()) { acc, it -> acc + it }
+
+
+/**
+ * Like `iterator`, but without [ConcurrentModificationException]s when elements are appended after the iterator has
+ * been created.
+ */
+fun <T> MutableList<T>.appendableIterator(): Iterator<T> =
+    iterator {
+        var i = 0
+        while (i < size) {
+            yield(get(i))
+            i++
+        }
+    }
+
+/**
+ * Like `onEach`, but without [ConcurrentModificationException]s when [action] appends elements to the list.
+ *
+ * [action] now takes one extra argument in front of the classic argument, which is a reference to [this].
+ */
+fun <T> MutableList<T>.appendOnEach(action: (MutableList<T>, T) -> Unit): MutableList<T> =
+    this.also { appendableIterator().forEach { action(this, it) } }
+
+/**
+ * Like `fold`, but without [ConcurrentModificationException]s when [operation] appends elements to the list.
+ *
+ * [operation] now takes one extra argument in front of the two classic arguments, which is a reference to [this].
+ */
+fun <T, R> MutableList<T>.appendingFold(initial: R, operation: (MutableList<T>, R, T) -> R): R {
+    var acc = initial
+    appendOnEach { self, it -> acc = operation(self, acc, it) }
+    return acc
+}

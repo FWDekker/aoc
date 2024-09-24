@@ -1,8 +1,8 @@
 package com.fwdekker.aoc.y2023
 
+import com.fwdekker.aoc.Day
 import com.fwdekker.std.Chart
 import com.fwdekker.std.Coords
-import com.fwdekker.aoc.Day
 import com.fwdekker.std.cardinals
 import com.fwdekker.std.cartesian
 import com.fwdekker.std.cell
@@ -13,7 +13,7 @@ import com.fwdekker.std.firstRow
 import com.fwdekker.std.lastRow
 import com.fwdekker.std.lastRowIndex
 import com.fwdekker.std.north
-import com.fwdekker.std.readLines
+import com.fwdekker.std.readChart
 import com.fwdekker.std.rows
 import com.fwdekker.std.south
 import com.fwdekker.std.west
@@ -21,7 +21,7 @@ import java.util.PriorityQueue
 
 
 class Day23(resource: String = resource(2023, 23)) : Day(resource) {
-    private val chart = readLines(resource)
+    private val chart = readChart(resource)
 
     private val start = Coords(0, chart.firstRow.indexOf('.'))
     private val end = Coords(chart.lastRowIndex, chart.lastRow.indexOf('.'))

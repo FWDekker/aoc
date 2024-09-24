@@ -3,6 +3,7 @@ package com.fwdekker.aoc.y2023
 import com.fwdekker.aoc.Day
 import com.fwdekker.std.lcm
 import com.fwdekker.std.map
+import com.fwdekker.std.appendOnEach
 import com.fwdekker.std.product
 import com.fwdekker.std.readLines
 import com.fwdekker.std.sum
@@ -30,8 +31,8 @@ class Day20(resource: String = resource(2023, 20)) : Day(resource) {
 
 
         fun pressButton(): Collection<Signal> =
-            ArrayDeque(listOf(Signal(src = "button", dst = "broadcaster", isHigh = false)))
-                .also { queue -> queue.onEach { queue += modules[it.dst]?.trigger(it.src, it.isHigh) ?: emptyList() } }
+            mutableListOf(Signal(src = "button", dst = "broadcaster", isHigh = false))
+                .appendOnEach { queue, it -> queue += modules[it.dst]?.trigger(it.src, it.isHigh) ?: emptyList() }
                 .toList()
 
         fun findPeriod(moduleName: String): Long =

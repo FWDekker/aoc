@@ -1,35 +1,37 @@
 package com.fwdekker.aoc.y2023
 
-import com.fwdekker.std.Coords
 import com.fwdekker.aoc.Day
+import com.fwdekker.std.Chart
+import com.fwdekker.std.Coords
 import com.fwdekker.std.cellOrNull
 import com.fwdekker.std.col
 import com.fwdekker.std.east
 import com.fwdekker.std.north
 import com.fwdekker.std.principals
 import com.fwdekker.std.product
-import com.fwdekker.std.readLines
+import com.fwdekker.std.readChart
 import com.fwdekker.std.rowOf
 import com.fwdekker.std.south
+import com.fwdekker.std.toRaw
 import com.fwdekker.std.west
 import kotlin.math.max
 
 
 class Day3(resource: String = resource(2023, 3)) : Day(resource) {
-    private val lines = readLines(resource)
+    private val chart = readChart(resource)
 
 
     override fun part1(): Int =
-        lines
-            .flatMapIndexed { lineIndex, line ->
-                line.toList().skipFoldIndexed(emptyList<Int>()) { index, acc, _ ->
-                    line.drop(index)
+        chart
+            .flatMapIndexed { rowIndex, row ->
+                row.skipFoldIndexed(emptyList<Int>()) { index, acc, _ ->
+                    row.drop(index)
                         .takeWhile { it.isDigit() }
-                        .let { number ->
+                        .let { partialRow ->
                             Pair(
-                                max(1, number.length),
-                                if (number.indices.none { lines.isNextToSymbol(lineIndex, index + it) }) acc
-                                else acc + number.toInt()
+                                max(1, partialRow.size),
+                                if (partialRow.indices.none { chart.isNextToSymbol(rowIndex, index + it) }) acc
+                                else acc + partialRow.toRaw().toInt()
                             )
                         }
                 }
@@ -37,11 +39,12 @@ class Day3(resource: String = resource(2023, 3)) : Day(resource) {
             .sum()
 
     override fun part2(): Long =
-        lines
-            .flatMapIndexed { lineIndex, line ->
-                line.withIndex()
+        chart
+            .flatMapIndexed { rowIndex, row ->
+                row.asSequence()
+                    .withIndex()
                     .filter { (_, char) -> char == '*' }
-                    .map { (index, _) -> lines.getSurroundingNumbers(Coords(lineIndex, index)) }
+                    .map { (index, _) -> chart.getSurroundingNumbers(Coords(rowIndex, index)) }
                     .filter { it.size == 2 }
                     .map { it.product() }
             }
@@ -64,19 +67,19 @@ class Day3(resource: String = resource(2023, 3)) : Day(resource) {
         return accumulator
     }
 
-    private fun List<String>.isNextToSymbol(rowIdx: Int, colIdx: Int): Boolean =
+    private fun Chart.isNextToSymbol(rowIdx: Int, colIdx: Int): Boolean =
         Coords(rowIdx, colIdx).principals.asSequence().mapNotNull(::cellOrNull).any { it != '.' && !it.isDigit() }
 
-    private fun List<String>.getNumber(coords: Coords): Int? {
+    private fun Chart.getNumber(coords: Coords): Int? {
         if (cellOrNull(coords)?.isDigit() == false) return null
 
         val row = rowOf(coords)
-        return row.reversed().drop(row.length - 1 - coords.col.toInt()).takeWhile { it.isDigit() }.drop(1).reversed()
+        return row.reversed().drop(row.size - 1 - coords.col.toInt()).takeWhile { it.isDigit() }.drop(1).reversed()
             .plus(row.drop(coords.col.toInt()).takeWhile { it.isDigit() })
-            .toInt()
+            .toRaw().toInt()
     }
 
-    private fun List<String>.getSurroundingNumbers(coords: Coords): List<Int> =
+    private fun Chart.getSurroundingNumbers(coords: Coords): List<Int> =
         listOf(coords.north, coords, coords.south)
             .flatMap { other ->
                 val char = cellOrNull(other)

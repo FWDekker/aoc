@@ -1,25 +1,25 @@
 package com.fwdekker.aoc.y2023
 
+import com.fwdekker.aoc.Day
 import com.fwdekker.std.Chart
 import com.fwdekker.std.Coords
-import com.fwdekker.aoc.Day
 import com.fwdekker.std.Direction
 import com.fwdekker.std.Heading
 import com.fwdekker.std.cell
 import com.fwdekker.std.contains
 import com.fwdekker.std.lastColIndex
 import com.fwdekker.std.lastRowIndex
-import com.fwdekker.std.readLines
+import com.fwdekker.std.readChart
 import java.util.PriorityQueue
 
 
 class Day17(resource: String = resource(2023, 17)) : Day(resource) {
-    private val lines = readLines(resource)
+    private val chart = readChart(resource)
 
 
-    override fun part1(): Int = lines.smallestLoss({ it.neighbors() }, { true })
+    override fun part1(): Int = chart.smallestLoss({ it.neighbors() }, { true })
 
-    override fun part2(): Int = lines.smallestLoss({ it.ultraNeighbors() }, { it.times >= 4 })
+    override fun part2(): Int = chart.smallestLoss({ it.ultraNeighbors() }, { it.times >= 4 })
 
 
     private data class Step(val heading: Heading, val times: Int) {

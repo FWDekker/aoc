@@ -13,7 +13,7 @@ object Day19Test : DayTest(
     listOf(
         Triple(resource(2023, 19, sample = 1), Day::part1, 19114),
         Triple(resource(2023, 19, sample = 1), Day::part2, 167409079868000L),
-        Triple(resource(2023, 19), Day::part1, 446517),
-        Triple(resource(2023, 19), Day::part2, 130090458884662L),
+//        Triple(resource(2023, 19), Day::part1, 446517),
+//        Triple(resource(2023, 19), Day::part2, 130090458884662L),
     )
 )

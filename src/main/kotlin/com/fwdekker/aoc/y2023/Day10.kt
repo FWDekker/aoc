@@ -1,7 +1,8 @@
 package com.fwdekker.aoc.y2023
 
-import com.fwdekker.std.Coords
 import com.fwdekker.aoc.Day
+import com.fwdekker.std.Chart
+import com.fwdekker.std.Coords
 import com.fwdekker.std.Direction
 import com.fwdekker.std.Heading
 import com.fwdekker.std.cardinals
@@ -9,11 +10,11 @@ import com.fwdekker.std.cell
 import com.fwdekker.std.contains
 import com.fwdekker.std.coordsOf
 import com.fwdekker.std.move
-import com.fwdekker.std.readLines
+import com.fwdekker.std.readChart
 
 
 class Day10(resource: String = resource(2023, 10)) : Day(resource) {
-    private val maze = readLines(resource)
+    private val maze = readChart(resource)
 
     private val start = maze.coordsOf('S')
     private val cycle = Direction.entries.asSequence()
@@ -28,7 +29,7 @@ class Day10(resource: String = resource(2023, 10)) : Day(resource) {
     override fun part2(): Int = cycle.getEnclosedSpace()
 }
 
-private class Raccoon(val maze: List<String>, heading: Heading) {
+private class Raccoon(val maze: Chart, heading: Heading) {
     private val path: MutableSet<Coords> = mutableSetOf(heading.coords)
     private var heading: Heading? = heading
 

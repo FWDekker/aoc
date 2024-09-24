@@ -1,7 +1,7 @@
 package com.fwdekker.aoc.y2023
 
-import com.fwdekker.std.Coords
 import com.fwdekker.aoc.Day
+import com.fwdekker.std.Coords
 import com.fwdekker.std.Direction
 import com.fwdekker.std.distance
 import com.fwdekker.std.getMod

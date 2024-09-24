@@ -1,26 +1,27 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
+import com.fwdekker.std.Chart
 import com.fwdekker.std.Heading
 import com.fwdekker.std.cell
 import com.fwdekker.std.cols
 import com.fwdekker.std.contains
 import com.fwdekker.std.height
-import com.fwdekker.std.readLines
+import com.fwdekker.std.readChart
 import com.fwdekker.std.rows
 import com.fwdekker.std.width
 
 
 class Day16(resource: String = resource(2023, 16)) : Day(resource) {
-    private val lines = readLines(resource)
+    private val chart = readChart(resource)
 
 
-    override fun part1(): Int = traverse(lines, Heading(0, 0, 'E'))
+    override fun part1(): Int = traverse(chart, Heading(0, 0, 'E'))
 
     override fun part2(): Int =
-        (lines.rows.flatMap { listOf(Heading(it, 0, 'E'), Heading(it, lines.width - 1, 'W')) } +
-            lines.cols.flatMap { listOf(Heading(0, it, 'S'), Heading(lines.height - 1, it, 'N')) })
-            .maxOf { traverse(lines, it) }
+        (chart.rows.flatMap { listOf(Heading(it, 0, 'E'), Heading(it, chart.width - 1, 'W')) } +
+            chart.cols.flatMap { listOf(Heading(0, it, 'S'), Heading(chart.height - 1, it, 'N')) })
+            .maxOf { traverse(chart, it) }
 
 
     private fun Char.traverse(from: Heading): List<Heading> =
@@ -33,7 +34,7 @@ class Day16(resource: String = resource(2023, 16)) : Day(resource) {
             else -> emptyList()
         }
 
-    private fun traverse(map: List<String>, start: Heading): Int {
+    private fun traverse(map: Chart, start: Heading): Int {
         var heads = listOf(start)
         val history = heads.toMutableSet()
 
