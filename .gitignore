@@ -1,6 +1,7 @@
 ## Custom
 **/main/resources/*/Day*.txt
 !**/main/resources/*/DayX.txt
+src/main/kotlin/com/fwdekker/euler
 
 
 ## Java
