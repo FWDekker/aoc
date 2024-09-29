@@ -12,7 +12,7 @@ import com.fwdekker.std.rows
 import com.fwdekker.std.width
 
 
-class Day16(resource: String = resource(2023, 16)) : Day(resource) {
+class Day16(resource: String = resource(2023, 16)) : Day() {
     private val chart = readChart(resource)
 
 

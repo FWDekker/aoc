@@ -8,7 +8,7 @@ import com.fwdekker.std.sumOfIndexed
 import kotlin.math.min
 
 
-class Day7(resource: String = resource(2023, 7)) : Day(resource) {
+class Day7(resource: String = resource(2023, 7)) : Day() {
     private val lines = readLines(resource)
     private val hands = lines.map { it.split(' ').asPair() }.mapSeconds { it.toInt() }
 

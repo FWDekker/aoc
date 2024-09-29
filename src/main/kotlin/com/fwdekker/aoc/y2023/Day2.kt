@@ -8,7 +8,7 @@ import com.fwdekker.std.product
 import com.fwdekker.std.readLines
 
 
-class Day2(resource: String = resource(2023, 2)) : Day(resource) {
+class Day2(resource: String = resource(2023, 2)) : Day() {
     private val lines = readLines(resource)
     private val limits = mapOf("red" to 12, "green" to 13, "blue" to 14)
     private val colors = limits.keys

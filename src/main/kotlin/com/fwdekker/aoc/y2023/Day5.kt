@@ -9,7 +9,7 @@ import com.fwdekker.std.sum
 import com.fwdekker.std.without
 
 
-class Day5(resource: String = resource(2023, 5)) : Day(resource) {
+class Day5(resource: String = resource(2023, 5)) : Day() {
     private val sections = readSections(resource)
 
     private val seeds: Collection<Long> = sections[0][0].substringAfter(": ").toLongs(' ')

@@ -6,7 +6,7 @@ import com.fwdekker.std.readCharts
 import com.fwdekker.std.transpose
 
 
-class Day13(resource: String = resource(2023, 13)) : Day(resource) {
+class Day13(resource: String = resource(2023, 13)) : Day() {
     private val patterns = readCharts(resource)
 
 

@@ -17,7 +17,7 @@ import com.fwdekker.std.west
 import kotlin.math.max
 
 
-class Day3(resource: String = resource(2023, 3)) : Day(resource) {
+class Day3(resource: String = resource(2023, 3)) : Day() {
     private val chart = readChart(resource)
 
 

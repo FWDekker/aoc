@@ -13,7 +13,7 @@ import com.fwdekker.std.readChart
 import java.util.PriorityQueue
 
 
-class Day17(resource: String = resource(2023, 17)) : Day(resource) {
+class Day17(resource: String = resource(2023, 17)) : Day() {
     private val chart = readChart(resource)
 
 

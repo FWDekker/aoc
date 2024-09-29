@@ -12,7 +12,7 @@ import com.fwdekker.std.readChart
 import com.fwdekker.std.width
 
 
-class Day21(resource: String = resource(2023, 21)) : Day(resource) {
+class Day21(resource: String = resource(2023, 21)) : Day() {
     private val chart = readChart(resource)
     private val start = setOf(chart.coordsOf('S'))
 

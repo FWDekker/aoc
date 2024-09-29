@@ -14,7 +14,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 
-class Day11(resource: String = resource(2023, 11)) : Day(resource) {
+class Day11(resource: String = resource(2023, 11)) : Day() {
     private val chart = readChart(resource)
 
     private val expandX = chart.rows.filter { x -> chart[x].all { it == '.' } }.toLongs()

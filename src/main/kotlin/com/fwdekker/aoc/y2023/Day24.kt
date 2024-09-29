@@ -18,7 +18,7 @@ private typealias BDMatrix = List<List<BigDecimal>>
 class Day24(
     resource: String = resource(2023, 24),
     private val coordinateRange: LongRange = 200000000000000L..400000000000000L,
-) : Day(resource) {
+) : Day() {
     private val stones =
         readLines(resource)
             .map { line -> line.split(Regex("\\s+@\\s+")).map { coords -> coords.toLongs(Regex(",\\s+")) } }

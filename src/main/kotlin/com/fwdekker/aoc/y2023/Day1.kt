@@ -4,7 +4,7 @@ import com.fwdekker.aoc.Day
 import com.fwdekker.std.readLines
 
 
-class Day1(resource: String = resource(2023, 1)) : Day(resource) {
+class Day1(resource: String = resource(2023, 1)) : Day() {
     private val lines = readLines(resource)
 
 

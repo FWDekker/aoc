@@ -9,7 +9,7 @@ import com.fwdekker.std.readLines
 import com.fwdekker.std.sum
 
 
-class Day20(resource: String = resource(2023, 20)) : Day(resource) {
+class Day20(resource: String = resource(2023, 20)) : Day() {
     private val lines = readLines(resource)
     private val machine = Machine.fromStrings(lines)
 

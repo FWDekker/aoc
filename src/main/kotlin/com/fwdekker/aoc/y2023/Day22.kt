@@ -6,7 +6,7 @@ import com.fwdekker.std.overlaps
 import com.fwdekker.std.readLines
 
 
-class Day22(resource: String = resource(2023, 22)) : Day(resource) {
+class Day22(resource: String = resource(2023, 22)) : Day() {
     private val lines = readLines(resource)
     private val stack = lines.asSequence()
         .map { line -> line.split('~').map { coords -> coords.toInts(',') } }

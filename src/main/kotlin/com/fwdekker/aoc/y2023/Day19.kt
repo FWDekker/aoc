@@ -9,7 +9,7 @@ import com.fwdekker.std.splitGEQ
 import com.fwdekker.std.splitLEQ
 
 
-class Day19(resource: String = resource(2023, 19)) : Day(resource) {
+class Day19(resource: String = resource(2023, 19)) : Day() {
     private val lineSets = readSections(resource)
     private val workflows = lineSets[0].map { Workflow.fromString(it) }.associateBy { it.name }
     private val parts = lineSets[1].map { Part.fromString(it) }

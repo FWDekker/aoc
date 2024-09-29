@@ -6,7 +6,7 @@ import com.fwdekker.std.lcm
 import com.fwdekker.std.readLines
 
 
-class Day8(resource: String = resource(2023, 8)) : Day(resource) {
+class Day8(resource: String = resource(2023, 8)) : Day() {
     private val lines = readLines(resource)
 
     private val steps = lines[0].toList()

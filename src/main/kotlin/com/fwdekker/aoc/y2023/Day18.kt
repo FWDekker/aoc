@@ -12,7 +12,7 @@ import kotlin.math.roundToLong
 
 
 @OptIn(ExperimentalStdlibApi::class)
-class Day18(resource: String = resource(2023, 18)) : Day(resource) {
+class Day18(resource: String = resource(2023, 18)) : Day() {
     private val lines = readLines(resource)
 
 

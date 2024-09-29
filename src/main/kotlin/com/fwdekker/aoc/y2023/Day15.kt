@@ -5,7 +5,7 @@ import com.fwdekker.std.readResource
 import com.fwdekker.std.sumOfIndexed
 
 
-class Day15(resource: String = resource(2023, 15)) : Day(resource) {
+class Day15(resource: String = resource(2023, 15)) : Day() {
     private val instructions = readResource(resource).split(',')
 
 

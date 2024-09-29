@@ -9,7 +9,7 @@ import com.fwdekker.std.readLines
 import com.fwdekker.std.zipped
 
 
-class Day6(resource: String = resource(2023, 6)) : Day(resource) {
+class Day6(resource: String = resource(2023, 6)) : Day() {
     private val lines = readLines(resource).asPair().map { it.substringAfter(": ") }
 
 

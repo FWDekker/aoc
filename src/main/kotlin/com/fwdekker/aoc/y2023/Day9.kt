@@ -5,7 +5,7 @@ import com.fwdekker.std.toInts
 import com.fwdekker.std.readLines
 
 
-class Day9(resource: String = resource(2023, 9)) : Day(resource) {
+class Day9(resource: String = resource(2023, 9)) : Day() {
     private val lines = readLines(resource)
 
 

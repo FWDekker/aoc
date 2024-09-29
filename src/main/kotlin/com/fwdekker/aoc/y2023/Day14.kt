@@ -12,7 +12,7 @@ import com.fwdekker.std.toRaw
 import com.fwdekker.std.toRow
 
 
-class Day14(resource: String = resource(2023, 14)) : Day(resource) {
+class Day14(resource: String = resource(2023, 14)) : Day() {
     private val chart = readChart(resource)
 
 

@@ -8,7 +8,7 @@ import com.fwdekker.std.readLines
 import com.fwdekker.std.repeat
 
 
-class Day12(resource: String = resource(2023, 12)) : Day(resource) {
+class Day12(resource: String = resource(2023, 12)) : Day() {
     private val lines = readLines(resource)
     private val rows = lines.map { it.split(' ').asPair() }.mapSeconds { it.toInts(',') }
 

@@ -20,7 +20,7 @@ import com.fwdekker.std.west
 import java.util.PriorityQueue
 
 
-class Day23(resource: String = resource(2023, 23)) : Day(resource) {
+class Day23(resource: String = resource(2023, 23)) : Day() {
     private val chart = readChart(resource)
 
     private val start = Coords(0, chart.firstRow.indexOf('.'))

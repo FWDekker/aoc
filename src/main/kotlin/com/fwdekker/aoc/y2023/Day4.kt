@@ -7,7 +7,7 @@ import com.fwdekker.std.readLines
 import kotlin.math.pow
 
 
-class Day4(resource: String = resource(2023, 4)) : Day(resource) {
+class Day4(resource: String = resource(2023, 4)) : Day() {
     private val lines = readLines(resource)
     private val winsByLine =
         lines

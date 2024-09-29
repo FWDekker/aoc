@@ -13,7 +13,7 @@ import com.fwdekker.std.move
 import com.fwdekker.std.readChart
 
 
-class Day10(resource: String = resource(2023, 10)) : Day(resource) {
+class Day10(resource: String = resource(2023, 10)) : Day() {
     private val maze = readChart(resource)
 
     private val start = maze.coordsOf('S')

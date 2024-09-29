@@ -4,7 +4,7 @@ package com.fwdekker.aoc
 /**
  * Convenience class for invoking the code for any particular day and part with a given resource.
  */
-abstract class Day(val resource: String) {
+abstract class Day {
     /**
      * Runs and prints both parts.
      */
