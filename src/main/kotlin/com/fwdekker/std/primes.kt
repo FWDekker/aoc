@@ -23,6 +23,8 @@ fun primes(): Sequence<Long> =
 /**
  * Returns `true` if and only if [this] is a prime number.
  */
+fun Int.isPrime(): Boolean = toLong().isPrime()
+
 fun Long.isPrime(): Boolean {
     if (this < 2L) return false
     if (this == 2L) return true
@@ -38,6 +40,8 @@ fun Long.isPrime(): Boolean {
 /**
  * Returns the prime factors of [this].
  */
+fun Int.factorize(): List<Int> = toLong().factorize().toInts()
+
 fun Long.factorize(): List<Long> =
     sequence {
         var remaining = this@factorize
@@ -54,5 +58,7 @@ fun Long.factorize(): List<Long> =
 /**
  * Returns all (positive) natural numbers that divide [this].
  */
+fun Int.divisors(): Set<Int> = toLong().divisors().toInts().toSet()
+
 fun Long.divisors(): Set<Long> =
     (listOf(1L) + this.factorize()).powerSet().filter { it.isNotEmpty() }.map { it.product() }.toSet()

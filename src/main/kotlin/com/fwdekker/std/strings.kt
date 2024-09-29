@@ -20,32 +20,32 @@ fun Collection<String>.filterNotBlank(): List<String> = filterNot(String::isBlan
 /**
  * Splits by [separator] and converts each entry to an [Int].
  */
-fun String.ints(separator: Char): List<Int> = ints(separator.toString())
+fun String.toInts(separator: Char): List<Int> = toInts(separator.toString())
 
 /**
  * Splits by [separator] and converts each entry to an [Int].
  */
-fun String.ints(separator: String): List<Int> = split(separator).filterNotBlank().map(String::toInt)
+fun String.toInts(separator: String): List<Int> = split(separator).filterNotBlank().map(String::toInt)
 
 /**
  * Splits by [separator] and converts each entry to an [Int].
  */
-fun String.ints(separator: Regex): List<Int> = split(separator).filterNotBlank().map(String::toInt)
+fun String.toInts(separator: Regex): List<Int> = split(separator).filterNotBlank().map(String::toInt)
 
 /**
  * Splits by [separator] and converts each entry to a [Long].
  */
-fun String.longs(separator: Char): List<Long> = longs(separator.toString())
+fun String.toLongs(separator: Char): List<Long> = toLongs(separator.toString())
 
 /**
  * Splits by [separator] and converts each entry to a [Long].
  */
-fun String.longs(separator: String): List<Long> = split(separator).filterNotBlank().map(String::toLong)
+fun String.toLongs(separator: String): List<Long> = split(separator).filterNotBlank().map(String::toLong)
 
 /**
  * Splits by [separator] and converts each entry to a [Long].
  */
-fun String.longs(separator: Regex): List<Long> = split(separator).filterNotBlank().map(String::toLong)
+fun String.toLongs(separator: Regex): List<Long> = split(separator).filterNotBlank().map(String::toLong)
 
 
 /**

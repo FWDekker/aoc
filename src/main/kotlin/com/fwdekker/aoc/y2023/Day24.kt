@@ -3,7 +3,7 @@ package com.fwdekker.aoc.y2023
 import com.fwdekker.aoc.Day
 import com.fwdekker.std.asTriple
 import com.fwdekker.std.cartesian
-import com.fwdekker.std.longs
+import com.fwdekker.std.toLongs
 import com.fwdekker.std.readLines
 import java.math.BigDecimal
 import java.math.MathContext
@@ -21,7 +21,7 @@ class Day24(
 ) : Day(resource) {
     private val stones =
         readLines(resource)
-            .map { line -> line.split(Regex("\\s+@\\s+")).map { coords -> coords.longs(Regex(",\\s+")) } }
+            .map { line -> line.split(Regex("\\s+@\\s+")).map { coords -> coords.toLongs(Regex(",\\s+")) } }
 
 
     override fun part1(): Int =

@@ -9,6 +9,16 @@ fun readResource(path: String, trim: Boolean = true): String =
         .let { if (trim) it.trim() else it }
 
 /**
+ * Returns the contents of resource [path], parsed as an [Int].
+ */
+fun readInt(path: String): Int = readResource(path, true).toInt()
+
+/**
+ * Returns the contents of resource [path], parsed as a [Long].
+ */
+fun readLong(path: String): Long = readResource(path, true).toLong()
+
+/**
  * Reads all lines in resource [path], trimming whitespace and removing blank lines.
  *
  * @see linesNotBlank

@@ -1,7 +1,7 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
-import com.fwdekker.std.ints
+import com.fwdekker.std.toInts
 import com.fwdekker.std.appendOnEach
 import com.fwdekker.std.readLines
 import kotlin.math.pow
@@ -11,7 +11,7 @@ class Day4(resource: String = resource(2023, 4)) : Day(resource) {
     private val lines = readLines(resource)
     private val winsByLine =
         lines
-            .map { line -> line.substringAfter(": ").trim().split('|').map { it.ints(Regex("\\s+")).toSet() } }
+            .map { line -> line.substringAfter(": ").trim().split('|').map { it.toInts(Regex("\\s+")).toSet() } }
             .map { (drawn, winning) -> drawn.intersect(winning).size }
 
 

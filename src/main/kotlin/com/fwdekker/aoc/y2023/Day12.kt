@@ -2,7 +2,7 @@ package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
 import com.fwdekker.std.asPair
-import com.fwdekker.std.ints
+import com.fwdekker.std.toInts
 import com.fwdekker.std.mapSeconds
 import com.fwdekker.std.readLines
 import com.fwdekker.std.repeat
@@ -10,7 +10,7 @@ import com.fwdekker.std.repeat
 
 class Day12(resource: String = resource(2023, 12)) : Day(resource) {
     private val lines = readLines(resource)
-    private val rows = lines.map { it.split(' ').asPair() }.mapSeconds { it.ints(',') }
+    private val rows = lines.map { it.split(' ').asPair() }.mapSeconds { it.toInts(',') }
 
 
     override fun part1(): Long = rows.sumOf { combosOf(it.first, it.second) }

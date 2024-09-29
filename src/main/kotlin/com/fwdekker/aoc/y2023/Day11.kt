@@ -6,7 +6,7 @@ import com.fwdekker.std.allCoordsOf
 import com.fwdekker.std.cartesian
 import com.fwdekker.std.col
 import com.fwdekker.std.cols
-import com.fwdekker.std.longs
+import com.fwdekker.std.toLongs
 import com.fwdekker.std.readChart
 import com.fwdekker.std.row
 import com.fwdekker.std.rows
@@ -17,8 +17,8 @@ import kotlin.math.min
 class Day11(resource: String = resource(2023, 11)) : Day(resource) {
     private val chart = readChart(resource)
 
-    private val expandX = chart.rows.filter { x -> chart[x].all { it == '.' } }.longs()
-    private val expandY = chart.cols.filter { y -> chart.all { it[y] == '.' } }.longs()
+    private val expandX = chart.rows.filter { x -> chart[x].all { it == '.' } }.toLongs()
+    private val expandY = chart.cols.filter { y -> chart.all { it[y] == '.' } }.toLongs()
     private val galaxies = chart.allCoordsOf('#')
     private val pairs = galaxies.cartesian(galaxies)
 

@@ -15,14 +15,24 @@ import kotlin.math.pow
 fun Long.toIntExact(): Int = Math.toIntExact(this)
 
 /**
+ * Converts all numbers to [Int]s.
+ */
+fun Iterable<Number>.toInts(): List<Int> = map(Number::toInt)
+
+/**
  * Converts all numbers to [Long]s.
  */
-fun Iterable<Number>.longs(): List<Long> = map(Number::toLong)
+fun Iterable<Number>.toLongs(): List<Long> = map(Number::toLong)
+
+/**
+ * Converts to a pair of [Int]s.
+ */
+fun Pair<Number, Number>.toInts(): Pair<Int, Int> = map(Number::toInt)
 
 /**
  * Converts to a pair of [Long]s.
  */
-fun Pair<Number, Number>.longs(): Pair<Long, Long> = map(Number::toLong)
+fun Pair<Number, Number>.toLongs(): Pair<Long, Long> = map(Number::toLong)
 
 
 /**
@@ -60,7 +70,7 @@ fun Iterable<BigDecimal>.sum(): BigDecimal = fold(BigDecimal.ZERO) { acc, it -> 
  * Takes the product of all elements.
  */
 @JvmName("intProduct")
-fun Iterable<Int>.product(): Long = longs().product()
+fun Iterable<Int>.product(): Long = toLongs().product()
 
 @JvmName("longProduct")
 fun Iterable<Long>.product(): Long = reduce(Long::times)

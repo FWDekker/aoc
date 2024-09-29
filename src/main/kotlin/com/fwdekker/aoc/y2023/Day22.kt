@@ -1,7 +1,7 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
-import com.fwdekker.std.ints
+import com.fwdekker.std.toInts
 import com.fwdekker.std.overlaps
 import com.fwdekker.std.readLines
 
@@ -9,7 +9,7 @@ import com.fwdekker.std.readLines
 class Day22(resource: String = resource(2023, 22)) : Day(resource) {
     private val lines = readLines(resource)
     private val stack = lines.asSequence()
-        .map { line -> line.split('~').map { coords -> coords.ints(',') } }
+        .map { line -> line.split('~').map { coords -> coords.toInts(',') } }
         .map { (from, to) -> (from zip to).map { it.first..it.second } }
         .map { (xs, ys, zs) -> Brick(xs, ys, zs) }
         .sortedBy { it.zs.first }

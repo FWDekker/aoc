@@ -1,7 +1,7 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
-import com.fwdekker.std.ints
+import com.fwdekker.std.toInts
 import com.fwdekker.std.readLines
 
 
@@ -9,9 +9,9 @@ class Day9(resource: String = resource(2023, 9)) : Day(resource) {
     private val lines = readLines(resource)
 
 
-    override fun part1(): Int = lines.sumOf { it.ints(' ').next() }
+    override fun part1(): Int = lines.sumOf { it.toInts(' ').next() }
 
-    override fun part2(): Int = lines.sumOf { it.ints(' ').reversed().next() }
+    override fun part2(): Int = lines.sumOf { it.toInts(' ').reversed().next() }
 
 
     private tailrec fun List<Int>.next(plus: Int = 0): Int =

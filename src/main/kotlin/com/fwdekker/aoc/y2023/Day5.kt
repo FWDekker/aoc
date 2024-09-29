@@ -1,7 +1,7 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
-import com.fwdekker.std.longs
+import com.fwdekker.std.toLongs
 import com.fwdekker.std.overlap
 import com.fwdekker.std.readSections
 import com.fwdekker.std.shift
@@ -12,7 +12,7 @@ import com.fwdekker.std.without
 class Day5(resource: String = resource(2023, 5)) : Day(resource) {
     private val sections = readSections(resource)
 
-    private val seeds: Collection<Long> = sections[0][0].substringAfter(": ").longs(' ')
+    private val seeds: Collection<Long> = sections[0][0].substringAfter(": ").toLongs(' ')
     private val seedRanges: Collection<LongRange> = seeds.chunked(2).map { it[0]..<it[0] + it[1] }
 
 
@@ -38,12 +38,12 @@ class Day5(resource: String = resource(2023, 5)) : Day(resource) {
 
 
     private fun String.asMapper(): (Map.Entry<Long, Long>) -> Long {
-        val (dstStart, srcStart, length) = longs(' ')
+        val (dstStart, srcStart, length) = toLongs(' ')
         return { (src, oldDst) -> if (src - srcStart in 0..<length) src - srcStart + dstStart else oldDst }
     }
 
     private fun String.asRangeMapper(): (Map.Entry<LongRange, LongRange>) -> Map<LongRange, LongRange> {
-        val (dstStart, srcStart, length) = longs(' ')
+        val (dstStart, srcStart, length) = toLongs(' ')
 
         return { (src, oldDst) ->
             if (src.first != oldDst.first) {

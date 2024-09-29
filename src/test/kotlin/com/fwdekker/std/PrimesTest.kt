@@ -1,7 +1,6 @@
 package com.fwdekker.std
 
 import com.fwdekker.shouldContainExactlyElementsOf
-import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.datatest.withData
 
@@ -11,7 +10,7 @@ import io.kotest.datatest.withData
  */
 object PrimesTest : DescribeSpec({
     val knownPrimes =
-        listOf(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97).longs()
+        listOf(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97).toLongs()
 
 
     describe("primes") {

@@ -2,7 +2,7 @@ package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
 import com.fwdekker.std.asPair
-import com.fwdekker.std.longs
+import com.fwdekker.std.toLongs
 import com.fwdekker.std.map
 import com.fwdekker.std.productOf
 import com.fwdekker.std.readLines
@@ -14,7 +14,7 @@ class Day6(resource: String = resource(2023, 6)) : Day(resource) {
 
 
     override fun part1(): Long =
-        lines.map { it.longs(Regex("\\s+")) }.zipped().productOf { it.countWays() }
+        lines.map { it.toLongs(Regex("\\s+")) }.zipped().productOf { it.countWays() }
 
     override fun part2(): Long =
         lines.map { it.filter(Char::isDigit).toLong() }.countWays()

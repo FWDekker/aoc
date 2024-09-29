@@ -1,3 +1,0 @@
-Put your input files in this directory with names 'Day1.txt' etc.
-
-These files are ignored in the `.gitignore` because everyone will have different inputs.

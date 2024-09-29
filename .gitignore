@@ -1,7 +1,7 @@
 ## Custom
-**/main/resources/aoc/*/Day*.txt
-!**/main/resources/aoc/*/DayX.txt
 src/main/kotlin/com/fwdekker/euler
+src/main/resources/euler/Problem*Solution.txt
+!src/main/resources/euler/Problem*Sample*Solution.txt
 
 
 ## Java
