@@ -188,6 +188,16 @@ operator fun Pair<Long, Long>.div(that: Pair<Long, Long>): Pair<Long, Long> =
 
 
 /**
+ * Returns the factorial of [this] number.
+ */
+fun BigInteger.factorial(): BigInteger = factorial(this)
+
+private tailrec fun factorial(number: BigInteger, acc: BigInteger = BigInteger.ONE): BigInteger =
+    if (number <= BigInteger.ONE) acc
+    else factorial(number - BigInteger.ONE, acc * number)
+
+
+/**
  * Returns the greatest common divisor of [a] and [b].
  */
 tailrec fun gcd(a: Long, b: Long): Long = if (b == 0L) a else gcd(b, a % b)
