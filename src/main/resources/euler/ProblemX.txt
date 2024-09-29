@@ -1,0 +1,3 @@
+Put your input files in this directory with names 'Problem1.txt' etc.
+
+These files are not ignored in the `.gitignore` because everyone has the same inputs anyway.

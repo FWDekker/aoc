@@ -1,6 +1,6 @@
 ## Custom
-**/main/resources/*/Day*.txt
-!**/main/resources/*/DayX.txt
+**/main/resources/aoc/*/Day*.txt
+!**/main/resources/aoc/*/DayX.txt
 src/main/kotlin/com/fwdekker/euler
 
 

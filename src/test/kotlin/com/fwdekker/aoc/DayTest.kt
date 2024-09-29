@@ -8,7 +8,7 @@ import io.kotest.matchers.shouldBe
 /**
  * Tests that a given [Day] has the expected outputs for given file inputs.
  *
- * @param day creates a new [Day] from a path to a file
+ * @param day the constructor of the [Day] to test
  * @param tests tests to run, expressed as an input file, a reference to the part to run, and the expected output
  * @constructor
  */

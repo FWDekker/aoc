@@ -29,10 +29,13 @@ abstract class Day(val resource: String) {
      */
     companion object {
         /**
-         * Shorthand for returning the standard resource for the given [year] and [day].
+         * Shorthand for returning the resource for the given [year] and [day].
+         *
+         * Setting [sample] to `0` returns the final difficult input, whereas all other values return easier sample
+         * inputs.
          */
         fun resource(year: Int, day: Int, sample: Int = 0) =
-            if (sample == 0) "/y$year/Day$day.txt"
-            else "/y${year}/Day${day}Sample${sample}.txt"
+            if (sample == 0) "/aoc/y$year/Day$day.txt"
+            else "/aoc/y${year}/Day${day}Sample${sample}.txt"
     }
 }
