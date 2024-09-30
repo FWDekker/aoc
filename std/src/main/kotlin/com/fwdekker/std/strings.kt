@@ -4,6 +4,12 @@ import com.fwdekker.std.collections.repeat
 
 
 /**
+ * The alphabet.
+ */
+const val alphabet = "abcdefghijklmnopqrstuvwxyz"
+
+
+/**
  * Returns the non-blank lines in this collection.
  */
 private fun Collection<String>.filterNotBlank(): List<String> = filterNot(String::isBlank)

@@ -69,12 +69,68 @@ fun Long.factorize(): List<Long> =
     }.toList()
 
 /**
- * Returns all (positive) natural numbers that divide [this].
+ * Returns the prime factors of [this] in a map with the number of occurrences of each factor.
+ */
+fun Int.factorizeGroups(): Map<Int, Int> = toLong().factorizeGroups().mapKeys { (k, _) -> k.toIntExact() }
+
+fun Long.factorizeGroups(): Map<Long, Int> {
+    val factors = mutableMapOf<Long, Int>()
+
+    var remaining = this
+    primes()
+        .takeWhile { remaining > 1L }
+        .forEach { factor ->
+            while (remaining % factor == 0L) {
+                factors.merge(factor, 1, Int::plus)
+                remaining /= factor
+            }
+        }
+
+    return factors
+}
+
+/**
+ * Returns all (positive) natural numbers that divide [this], excluding [this].
  */
 fun Int.divisors(): Set<Int> = toLong().divisors().toInts().toSet()
 
 fun Long.divisors(): Set<Long> =
-    (listOf(1L) + factorize()).powerSet().filter { it.isNotEmpty() }.map { it.product() }.toSet()
+    (listOf(1L) + factorize()).powerSet(includeEmpty = false).map { it.product() }.toSet().minus(this)
+
+/**
+ * Returns the number of [divisors]. More efficient than first calling [divisors] and then `size`!
+ */
+fun Int.divisorsCount(): Int = toLong().divisorsCount().toIntExact()
+
+fun Long.divisorsCount(): Long = factorizeGroups().values.productOf { it + 1 } - 1
+
+/**
+ * Returns the sum of [divisors]. More efficient than first calling [divisors] and then `sum`!
+ */
+fun Int.divisorsSum(): Int = toLong().divisorsSum().toIntExact()
+
+fun Long.divisorsSum(): Long {
+    // TODO: Clean up this method! Not really my code tbh :(
+    if (this == 1L) return 0L
+
+    val end = sqrt(toDouble()).toLong()
+
+    var prod = 1L
+    var n = this
+
+    (2L..end).forEach { k ->
+        var p = 1L
+        while (n % k == 0L) {
+            p = p * k + 1L
+            n /= k
+        }
+        prod *= p
+    }
+    if (n > 1L)
+        prod *= n + 1L
+
+    return prod - this
+}
 
 
 /**

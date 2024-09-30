@@ -22,7 +22,8 @@ fun <T, U> Iterable<T>.cartesian(that: Iterable<U>): List<Pair<T, U>> =
 /**
  * Returns all (not necessarily proper) subsets of [this].
  */
-fun <T> Collection<T>.powerSet(): Collection<Collection<T>> = powerSet(this)
+fun <T> Collection<T>.powerSet(includeEmpty: Boolean = true): Collection<Collection<T>> =
+    powerSet(this).let { if (includeEmpty) it else it.drop(1) }
 
 private tailrec fun <T> powerSet(rem: Collection<T>, acc: List<List<T>> = listOf(emptyList())): List<List<T>> =
     when {

@@ -18,21 +18,6 @@ fun <T> List<T>.getMod(index: Int): T = this[index.wrapMod(size)]
 
 
 /**
- * Sets the value at [key] to the minimum of its current value and [newValue].
- */
-fun <K, V : Comparable<V>> MutableMap<K, V>.minSet(key: K, newValue: V): Unit =
-    if (key !in this) set(key, newValue)
-    else set(key, min(getValue(key), newValue))
-
-/**
- * Sets the value at [key] to the maximum of its current value and [newValue].
- */
-fun <K, V : Comparable<V>> MutableMap<K, V>.maxSet(key: K, newValue: V): Unit =
-    if (key !in this) set(key, newValue)
-    else set(key, max(getValue(key), newValue))
-
-
-/**
  * Shorthand for invoking [withIndex] and then [sumOf].
  */
 @JvmName("intSumOfIndexed")
