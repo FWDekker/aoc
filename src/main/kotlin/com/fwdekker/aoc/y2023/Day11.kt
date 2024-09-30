@@ -6,16 +6,17 @@ import com.fwdekker.std.allCoordsOf
 import com.fwdekker.std.cartesian
 import com.fwdekker.std.col
 import com.fwdekker.std.cols
+import com.fwdekker.std.read
 import com.fwdekker.std.toLongs
-import com.fwdekker.std.readChart
 import com.fwdekker.std.row
 import com.fwdekker.std.rows
+import com.fwdekker.std.toChart
 import kotlin.math.max
 import kotlin.math.min
 
 
 class Day11(resource: String = resource(2023, 11)) : Day() {
-    private val chart = readChart(resource)
+    private val chart = read(resource).toChart()
 
     private val expandX = chart.rows.filter { x -> chart[x].all { it == '.' } }.toLongs()
     private val expandY = chart.cols.filter { y -> chart.all { it[y] == '.' } }.toLongs()

@@ -4,13 +4,14 @@ import com.fwdekker.aoc.Day
 import com.fwdekker.std.map
 import com.fwdekker.std.appendingFold
 import com.fwdekker.std.productOf
-import com.fwdekker.std.readSections
+import com.fwdekker.std.read
+import com.fwdekker.std.sections
 import com.fwdekker.std.splitGEQ
 import com.fwdekker.std.splitLEQ
 
 
 class Day19(resource: String = resource(2023, 19)) : Day() {
-    private val lineSets = readSections(resource)
+    private val lineSets = read(resource).sections()
     private val workflows = lineSets[0].map { Workflow.fromString(it) }.associateBy { it.name }
     private val parts = lineSets[1].map { Part.fromString(it) }
 

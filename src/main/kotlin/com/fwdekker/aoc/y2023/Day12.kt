@@ -2,14 +2,15 @@ package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
 import com.fwdekker.std.asPair
+import com.fwdekker.std.linesNotBlank
 import com.fwdekker.std.toInts
 import com.fwdekker.std.mapSeconds
-import com.fwdekker.std.readLines
+import com.fwdekker.std.read
 import com.fwdekker.std.repeat
 
 
 class Day12(resource: String = resource(2023, 12)) : Day() {
-    private val lines = readLines(resource)
+    private val lines = read(resource).linesNotBlank()
     private val rows = lines.map { it.split(' ').asPair() }.mapSeconds { it.toInts(',') }
 
 

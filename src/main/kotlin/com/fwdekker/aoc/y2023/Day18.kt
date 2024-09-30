@@ -5,15 +5,16 @@ import com.fwdekker.std.Coords
 import com.fwdekker.std.Direction
 import com.fwdekker.std.distance
 import com.fwdekker.std.getMod
+import com.fwdekker.std.linesNotBlank
 import com.fwdekker.std.move
-import com.fwdekker.std.readLines
+import com.fwdekker.std.read
 import kotlin.math.abs
 import kotlin.math.roundToLong
 
 
 @OptIn(ExperimentalStdlibApi::class)
 class Day18(resource: String = resource(2023, 18)) : Day() {
-    private val lines = readLines(resource)
+    private val lines = read(resource).linesNotBlank()
 
 
     override fun part1(): Long =

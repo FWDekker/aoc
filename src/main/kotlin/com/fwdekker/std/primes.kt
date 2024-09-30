@@ -61,4 +61,4 @@ fun Long.factorize(): List<Long> =
 fun Int.divisors(): Set<Int> = toLong().divisors().toInts().toSet()
 
 fun Long.divisors(): Set<Long> =
-    (listOf(1L) + this.factorize()).powerSet().filter { it.isNotEmpty() }.map { it.product() }.toSet()
+    (listOf(1L) + factorize()).powerSet().filter { it.isNotEmpty() }.map { it.product() }.toSet()

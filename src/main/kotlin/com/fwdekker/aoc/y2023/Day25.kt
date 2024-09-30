@@ -1,7 +1,8 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
-import com.fwdekker.std.readLines
+import com.fwdekker.std.linesNotBlank
+import com.fwdekker.std.read
 import org.jgrapht.Graph
 import org.jgrapht.alg.StoerWagnerMinimumCut
 import org.jgrapht.graph.DefaultEdge
@@ -13,7 +14,7 @@ class Day25(resource: String = resource(2023, 25)) : Day() {
 
 
     init {
-        readLines(resource)
+        read(resource).linesNotBlank()
             .map { it.split(": ") }
             .forEach { (source, destinations) ->
                 graph.addVertex(source)

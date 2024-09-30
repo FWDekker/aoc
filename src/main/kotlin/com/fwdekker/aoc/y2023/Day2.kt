@@ -2,14 +2,15 @@ package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
 import com.fwdekker.std.asPair
+import com.fwdekker.std.linesNotBlank
 import com.fwdekker.std.mapFirst
 import com.fwdekker.std.mapSecond
 import com.fwdekker.std.product
-import com.fwdekker.std.readLines
+import com.fwdekker.std.read
 
 
 class Day2(resource: String = resource(2023, 2)) : Day() {
-    private val lines = readLines(resource)
+    private val lines = read(resource).linesNotBlank()
     private val limits = mapOf("red" to 12, "green" to 13, "blue" to 14)
     private val colors = limits.keys
 

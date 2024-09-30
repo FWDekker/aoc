@@ -4,13 +4,14 @@ import com.fwdekker.aoc.Day
 import com.fwdekker.std.lcm
 import com.fwdekker.std.map
 import com.fwdekker.std.appendOnEach
+import com.fwdekker.std.linesNotBlank
 import com.fwdekker.std.product
-import com.fwdekker.std.readLines
+import com.fwdekker.std.read
 import com.fwdekker.std.sum
 
 
 class Day20(resource: String = resource(2023, 20)) : Day() {
-    private val lines = readLines(resource)
+    private val lines = read(resource).linesNotBlank()
     private val machine = Machine.fromStrings(lines)
 
 

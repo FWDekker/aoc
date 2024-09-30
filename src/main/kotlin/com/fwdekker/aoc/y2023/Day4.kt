@@ -3,12 +3,13 @@ package com.fwdekker.aoc.y2023
 import com.fwdekker.aoc.Day
 import com.fwdekker.std.toInts
 import com.fwdekker.std.appendOnEach
-import com.fwdekker.std.readLines
+import com.fwdekker.std.linesNotBlank
+import com.fwdekker.std.read
 import kotlin.math.pow
 
 
 class Day4(resource: String = resource(2023, 4)) : Day() {
-    private val lines = readLines(resource)
+    private val lines = read(resource).linesNotBlank()
     private val winsByLine =
         lines
             .map { line -> line.substringAfter(": ").trim().split('|').map { it.toInts(Regex("\\s+")).toSet() } }

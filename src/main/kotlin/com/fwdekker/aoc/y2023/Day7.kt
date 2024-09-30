@@ -2,14 +2,15 @@ package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
 import com.fwdekker.std.asPair
+import com.fwdekker.std.linesNotBlank
 import com.fwdekker.std.mapSeconds
-import com.fwdekker.std.readLines
+import com.fwdekker.std.read
 import com.fwdekker.std.sumOfIndexed
 import kotlin.math.min
 
 
 class Day7(resource: String = resource(2023, 7)) : Day() {
-    private val lines = readLines(resource)
+    private val lines = read(resource).linesNotBlank()
     private val hands = lines.map { it.split(' ').asPair() }.mapSeconds { it.toInt() }
 
 

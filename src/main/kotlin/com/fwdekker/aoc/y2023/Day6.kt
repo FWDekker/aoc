@@ -2,15 +2,16 @@ package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
 import com.fwdekker.std.asPair
+import com.fwdekker.std.linesNotBlank
 import com.fwdekker.std.toLongs
 import com.fwdekker.std.map
 import com.fwdekker.std.productOf
-import com.fwdekker.std.readLines
+import com.fwdekker.std.read
 import com.fwdekker.std.zipped
 
 
 class Day6(resource: String = resource(2023, 6)) : Day() {
-    private val lines = readLines(resource).asPair().map { it.substringAfter(": ") }
+    private val lines = read(resource).linesNotBlank().asPair().map { it.substringAfter(": ") }
 
 
     override fun part1(): Long =

@@ -3,14 +3,15 @@ package com.fwdekker.aoc.y2023
 import com.fwdekker.aoc.Day
 import com.fwdekker.std.toLongs
 import com.fwdekker.std.overlap
-import com.fwdekker.std.readSections
+import com.fwdekker.std.read
+import com.fwdekker.std.sections
 import com.fwdekker.std.shift
 import com.fwdekker.std.sum
 import com.fwdekker.std.without
 
 
 class Day5(resource: String = resource(2023, 5)) : Day() {
-    private val sections = readSections(resource)
+    private val sections = read(resource).sections()
 
     private val seeds: Collection<Long> = sections[0][0].substringAfter(": ").toLongs(' ')
     private val seedRanges: Collection<LongRange> = seeds.chunked(2).map { it[0]..<it[0] + it[1] }

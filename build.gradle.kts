@@ -19,5 +19,11 @@ kotlin {
 }
 
 tasks.test {
-    useJUnitPlatform()
+    systemProperty("kotest.framework.classpath.scanning.autoscan.disable", true)
+    if (project.hasProperty("kotest.tags"))
+        systemProperty("kotest.tags", project.findProperty("kotest.tags")!!)
+
+    useJUnitPlatform {
+        includeEngines("kotest")
+    }
 }

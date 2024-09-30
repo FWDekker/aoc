@@ -9,12 +9,13 @@ import com.fwdekker.std.cell
 import com.fwdekker.std.contains
 import com.fwdekker.std.lastColIndex
 import com.fwdekker.std.lastRowIndex
-import com.fwdekker.std.readChart
+import com.fwdekker.std.read
+import com.fwdekker.std.toChart
 import java.util.PriorityQueue
 
 
 class Day17(resource: String = resource(2023, 17)) : Day() {
-    private val chart = readChart(resource)
+    private val chart = read(resource).toChart()
 
 
     override fun part1(): Int = chart.smallestLoss({ it.neighbors() }, { true })

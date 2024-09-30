@@ -1,16 +1,11 @@
 package com.fwdekker.euler
 
-import com.fwdekker.std.readLong
 
-
-/**
- * Tests for [Problem3].
- */
 class Problem3Test : ProblemTest<Long>(
     ::Problem3,
-    ::readLong,
+    String::toLong,
     listOf(
-        ProblemTestCase(problem = 3, sample = 1),
-        ProblemTestCase(problem = 3),
+        case(sample = 1),
+        case(),
     )
 )

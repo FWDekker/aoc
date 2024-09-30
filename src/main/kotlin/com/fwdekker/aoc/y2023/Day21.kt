@@ -8,12 +8,13 @@ import com.fwdekker.std.cellMod
 import com.fwdekker.std.contains
 import com.fwdekker.std.coordsOf
 import com.fwdekker.std.foldSelf
-import com.fwdekker.std.readChart
+import com.fwdekker.std.read
+import com.fwdekker.std.toChart
 import com.fwdekker.std.width
 
 
 class Day21(resource: String = resource(2023, 21)) : Day() {
-    private val chart = readChart(resource)
+    private val chart = read(resource).toChart()
     private val start = setOf(chart.coordsOf('S'))
 
 

@@ -13,15 +13,16 @@ import com.fwdekker.std.firstRow
 import com.fwdekker.std.lastRow
 import com.fwdekker.std.lastRowIndex
 import com.fwdekker.std.north
-import com.fwdekker.std.readChart
+import com.fwdekker.std.read
 import com.fwdekker.std.rows
 import com.fwdekker.std.south
+import com.fwdekker.std.toChart
 import com.fwdekker.std.west
 import java.util.PriorityQueue
 
 
 class Day23(resource: String = resource(2023, 23)) : Day() {
-    private val chart = readChart(resource)
+    private val chart = read(resource).toChart()
 
     private val start = Coords(0, chart.firstRow.indexOf('.'))
     private val end = Coords(chart.lastRowIndex, chart.lastRow.indexOf('.'))

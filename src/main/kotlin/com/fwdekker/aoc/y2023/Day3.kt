@@ -9,16 +9,17 @@ import com.fwdekker.std.east
 import com.fwdekker.std.north
 import com.fwdekker.std.principals
 import com.fwdekker.std.product
-import com.fwdekker.std.readChart
+import com.fwdekker.std.read
 import com.fwdekker.std.rowOf
 import com.fwdekker.std.south
+import com.fwdekker.std.toChart
 import com.fwdekker.std.toRaw
 import com.fwdekker.std.west
 import kotlin.math.max
 
 
 class Day3(resource: String = resource(2023, 3)) : Day() {
-    private val chart = readChart(resource)
+    private val chart = read(resource).toChart()
 
 
     override fun part1(): Int =

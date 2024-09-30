@@ -1,5 +1,6 @@
 package com.fwdekker.aoc
 
+import com.fwdekker.Tags
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.datatest.withData
 import io.kotest.matchers.shouldBe
@@ -13,6 +14,8 @@ import io.kotest.matchers.shouldBe
  * @constructor
  */
 abstract class DayTest(day: (String) -> Day, tests: Collection<Triple<String, (Day) -> Any, Any>>) : FunSpec({
+    tags(Tags.AOC)
+
     withData(
         nameFn = { (file, part, expected) -> "($file, ${if (part == Day::part1) "part 1" else "part 2"}) = $expected" },
         tests

@@ -2,12 +2,13 @@ package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
 import com.fwdekker.std.Chart
-import com.fwdekker.std.readCharts
+import com.fwdekker.std.read
+import com.fwdekker.std.toCharts
 import com.fwdekker.std.transpose
 
 
 class Day13(resource: String = resource(2023, 13)) : Day() {
-    private val patterns = readCharts(resource)
+    private val patterns = read(resource).toCharts()
 
 
     override fun part1(): Int = patterns.sumOf { it.value(targetDiff = 0) }

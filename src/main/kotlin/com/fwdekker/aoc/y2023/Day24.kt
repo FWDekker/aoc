@@ -3,8 +3,9 @@ package com.fwdekker.aoc.y2023
 import com.fwdekker.aoc.Day
 import com.fwdekker.std.asTriple
 import com.fwdekker.std.cartesian
+import com.fwdekker.std.linesNotBlank
+import com.fwdekker.std.read
 import com.fwdekker.std.toLongs
-import com.fwdekker.std.readLines
 import java.math.BigDecimal
 import java.math.MathContext
 import kotlin.math.roundToLong
@@ -20,7 +21,7 @@ class Day24(
     private val coordinateRange: LongRange = 200000000000000L..400000000000000L,
 ) : Day() {
     private val stones =
-        readLines(resource)
+        read(resource).linesNotBlank()
             .map { line -> line.split(Regex("\\s+@\\s+")).map { coords -> coords.toLongs(Regex(",\\s+")) } }
 
 

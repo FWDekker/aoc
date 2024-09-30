@@ -3,17 +3,18 @@ package com.fwdekker.aoc.y2023
 import com.fwdekker.aoc.Day
 import com.fwdekker.std.Chart
 import com.fwdekker.std.foldSelf
-import com.fwdekker.std.readChart
+import com.fwdekker.std.read
 import com.fwdekker.std.rotateCCW
 import com.fwdekker.std.rotateCW
 import com.fwdekker.std.sortedDescending
 import com.fwdekker.std.sumOfIndexed
+import com.fwdekker.std.toChart
 import com.fwdekker.std.toRaw
 import com.fwdekker.std.toRow
 
 
 class Day14(resource: String = resource(2023, 14)) : Day() {
-    private val chart = readChart(resource)
+    private val chart = read(resource).toChart()
 
 
     override fun part1(): Int = chart.rotateCCW().tiltWest().rotateCW().calcLoad()

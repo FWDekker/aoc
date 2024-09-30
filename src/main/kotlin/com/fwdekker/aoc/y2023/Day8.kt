@@ -3,11 +3,12 @@ package com.fwdekker.aoc.y2023
 import com.fwdekker.aoc.Day
 import com.fwdekker.std.cyclic
 import com.fwdekker.std.lcm
-import com.fwdekker.std.readLines
+import com.fwdekker.std.linesNotBlank
+import com.fwdekker.std.read
 
 
 class Day8(resource: String = resource(2023, 8)) : Day() {
-    private val lines = readLines(resource)
+    private val lines = read(resource).linesNotBlank()
 
     private val steps = lines[0].toList()
     private val map = lines.drop(1)

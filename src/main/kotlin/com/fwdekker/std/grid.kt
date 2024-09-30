@@ -6,6 +6,13 @@ package com.fwdekker.std
  */
 typealias Grid<T> = List<List<T>>
 
+/**
+ * Converts a multi-line string into a [Grid], turning a row into cells with [splitRow], and casting cells to the right
+ * type with [convertCell].
+ */
+fun <T> String.toGrid(splitRow: (String) -> List<String>, convertCell: (String) -> T): Grid<T> =
+    linesNotBlank().map { line -> splitRow(line).map { cell -> convertCell(cell) } }
+
 
 /**
  * The number of rows.
@@ -99,10 +106,14 @@ operator fun <T> Grid<T>.contains(coords: Coords): Boolean = contains(coords.row
  */
 fun <T> Grid<T>.cell(row: Int, col: Int): T = this[row][col]
 
+operator fun <T> Grid<T>.get(row: Int, col: Int): T = cell(row, col)
+
 /**
  * Returns the cell at [coords].
  */
 fun <T> Grid<T>.cell(coords: Coords): T = cell(coords.row.toIntExact(), coords.col.toIntExact())
+
+operator fun <T> Grid<T>.get(coords: Coords): T = cell(coords)
 
 /**
  * Returns the cell at coordinates [row], [col], or `null` if there is no cell at those coordinates.
@@ -168,7 +179,6 @@ fun <T> Grid<T>.rotateCCW(): Grid<T> = transpose().flipUD()
 fun <T> Grid<T>.rotateHalf(): Grid<T> = flipLR().flipUD()
 
 
-
 /**
  * A 2-dimensional chart (or map), represented by a list of strings, all with the same length.
  */
@@ -177,12 +187,22 @@ typealias Chart = Grid<Char>
 /**
  * Returns the raw [String] representation of this row.
  */
-fun List<Char>.toRaw(): String = this.joinToString("")
+fun List<Char>.toRaw(): String = joinToString("")
 
 /**
  * Returns the [Chart] row representation of this raw [String].
  */
-fun String.toRow(): List<Char> = this.toList()
+fun String.toRow(): List<Char> = toList()
+
+/**
+ * Converts this (multi-line) string into a [Chart].
+ */
+fun String.toChart() = linesNotBlank().map { it.toRow() }
+
+/**
+ * Converts each of the [sections] of this multi-line string into a [Chart].
+ */
+fun String.toCharts() = sections().map { it.map(String::toRow) }
 
 
 /**
@@ -335,7 +355,7 @@ enum class Direction {
 /**
  * Two-dimensional coordinates.
  */
-typealias Coords = Pair<Long,Long>
+typealias Coords = Pair<Long, Long>
 
 /**
  * Utility "constructor" for creating [Coords] from integers.

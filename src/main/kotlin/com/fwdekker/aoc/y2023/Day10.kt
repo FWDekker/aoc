@@ -10,11 +10,12 @@ import com.fwdekker.std.cell
 import com.fwdekker.std.contains
 import com.fwdekker.std.coordsOf
 import com.fwdekker.std.move
-import com.fwdekker.std.readChart
+import com.fwdekker.std.read
+import com.fwdekker.std.toChart
 
 
 class Day10(resource: String = resource(2023, 10)) : Day() {
-    private val maze = readChart(resource)
+    private val maze = read(resource).toChart()
 
     private val start = maze.coordsOf('S')
     private val cycle = Direction.entries.asSequence()

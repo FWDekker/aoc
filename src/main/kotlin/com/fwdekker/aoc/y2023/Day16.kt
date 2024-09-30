@@ -3,17 +3,18 @@ package com.fwdekker.aoc.y2023
 import com.fwdekker.aoc.Day
 import com.fwdekker.std.Chart
 import com.fwdekker.std.Heading
-import com.fwdekker.std.cell
 import com.fwdekker.std.cols
 import com.fwdekker.std.contains
+import com.fwdekker.std.get
 import com.fwdekker.std.height
-import com.fwdekker.std.readChart
+import com.fwdekker.std.read
 import com.fwdekker.std.rows
+import com.fwdekker.std.toChart
 import com.fwdekker.std.width
 
 
 class Day16(resource: String = resource(2023, 16)) : Day() {
-    private val chart = readChart(resource)
+    private val chart = read(resource).toChart()
 
 
     override fun part1(): Int = traverse(chart, Heading(0, 0, 'E'))
@@ -40,7 +41,7 @@ class Day16(resource: String = resource(2023, 16)) : Day() {
 
         while (heads.isNotEmpty()) {
             heads = heads
-                .flatMap { map.cell(it.coords).traverse(it) }
+                .flatMap { map[it.coords].traverse(it) }
                 .filter { map.contains(it.coords) && it !in history }
                 .also { history.addAll(it) }
         }
