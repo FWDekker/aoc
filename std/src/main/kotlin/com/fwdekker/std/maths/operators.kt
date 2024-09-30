@@ -12,7 +12,7 @@ import kotlin.math.pow
  */
 fun Int.wrapMod(mod: Int): Int = ((this % mod) + mod) % mod
 
-fun Long.wrapMod(mod: Int): Int = (((this % mod) + mod) % mod).toIntExact()
+fun Long.wrapMod(mod: Int): Int = (((this % mod) + mod) % mod).toInt()
 
 fun Long.wrapMod(mod: Long): Long = ((this % mod) + mod) % mod
 
