@@ -1,9 +1,6 @@
 package com.fwdekker.std.grid
 
 import com.fwdekker.std.collections.getMod
-import com.fwdekker.std.linesNotBlank
-import com.fwdekker.std.maths.toIntExact
-import com.fwdekker.std.sections
 
 
 /**
@@ -81,12 +78,12 @@ fun <T> Grid<T>.col(col: Int): Col<T> = map { it[col] }
 /**
  * Returns the row in which [coords] is located.
  */
-fun <T> Grid<T>.rowOf(coords: Coords): Row<T> = row(coords.row.toIntExact())
+fun <T> Grid<T>.rowOf(coords: Coords): Row<T> = row(coords.row)
 
 /**
  * Returns the column in which [coords] is located.
  */
-fun <T> Grid<T>.colOf(coords: Coords): Col<T> = col(coords.col.toIntExact())
+fun <T> Grid<T>.colOf(coords: Coords): Col<T> = col(coords.col)
 
 /**
  * Returns the first row.
@@ -112,23 +109,22 @@ val <T> Grid<T>.lastCol: Col<T> get() = col(lastColIndex)
 /**
  * Returns `true` if and only if [coords] fall within bounds.
  */
-operator fun <T> Grid<T>.contains(coords: Coords): Boolean =
-    coords.row.toIntExact() in rows && coords.col.toIntExact() in cols
+operator fun <T> Grid<T>.contains(coords: Coords): Boolean = coords.row in rows && coords.col in cols
 
 /**
  * Returns the cell at [coords].
  */
-operator fun <T> Grid<T>.get(coords: Coords): T = this[coords.row.toIntExact()][coords.col.toIntExact()]
+operator fun <T> Grid<T>.get(coords: Coords): T = this[coords.row][coords.col]
 
 /**
  * Returns the cell at [coords], or `null` if there is no cell at those coordinates.
  */
-fun <T> Grid<T>.getOrNull(coords: Coords): T? = getOrNull(coords.row.toIntExact())?.getOrNull(coords.col.toIntExact())
+fun <T> Grid<T>.getOrNull(coords: Coords): T? = getOrNull(coords.row)?.getOrNull(coords.col)
 
 /**
  * Returns the cell at wrapped [coords], so `cellMod(Coords(-1, -1))` returns the bottom-right cell.
  */
-fun <T> Grid<T>.getMod(coords: Coords): T = getMod(coords.row.toIntExact()).getMod(coords.col.toIntExact())
+fun <T> Grid<T>.getMod(coords: Coords): T = getMod(coords.row).getMod(coords.col)
 
 /**
  * Returns the first [Coords] at which [cell] is found.
@@ -146,15 +142,15 @@ fun <T> Grid<T>.allCoordsOf(cell: T): List<Coords> =
 /**
  * Returns `true` if and only if you can move [distance] steps in the given [direction] from [coords] in [this].
  */
-fun <T> Grid<T>.canMove(coords: Coords, direction: Direction, distance: Long = 1L): Boolean =
+fun <T> Grid<T>.canMove(coords: Coords, direction: Direction, distance: Int = 1): Boolean =
     coords.move(direction, distance) in this
 
 /**
  * Returns all elements on the line piece from [coords] up to and including [coords] plus [distance] steps in the given
  * [direction].
  */
-fun <T> Grid<T>.getLine(coords: Coords, direction: Direction, distance: Long = 1L): List<T> =
-    (0L..distance).map { this[coords.move(direction, it)] }
+fun <T> Grid<T>.getLine(coords: Coords, direction: Direction, distance: Int = 1): List<T> =
+    (0..distance).map { this[coords.move(direction, it)] }
 
 
 /**

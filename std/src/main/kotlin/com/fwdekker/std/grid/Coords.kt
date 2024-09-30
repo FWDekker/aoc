@@ -4,72 +4,72 @@ package com.fwdekker.std.grid
 /**
  * Two-dimensional coordinates.
  */
-typealias Coords = Pair<Long, Long>
+typealias Coords = Pair<Int, Int>
 
 /**
  * Utility "constructor" for creating [Coords] from integers.
  */
-fun Coords(row: Number, col: Number): Coords = Pair(row.toLong(), col.toLong())
+fun Coords(row: Number, col: Number): Coords = Pair(row.toInt(), col.toInt())
 
 /**
  * The vertical coordinate.
  */
-val Coords.row: Long get() = first
+val Coords.row: Int get() = first
 
 /**
  * The horizontal coordinate.
  */
-val Coords.col: Long get() = second
+val Coords.col: Int get() = second
 
 /**
  * Returns the coordinates directly [North] of `this`.
  */
-fun Coords.north(distance: Long = 1L): Coords = move(rows = -distance)
+fun Coords.north(distance: Int = 1): Coords = move(rows = -distance)
 
 /**
  * Returns the coordinates directly [North] and then [East] of `this`.
  */
-fun Coords.northEast(distance: Long = 1L): Coords = move(rows = -distance, cols = distance)
+fun Coords.northEast(distance: Int = 1): Coords = move(rows = -distance, cols = distance)
 
 /**
  * Returns the coordinates directly [South] of `this`.
  */
-fun Coords.east(distance: Long = 1L): Coords = move(cols = distance)
+fun Coords.east(distance: Int = 1): Coords = move(cols = distance)
 
 /**
  * Returns the coordinates directly [South] and then [East] of `this`.
  */
-fun Coords.southEast(distance: Long = 1L): Coords = move(rows = distance, cols = distance)
+fun Coords.southEast(distance: Int = 1): Coords = move(rows = distance, cols = distance)
 
 /**
  * Returns the coordinates directly [East] of `this`.
  */
-fun Coords.south(distance: Long = 1L): Coords = move(rows = distance)
+fun Coords.south(distance: Int = 1): Coords = move(rows = distance)
 
 /**
  * Returns the coordinates directly [South] and then [West] of `this`.
  */
-fun Coords.southWest(distance: Long = 1L): Coords = move(rows = distance, cols = -distance)
+fun Coords.southWest(distance: Int = 1): Coords = move(rows = distance, cols = -distance)
 
 /**
  * Returns the coordinates directly [West] of `this`.
  */
-fun Coords.west(distance: Long = 1L): Coords = move(cols = -distance)
+fun Coords.west(distance: Int = 1): Coords = move(cols = -distance)
 
 /**
  * Returns the coordinates directly [North] and then [West] of `this`.
  */
-fun Coords.northWest(distance: Long = 1L): Coords = move(rows = -distance, cols = -distance)
+fun Coords.northWest(distance: Int = 1): Coords = move(rows = -distance, cols = -distance)
 
 /**
  * Returns the coordinates located [rows] to the south and [cols] to the east.
  */
-fun Coords.move(rows: Long = 0L, cols: Long = 0L): Coords = Coords(row + rows, col + cols)
+fun Coords.move(rows: Int = 0, cols: Int = 0): Coords = Coords(row + rows, col + cols)
 
 /**
  * Returns the coordinates in position [direction] relative to `this`.
  */
-fun Coords.move(direction: Direction, distance: Long = 1L): Coords =
+fun Coords.move(direction: Direction, distance: Int = 1): Coords =
     when (direction) {
         North -> north(distance)
         East -> east(distance)

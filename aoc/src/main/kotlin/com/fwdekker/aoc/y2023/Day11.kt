@@ -24,13 +24,13 @@ class Day11(resource: String = resource(2023, 11)) : Day() {
     private val pairs = galaxies.cartesian(galaxies)
 
 
-    override fun part1(): Long = pairs.sumOf { (a, b) -> a.distance(b, expandX, expandY, 2) } / 2
+    override fun part1(): Long = pairs.sumOf { (a, b) -> a.distance(b, expandX, expandY, 2L) } / 2
 
-    override fun part2(): Long = pairs.sumOf { (a, b) -> a.distance(b, expandX, expandY, 1000000) } / 2
+    override fun part2(): Long = pairs.sumOf { (a, b) -> a.distance(b, expandX, expandY, 1000000L) } / 2
 
 
-    private fun Long.distance(that: Long, expanded: List<Long>, weight: Long): Long =
-        (min(this, that)..<max(this, that)).sumOf { if (it in expanded) weight else 1L }
+    private fun Int.distance(that: Int, expanded: List<Long>, weight: Long): Long =
+        (min(this, that)..<max(this, that)).toLongs().sumOf { if (it in expanded) weight else 1L }
 
     private fun Coords.distance(that: Coords, expandX: List<Long>, expandY: List<Long>, weight: Long): Long =
         this.row.distance(that.row, expandX, weight) + this.col.distance(that.col, expandY, weight)

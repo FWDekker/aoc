@@ -11,7 +11,6 @@ import com.fwdekker.std.grid.principals
 import com.fwdekker.std.grid.rowOf
 import com.fwdekker.std.grid.south
 import com.fwdekker.std.grid.toChart
-import com.fwdekker.std.grid.toRaw
 import com.fwdekker.std.grid.west
 import com.fwdekker.std.maths.product
 import com.fwdekker.std.read
@@ -32,7 +31,7 @@ class Day3(resource: String = resource(2023, 3)) : Day() {
                             Pair(
                                 max(1, partialRow.size),
                                 if (partialRow.indices.none { chart.isNextToSymbol(rowIndex, index + it) }) acc
-                                else acc + partialRow.toRaw().toInt()
+                                else acc + partialRow.joinToString("").toInt()
                             )
                         }
                 }
@@ -77,7 +76,7 @@ class Day3(resource: String = resource(2023, 3)) : Day() {
         val row = rowOf(coords)
         return row.reversed().drop(row.size - 1 - coords.col.toInt()).takeWhile { it.isDigit() }.drop(1).reversed()
             .plus(row.drop(coords.col.toInt()).takeWhile { it.isDigit() })
-            .toRaw().toInt()
+            .joinToString("").toInt()
     }
 
     private fun Chart.getSurroundingNumbers(coords: Coords): List<Int> =

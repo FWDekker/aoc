@@ -6,8 +6,6 @@ import com.fwdekker.std.grid.rotateCCW
 import com.fwdekker.std.grid.rotateCW
 import com.fwdekker.std.collections.sumOfIndexed
 import com.fwdekker.std.grid.toChart
-import com.fwdekker.std.grid.toRaw
-import com.fwdekker.std.grid.toRow
 import com.fwdekker.std.foldSelf
 import com.fwdekker.std.read
 import com.fwdekker.std.sortedDescending
@@ -23,7 +21,7 @@ class Day14(resource: String = resource(2023, 14)) : Day() {
 
 
     private fun Chart.tiltWest(): Chart =
-        map { row -> row.toRaw().split("#").joinToString("#") { it.sortedDescending() }.toRow() }
+        map { row -> row.joinToString("").split("#").joinToString("#") { it.sortedDescending() }.toList() }
 
     private fun Chart.cycle(repetitions: Int = 1): Chart {
         val history = mutableMapOf(this to 0)
