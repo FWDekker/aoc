@@ -1,9 +1,9 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
-import com.fwdekker.std.asTriple
-import com.fwdekker.std.cartesian
+import com.fwdekker.std.collections.asTriple
 import com.fwdekker.std.linesNotBlank
+import com.fwdekker.std.maths.cartesian
 import com.fwdekker.std.read
 import com.fwdekker.std.toLongs
 import java.math.BigDecimal

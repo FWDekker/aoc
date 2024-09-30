@@ -1,20 +1,20 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
-import com.fwdekker.std.Chart
-import com.fwdekker.std.Coords
-import com.fwdekker.std.cellOrNull
-import com.fwdekker.std.col
-import com.fwdekker.std.east
-import com.fwdekker.std.north
-import com.fwdekker.std.principals
-import com.fwdekker.std.product
+import com.fwdekker.std.grid.Chart
+import com.fwdekker.std.grid.Coords
+import com.fwdekker.std.grid.col
+import com.fwdekker.std.grid.east
+import com.fwdekker.std.grid.getOrNull
+import com.fwdekker.std.grid.north
+import com.fwdekker.std.grid.principals
+import com.fwdekker.std.grid.rowOf
+import com.fwdekker.std.grid.south
+import com.fwdekker.std.grid.toChart
+import com.fwdekker.std.grid.toRaw
+import com.fwdekker.std.grid.west
+import com.fwdekker.std.maths.product
 import com.fwdekker.std.read
-import com.fwdekker.std.rowOf
-import com.fwdekker.std.south
-import com.fwdekker.std.toChart
-import com.fwdekker.std.toRaw
-import com.fwdekker.std.west
 import kotlin.math.max
 
 
@@ -69,10 +69,10 @@ class Day3(resource: String = resource(2023, 3)) : Day() {
     }
 
     private fun Chart.isNextToSymbol(rowIdx: Int, colIdx: Int): Boolean =
-        Coords(rowIdx, colIdx).principals.asSequence().mapNotNull(::cellOrNull).any { it != '.' && !it.isDigit() }
+        Coords(rowIdx, colIdx).principals.asSequence().mapNotNull(this::getOrNull).any { it != '.' && !it.isDigit() }
 
     private fun Chart.getNumber(coords: Coords): Int? {
-        if (cellOrNull(coords)?.isDigit() == false) return null
+        if (getOrNull(coords)?.isDigit() == false) return null
 
         val row = rowOf(coords)
         return row.reversed().drop(row.size - 1 - coords.col.toInt()).takeWhile { it.isDigit() }.drop(1).reversed()
@@ -81,13 +81,13 @@ class Day3(resource: String = resource(2023, 3)) : Day() {
     }
 
     private fun Chart.getSurroundingNumbers(coords: Coords): List<Int> =
-        listOf(coords.north, coords, coords.south)
+        listOf(coords.north(), coords, coords.south())
             .flatMap { other ->
-                val char = cellOrNull(other)
+                val char = getOrNull(other)
 
                 if (char == null) emptyList()
                 else if (char.isDigit()) listOf(getNumber(other))
-                else listOf(getNumber(other.west), getNumber(other.east))
+                else listOf(getNumber(other.west()), getNumber(other.east()))
             }
             .filterNotNull()
 }

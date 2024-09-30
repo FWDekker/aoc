@@ -1,17 +1,35 @@
-package com.fwdekker.std
+package com.fwdekker.std.collections
 
+import com.fwdekker.std.maths.max
+import com.fwdekker.std.maths.min
+import com.fwdekker.std.maths.wrapMod
 import kotlin.experimental.ExperimentalTypeInference
 
 
 /**
- * Returns the element at wrapped [index], so `this.getMod(-1)` is equivalent to `this.last()`.
- */
-fun <T> List<T>.getMod(index: Number): T = this[index.toLong().wrapMod(size)]
-
-/**
  * Returns the character at wrapped [index], so `this.getMod(-1)` is equivalent to `this.last()`.
  */
-fun String.getMod(index: Number): Char = this[index.toLong().wrapMod(length)]
+fun String.getMod(index: Int): Char = this[index.wrapMod(length)]
+
+/**
+ * Returns the element at wrapped [index], so `this.getMod(-1)` is equivalent to `this.last()`.
+ */
+fun <T> List<T>.getMod(index: Int): T = this[index.wrapMod(size)]
+
+
+/**
+ * Sets the value at [key] to the minimum of its current value and [newValue].
+ */
+fun <K, V : Comparable<V>> MutableMap<K, V>.minSet(key: K, newValue: V): Unit =
+    if (key !in this) set(key, newValue)
+    else set(key, min(getValue(key), newValue))
+
+/**
+ * Sets the value at [key] to the maximum of its current value and [newValue].
+ */
+fun <K, V : Comparable<V>> MutableMap<K, V>.maxSet(key: K, newValue: V): Unit =
+    if (key !in this) set(key, newValue)
+    else set(key, max(getValue(key), newValue))
 
 
 /**
@@ -23,9 +41,6 @@ fun String.getMod(index: Number): Char = this[index.toLong().wrapMod(length)]
 fun <T> Collection<T>.sumOfIndexed(transform: (Int, T) -> Int): Int =
     withIndex().sumOf { (idx, element) -> transform(idx, element) }
 
-/**
- * Shorthand for invoking [withIndex] and then [sumOf].
- */
 @JvmName("longSumOfIndexed")
 @OptIn(ExperimentalTypeInference::class)
 @OverloadResolutionByLambdaReturnType
@@ -33,56 +48,9 @@ fun <T> Collection<T>.sumOfIndexed(transform: (Int, T) -> Long): Long =
     withIndex().sumOf { (idx, element) -> transform(idx, element) }
 
 /**
- * Takes the component-wise sum of all elements.
+ * Returns the left-folded addition of all contained maps.
  */
-@JvmName("intPairSum")
-fun Iterable<Pair<Int, Int>>.sum(): Pair<Int, Int> = fold(Pair(0, 0)) { acc, it -> acc + it }
-
-/**
- * Takes the component-wise sum of all elements.
- */
-@JvmName("longPairSum")
-fun Iterable<Pair<Long, Long>>.sum(): Pair<Long, Long> = fold(Pair(0L, 0L)) { acc, it -> acc + it }
-
-
-/**
- * Repeats [this] sequence [amount] times.
- */
-fun <T> Sequence<T>.repeat(amount: Int): Sequence<T> = sequence { for (i in 1..amount) yieldAll(this@repeat) }
-
-/**
- * Repeats [this] iterable [amount] times.
- */
-fun <T> Iterable<T>.repeat(amount: Int): List<T> = asSequence().repeat(amount).toList()
-
-
-/**
- * Repeats [this] sequence infinitely many times.
- */
-fun <T> Sequence<T>.cyclic(): Sequence<T> = sequence { while (true) yieldAll(this@cyclic) }
-
-/**
- * Returns a (lazy) [Sequence] which repeats [this] infinitely many times.
- */
-fun <T> Iterable<T>.cyclic(): Sequence<T> = asSequence().cyclic()
-
-
-/**
- * Returns all possible combinations of elements in [this] and [that].
- */
-fun <T, U> Iterable<T>.cartesian(that: Iterable<U>): List<Pair<T, U>> =
-    this.flatMap { a -> that.map { b -> Pair(a, b) } }
-
-/**
- * Returns all (not necessarily proper) subsets of [this].
- */
-fun <T> Collection<T>.powerSet(): Collection<Collection<T>> = powerSet(this)
-
-private tailrec fun <T> powerSet(rem: Collection<T>, acc: List<List<T>> = listOf(emptyList())): List<List<T>> =
-    when {
-        rem.isEmpty() -> acc
-        else -> powerSet(rem.drop(1), acc + acc.map { it + rem.first() })
-    }
+fun <K, V> Iterable<Map<K, V>>.sum() = fold(emptyMap<K, V>()) { acc, it -> acc + it }
 
 
 /**
@@ -138,9 +106,18 @@ fun <A, B> Pair<Iterable<A>, Iterable<B>>.zipped(): List<Pair<A, B>> = first zip
 
 
 /**
- * Returns the left-folded addition of all contained maps.
+ * Repeats [this] sequence [amount] times.
  */
-fun <K, V> Iterable<Map<K, V>>.sum() = fold(emptyMap<K, V>()) { acc, it -> acc + it }
+fun <T> Sequence<T>.repeat(amount: Int): Sequence<T> = sequence { for (i in 1..amount) yieldAll(this@repeat) }
+
+fun <T> Iterable<T>.repeat(amount: Int): List<T> = asSequence().repeat(amount).toList()
+
+/**
+ * Repeats [this] sequence infinitely many times.
+ */
+fun <T> Sequence<T>.cyclic(): Sequence<T> = sequence { while (true) yieldAll(this@cyclic) }
+
+fun <T> Iterable<T>.cyclic(): Sequence<T> = asSequence().cyclic()
 
 
 /**

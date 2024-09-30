@@ -1,13 +1,13 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
-import com.fwdekker.std.asPair
+import com.fwdekker.std.collections.asPair
+import com.fwdekker.std.collections.map
+import com.fwdekker.std.collections.zipped
 import com.fwdekker.std.linesNotBlank
-import com.fwdekker.std.toLongs
-import com.fwdekker.std.map
-import com.fwdekker.std.productOf
+import com.fwdekker.std.maths.productOf
 import com.fwdekker.std.read
-import com.fwdekker.std.zipped
+import com.fwdekker.std.toLongs
 
 
 class Day6(resource: String = resource(2023, 6)) : Day() {

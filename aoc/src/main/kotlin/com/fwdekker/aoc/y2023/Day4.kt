@@ -1,10 +1,10 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
-import com.fwdekker.std.toInts
-import com.fwdekker.std.appendOnEach
+import com.fwdekker.std.collections.appendOnEach
 import com.fwdekker.std.linesNotBlank
 import com.fwdekker.std.read
+import com.fwdekker.std.toInts
 import kotlin.math.pow
 
 

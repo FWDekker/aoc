@@ -1,16 +1,16 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
-import com.fwdekker.std.Chart
+import com.fwdekker.std.grid.Chart
+import com.fwdekker.std.grid.rotateCCW
+import com.fwdekker.std.grid.rotateCW
+import com.fwdekker.std.collections.sumOfIndexed
+import com.fwdekker.std.grid.toChart
+import com.fwdekker.std.grid.toRaw
+import com.fwdekker.std.grid.toRow
 import com.fwdekker.std.foldSelf
 import com.fwdekker.std.read
-import com.fwdekker.std.rotateCCW
-import com.fwdekker.std.rotateCW
 import com.fwdekker.std.sortedDescending
-import com.fwdekker.std.sumOfIndexed
-import com.fwdekker.std.toChart
-import com.fwdekker.std.toRaw
-import com.fwdekker.std.toRow
 
 
 class Day14(resource: String = resource(2023, 14)) : Day() {

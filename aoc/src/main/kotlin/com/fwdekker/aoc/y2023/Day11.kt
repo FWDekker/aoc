@@ -1,16 +1,16 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
-import com.fwdekker.std.Coords
-import com.fwdekker.std.allCoordsOf
-import com.fwdekker.std.cartesian
-import com.fwdekker.std.col
-import com.fwdekker.std.cols
+import com.fwdekker.std.grid.Coords
+import com.fwdekker.std.grid.allCoordsOf
+import com.fwdekker.std.grid.col
+import com.fwdekker.std.grid.cols
+import com.fwdekker.std.grid.row
+import com.fwdekker.std.grid.rows
+import com.fwdekker.std.grid.toChart
+import com.fwdekker.std.maths.cartesian
+import com.fwdekker.std.maths.toLongs
 import com.fwdekker.std.read
-import com.fwdekker.std.toLongs
-import com.fwdekker.std.row
-import com.fwdekker.std.rows
-import com.fwdekker.std.toChart
 import kotlin.math.max
 import kotlin.math.min
 

@@ -1,6 +1,10 @@
 package com.fwdekker.std
 
 import com.fwdekker.shouldContainExactlyElementsOf
+import com.fwdekker.std.maths.factorize
+import com.fwdekker.std.maths.isPrime
+import com.fwdekker.std.maths.primes
+import com.fwdekker.std.maths.toLongs
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.datatest.withData
 

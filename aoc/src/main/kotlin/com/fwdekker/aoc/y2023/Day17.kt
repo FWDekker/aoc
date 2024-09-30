@@ -1,16 +1,17 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
-import com.fwdekker.std.Chart
-import com.fwdekker.std.Coords
-import com.fwdekker.std.Direction
-import com.fwdekker.std.Heading
-import com.fwdekker.std.cell
-import com.fwdekker.std.contains
-import com.fwdekker.std.lastColIndex
-import com.fwdekker.std.lastRowIndex
+import com.fwdekker.std.grid.Cardinal
+import com.fwdekker.std.grid.Chart
+import com.fwdekker.std.grid.Coords
+import com.fwdekker.std.grid.Direction
+import com.fwdekker.std.grid.Heading
+import com.fwdekker.std.grid.contains
+import com.fwdekker.std.grid.get
+import com.fwdekker.std.grid.lastColIndex
+import com.fwdekker.std.grid.lastRowIndex
+import com.fwdekker.std.grid.toChart
 import com.fwdekker.std.read
-import com.fwdekker.std.toChart
 import java.util.PriorityQueue
 
 
@@ -31,12 +32,12 @@ class Day17(resource: String = resource(2023, 17)) : Day() {
             Step(heading.go { direction }, if (direction == this.direction) times + 1 else 1)
 
         fun neighbors(): List<Step> =
-            Direction.entries
+            Cardinal.entries
                 .filter { (it != direction || times < 3) && it != direction.behind }
                 .map { move(it) }
 
         fun ultraNeighbors(): List<Step> =
-            Direction.entries
+            Cardinal.entries
                 .filter { (if (it == direction) times < 10 else times >= 4) && it != direction.behind }
                 .map { move(it) }
     }
@@ -47,7 +48,7 @@ class Day17(resource: String = resource(2023, 17)) : Day() {
 
         val end = Coords(lastRowIndex, lastColIndex)
 
-        listOf(Direction.SOUTH, Direction.EAST)
+        listOf(com.fwdekker.std.grid.South, com.fwdekker.std.grid.East)
             .map { Step(Heading(0, 0, it), 0) }
             .forEach {
                 distances[it] = 0
@@ -60,9 +61,9 @@ class Day17(resource: String = resource(2023, 17)) : Day() {
 
             val distance = distances.getValue(current)
             getNeighbors(current)
-                .filter { contains(it.coords) && it !in distances }
+                .filter { it.coords in this && it !in distances }
                 .forEach { next ->
-                    val weight = cell(next.coords).digitToInt()
+                    val weight = this[next.coords].digitToInt()
                     if (distance + weight < distances.getValue(next)) {
                         distances[next] = distance + weight
                         queue.add(next)

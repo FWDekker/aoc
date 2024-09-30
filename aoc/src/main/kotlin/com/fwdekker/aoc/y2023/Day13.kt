@@ -1,10 +1,10 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
-import com.fwdekker.std.Chart
+import com.fwdekker.std.grid.Chart
+import com.fwdekker.std.grid.toCharts
+import com.fwdekker.std.grid.transpose
 import com.fwdekker.std.read
-import com.fwdekker.std.toCharts
-import com.fwdekker.std.transpose
 
 
 class Day13(resource: String = resource(2023, 13)) : Day() {

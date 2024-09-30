@@ -1,9 +1,9 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
-import com.fwdekker.std.cyclic
-import com.fwdekker.std.lcm
+import com.fwdekker.std.collections.cyclic
 import com.fwdekker.std.linesNotBlank
+import com.fwdekker.std.maths.lcm
 import com.fwdekker.std.read
 
 

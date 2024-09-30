@@ -1,13 +1,13 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
-import com.fwdekker.std.lcm
-import com.fwdekker.std.map
-import com.fwdekker.std.appendOnEach
+import com.fwdekker.std.collections.appendOnEach
+import com.fwdekker.std.collections.map
 import com.fwdekker.std.linesNotBlank
-import com.fwdekker.std.product
+import com.fwdekker.std.maths.lcm
+import com.fwdekker.std.maths.sum
+import com.fwdekker.std.maths.toLongs
 import com.fwdekker.std.read
-import com.fwdekker.std.sum
 
 
 class Day20(resource: String = resource(2023, 20)) : Day() {
@@ -16,7 +16,8 @@ class Day20(resource: String = resource(2023, 20)) : Day() {
 
 
     override fun part1(): Long =
-        (1..1000).map { machine.pressButton().partition { it.isHigh }.map { it.size } }.sum().product()
+        (1..1000).map { machine.pressButton().partition { it.isHigh }.map { it.size } }
+            .sum().toLongs().let { (a, b) -> a * b }
 
     override fun part2(): Long =
         machine.modules.values

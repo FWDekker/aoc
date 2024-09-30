@@ -1,12 +1,12 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
-import com.fwdekker.std.Coords
-import com.fwdekker.std.Direction
-import com.fwdekker.std.distance
-import com.fwdekker.std.getMod
+import com.fwdekker.std.collections.getMod
+import com.fwdekker.std.grid.Cardinal
+import com.fwdekker.std.grid.Coords
+import com.fwdekker.std.grid.move
 import com.fwdekker.std.linesNotBlank
-import com.fwdekker.std.move
+import com.fwdekker.std.maths.distance
 import com.fwdekker.std.read
 import kotlin.math.abs
 import kotlin.math.roundToLong
@@ -20,14 +20,14 @@ class Day18(resource: String = resource(2023, 18)) : Day() {
     override fun part1(): Long =
         lines
             .map { line -> line.split(' ') }
-            .map { Pair(Direction.fromChar(it[0][0], "URDL"), it[1].toLong()) }
+            .map { Pair(Cardinal.fromChar(it[0][0], "URDL"), it[1].toLong()) }
             .runningFold(Coords(0L, 0L)) { previous, (direction, distance) -> previous.move(direction, distance) }
             .area()
 
     override fun part2(): Long =
         lines
             .map { line -> line.split(' ')[2].removeSurrounding("(#", ")") }
-            .map { Pair(Direction.fromInt(it.drop(5).toInt()), it.take(5).hexToInt().toLong()) }
+            .map { Pair(Cardinal.fromInt(it.drop(5).toInt()), it.take(5).hexToInt().toLong()) }
             .runningFold(Coords(0L, 0L)) { previous, (direction, distance) -> previous.move(direction, distance) }
             .area()
 

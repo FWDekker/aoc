@@ -1,25 +1,30 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
-import com.fwdekker.std.Chart
-import com.fwdekker.std.Coords
-import com.fwdekker.std.Direction
-import com.fwdekker.std.Heading
-import com.fwdekker.std.cardinals
-import com.fwdekker.std.cell
-import com.fwdekker.std.contains
-import com.fwdekker.std.coordsOf
-import com.fwdekker.std.move
+import com.fwdekker.std.grid.Cardinal
+import com.fwdekker.std.grid.Chart
+import com.fwdekker.std.grid.Coords
+import com.fwdekker.std.grid.Direction
+import com.fwdekker.std.grid.East
+import com.fwdekker.std.grid.Heading
+import com.fwdekker.std.grid.North
+import com.fwdekker.std.grid.South
+import com.fwdekker.std.grid.West
+import com.fwdekker.std.grid.cardinals
+import com.fwdekker.std.grid.contains
+import com.fwdekker.std.grid.coordsOf
+import com.fwdekker.std.grid.get
+import com.fwdekker.std.grid.move
+import com.fwdekker.std.grid.toChart
 import com.fwdekker.std.read
-import com.fwdekker.std.toChart
 
 
 class Day10(resource: String = resource(2023, 10)) : Day() {
     private val maze = read(resource).toChart()
 
     private val start = maze.coordsOf('S')
-    private val cycle = Direction.entries.asSequence()
-        .filter { maze.contains(start.move(it)) }
+    private val cycle = Cardinal.entries.asSequence()
+        .filter { start.move(it) in maze }
         .map { Raccoon(maze, Heading(start, it)) }
         .onEach { it.scurry() }
         .first { it.isCycle() }
@@ -52,7 +57,7 @@ private class Raccoon(val maze: Chart, heading: Heading) {
 
     private fun step() {
         val oldHeading = heading!!
-        val newHeading = maze.cell(oldHeading.coords).traverse(oldHeading)
+        val newHeading = maze[oldHeading.coords].traverse(oldHeading)
             .also { heading = it }
             ?: return
 
@@ -86,13 +91,13 @@ private class Raccoon(val maze: Chart, heading: Heading) {
         val encloses = (if (rightPipes.size > leftPipes.size) leftPipes else rightPipes).toMutableSet()
 
         encloses.removeAll(path)
-        encloses.retainAll { maze.contains(it) }
+        encloses.retainAll { it in maze }
 
         var enclosed = 0
         while (encloses.size > enclosed) {
             enclosed = encloses.size
             encloses.addAll(encloses.flatMap { it.cardinals }.toSet().subtract(path))
-            encloses.retainAll { maze.contains(it) }
+            encloses.retainAll { it in maze }
         }
 
         return encloses.size
@@ -102,10 +107,11 @@ private class Raccoon(val maze: Chart, heading: Heading) {
     private fun Char.traverse(from: Heading): Heading? {
         val table: Map<Char, Direction.() -> Direction> =
             when (from.direction) {
-                Direction.NORTH -> mapOf('S' to { ahead }, '|' to { ahead }, '7' to { left }, 'F' to { right })
-                Direction.EAST -> mapOf('S' to { ahead }, '-' to { ahead }, 'J' to { left }, '7' to { right })
-                Direction.SOUTH -> mapOf('S' to { ahead }, '|' to { ahead }, 'J' to { right }, 'L' to { left })
-                Direction.WEST -> mapOf('S' to { ahead }, '-' to { ahead }, 'L' to { right }, 'F' to { left })
+                North -> mapOf('S' to { ahead }, '|' to { ahead }, '7' to { left }, 'F' to { right })
+                East -> mapOf('S' to { ahead }, '-' to { ahead }, 'J' to { left }, '7' to { right })
+                South -> mapOf('S' to { ahead }, '|' to { ahead }, 'J' to { right }, 'L' to { left })
+                West -> mapOf('S' to { ahead }, '-' to { ahead }, 'L' to { right }, 'F' to { left })
+                else -> error("Ordinal directions should not exist here.")
             }
 
         return table[this]?.invoke(from.direction)?.let(from::go)

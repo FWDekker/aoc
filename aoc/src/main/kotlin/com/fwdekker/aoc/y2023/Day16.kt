@@ -1,27 +1,31 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
-import com.fwdekker.std.Chart
-import com.fwdekker.std.Heading
-import com.fwdekker.std.cols
-import com.fwdekker.std.contains
-import com.fwdekker.std.get
-import com.fwdekker.std.height
+import com.fwdekker.std.grid.Chart
+import com.fwdekker.std.grid.East
+import com.fwdekker.std.grid.Heading
+import com.fwdekker.std.grid.North
+import com.fwdekker.std.grid.South
+import com.fwdekker.std.grid.West
+import com.fwdekker.std.grid.cols
+import com.fwdekker.std.grid.contains
+import com.fwdekker.std.grid.get
+import com.fwdekker.std.grid.height
+import com.fwdekker.std.grid.rows
+import com.fwdekker.std.grid.toChart
+import com.fwdekker.std.grid.width
 import com.fwdekker.std.read
-import com.fwdekker.std.rows
-import com.fwdekker.std.toChart
-import com.fwdekker.std.width
 
 
 class Day16(resource: String = resource(2023, 16)) : Day() {
     private val chart = read(resource).toChart()
 
 
-    override fun part1(): Int = traverse(chart, Heading(0, 0, 'E'))
+    override fun part1(): Int = traverse(chart, Heading(0, 0, East))
 
     override fun part2(): Int =
-        (chart.rows.flatMap { listOf(Heading(it, 0, 'E'), Heading(it, chart.width - 1, 'W')) } +
-            chart.cols.flatMap { listOf(Heading(0, it, 'S'), Heading(chart.height - 1, it, 'N')) })
+        (chart.rows.flatMap { listOf(Heading(it, 0, East), Heading(it, chart.width - 1, West)) } +
+            chart.cols.flatMap { listOf(Heading(0, it, South), Heading(chart.height - 1, it, North)) })
             .maxOf { traverse(chart, it) }
 
 
@@ -42,7 +46,7 @@ class Day16(resource: String = resource(2023, 16)) : Day() {
         while (heads.isNotEmpty()) {
             heads = heads
                 .flatMap { map[it.coords].traverse(it) }
-                .filter { map.contains(it.coords) && it !in history }
+                .filter { it.coords in map && it !in history }
                 .also { history.addAll(it) }
         }
 

@@ -1,13 +1,13 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
-import com.fwdekker.std.map
-import com.fwdekker.std.appendingFold
-import com.fwdekker.std.productOf
+import com.fwdekker.std.collections.appendingFold
+import com.fwdekker.std.collections.map
+import com.fwdekker.std.maths.productOf
+import com.fwdekker.std.maths.splitGEQ
+import com.fwdekker.std.maths.splitLEQ
 import com.fwdekker.std.read
 import com.fwdekker.std.sections
-import com.fwdekker.std.splitGEQ
-import com.fwdekker.std.splitLEQ
 
 
 class Day19(resource: String = resource(2023, 19)) : Day() {

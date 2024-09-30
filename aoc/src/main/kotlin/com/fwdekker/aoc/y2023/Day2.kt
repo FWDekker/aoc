@@ -1,11 +1,11 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
-import com.fwdekker.std.asPair
+import com.fwdekker.std.collections.asPair
+import com.fwdekker.std.collections.mapFirst
+import com.fwdekker.std.collections.mapSecond
 import com.fwdekker.std.linesNotBlank
-import com.fwdekker.std.mapFirst
-import com.fwdekker.std.mapSecond
-import com.fwdekker.std.product
+import com.fwdekker.std.maths.product
 import com.fwdekker.std.read
 
 

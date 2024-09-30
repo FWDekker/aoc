@@ -1,23 +1,23 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
-import com.fwdekker.std.Chart
-import com.fwdekker.std.Coords
-import com.fwdekker.std.cardinals
-import com.fwdekker.std.cartesian
-import com.fwdekker.std.cell
-import com.fwdekker.std.cols
-import com.fwdekker.std.contains
-import com.fwdekker.std.east
-import com.fwdekker.std.firstRow
-import com.fwdekker.std.lastRow
-import com.fwdekker.std.lastRowIndex
-import com.fwdekker.std.north
+import com.fwdekker.std.grid.Chart
+import com.fwdekker.std.grid.Coords
+import com.fwdekker.std.grid.cardinals
+import com.fwdekker.std.grid.cols
+import com.fwdekker.std.grid.contains
+import com.fwdekker.std.grid.east
+import com.fwdekker.std.grid.firstRow
+import com.fwdekker.std.grid.get
+import com.fwdekker.std.grid.lastRow
+import com.fwdekker.std.grid.lastRowIndex
+import com.fwdekker.std.grid.north
+import com.fwdekker.std.grid.rows
+import com.fwdekker.std.grid.south
+import com.fwdekker.std.grid.toChart
+import com.fwdekker.std.grid.west
+import com.fwdekker.std.maths.cartesian
 import com.fwdekker.std.read
-import com.fwdekker.std.rows
-import com.fwdekker.std.south
-import com.fwdekker.std.toChart
-import com.fwdekker.std.west
 import java.util.PriorityQueue
 
 
@@ -29,7 +29,7 @@ class Day23(resource: String = resource(2023, 23)) : Day() {
     private val junctions =
         chart.rows.cartesian(chart.cols)
             .map { (row, col) -> Coords(row, col) }
-            .filter { chart.contains(it) && chart.cell(it) != '#' }
+            .filter { it in chart && chart[it] != '#' }
             .filter { chart.dryNeighborsOf(it).size > 2 }
             .let { it + listOf(start, end) }
 
@@ -40,20 +40,20 @@ class Day23(resource: String = resource(2023, 23)) : Day() {
 
 
     private fun Chart.slipperyNeighborsOf(coords: Coords): List<Coords> =
-        when (cell(coords)) {
+        when (this[coords]) {
             '#' -> emptyList()
-            '^' -> listOf(coords.north)
-            '>' -> listOf(coords.east)
-            'v' -> listOf(coords.south)
-            '<' -> listOf(coords.west)
+            '^' -> listOf(coords.north())
+            '>' -> listOf(coords.east())
+            'v' -> listOf(coords.south())
+            '<' -> listOf(coords.west())
             else -> coords.cardinals
-        }.filter { contains(it) && cell(it) != '#' }
+        }.filter { it in this && this[it] != '#' }
 
     private fun Chart.dryNeighborsOf(coords: Coords): List<Coords> =
-        when (cell(coords)) {
+        when (this[coords]) {
             '#' -> emptyList()
             else -> coords.cardinals
-        }.filter { contains(it) && cell(it) != '#' }
+        }.filter { it in this && this[it] != '#' }
 
     private fun Chart.longestDistance(from: Coords, to: Coords, getNeighbors: (Coords) -> Iterable<Coords>): Int =
         longestDistance(from, to, junctions.associateWith { findShortestDistances(it, junctions, getNeighbors) })

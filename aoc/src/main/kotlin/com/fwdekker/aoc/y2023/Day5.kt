@@ -1,13 +1,13 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
-import com.fwdekker.std.toLongs
-import com.fwdekker.std.overlap
+import com.fwdekker.std.collections.sum
+import com.fwdekker.std.maths.overlap
+import com.fwdekker.std.maths.shift
+import com.fwdekker.std.maths.without
 import com.fwdekker.std.read
 import com.fwdekker.std.sections
-import com.fwdekker.std.shift
-import com.fwdekker.std.sum
-import com.fwdekker.std.without
+import com.fwdekker.std.toLongs
 
 
 class Day5(resource: String = resource(2023, 5)) : Day() {
