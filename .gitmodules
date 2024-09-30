@@ -1,0 +1,4 @@
+[submodule "euler"]
+	path = euler
+	url = git@github.com:FWDekker/project-euler.git
+	branch = main
