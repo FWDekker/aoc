@@ -1,7 +1,5 @@
 package com.fwdekker.std.collections
 
-import com.fwdekker.std.maths.max
-import com.fwdekker.std.maths.min
 import com.fwdekker.std.maths.wrapMod
 import kotlin.experimental.ExperimentalTypeInference
 
@@ -42,6 +40,16 @@ fun <K, V> Iterable<Map<K, V>>.sum() = fold(emptyMap<K, V>()) { acc, it -> acc +
  * Swaps the first and second entry.
  */
 fun <A, B> Pair<A, B>.swap(): Pair<B, A> = Pair(second, first)
+
+/**
+ * Returns the first element of each pair.
+ */
+fun <A, B> Iterable<Pair<A, B>>.firsts(): List<A> = map { it.first }
+
+/**
+ * Returns the second element of each pair.
+ */
+fun <A, B> Iterable<Pair<A, B>>.seconds(): List<B> = map { it.second }
 
 /**
  * Maps both entries using [transform].
