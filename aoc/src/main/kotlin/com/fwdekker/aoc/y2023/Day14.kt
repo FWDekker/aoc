@@ -1,12 +1,12 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
+import com.fwdekker.std.collections.sumOfIndexed
+import com.fwdekker.std.foldSelf
 import com.fwdekker.std.grid.Chart
 import com.fwdekker.std.grid.rotateCCW
 import com.fwdekker.std.grid.rotateCW
-import com.fwdekker.std.collections.sumOfIndexed
 import com.fwdekker.std.grid.toChart
-import com.fwdekker.std.foldSelf
 import com.fwdekker.std.read
 import com.fwdekker.std.sortedDescending
 

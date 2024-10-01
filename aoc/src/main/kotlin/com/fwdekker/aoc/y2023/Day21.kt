@@ -1,6 +1,7 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
+import com.fwdekker.std.foldSelf
 import com.fwdekker.std.grid.Coords
 import com.fwdekker.std.grid.cardinals
 import com.fwdekker.std.grid.contains
@@ -9,7 +10,6 @@ import com.fwdekker.std.grid.get
 import com.fwdekker.std.grid.getMod
 import com.fwdekker.std.grid.toChart
 import com.fwdekker.std.grid.width
-import com.fwdekker.std.foldSelf
 import com.fwdekker.std.read
 
 

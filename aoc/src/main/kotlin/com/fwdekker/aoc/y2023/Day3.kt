@@ -74,8 +74,8 @@ class Day3(resource: String = resource(2023, 3)) : Day() {
         if (getOrNull(coords)?.isDigit() == false) return null
 
         val row = rowOf(coords)
-        return row.reversed().drop(row.size - 1 - coords.col.toInt()).takeWhile { it.isDigit() }.drop(1).reversed()
-            .plus(row.drop(coords.col.toInt()).takeWhile { it.isDigit() })
+        return row.reversed().drop(row.size - 1 - coords.col).takeWhile { it.isDigit() }.drop(1).reversed()
+            .plus(row.drop(coords.col).takeWhile { it.isDigit() })
             .joinToString("").toInt()
     }
 
