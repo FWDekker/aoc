@@ -12,7 +12,7 @@ fun <T> containExactlyElementsOf(expected: Collection<T>) =
     Matcher<Collection<T>> { actual ->
         MatcherResult(
             actual.size == expected.size && actual.zip(expected).all { (a, b) -> a == b },
-            { "List contained elements $actual but expected $expected}." },
+            { "List contained elements $actual but expected $expected." },
             { "Both lists contained the same elements $actual." },
         )
     }

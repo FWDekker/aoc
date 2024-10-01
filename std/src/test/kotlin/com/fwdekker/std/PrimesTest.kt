@@ -1,7 +1,11 @@
 package com.fwdekker.std
 
 import com.fwdekker.containExactlyElementsOf
+import com.fwdekker.std.maths.divisors
+import com.fwdekker.std.maths.divisorsCount
+import com.fwdekker.std.maths.divisorsSum
 import com.fwdekker.std.maths.factorize
+import com.fwdekker.std.maths.factorizeGroups
 import com.fwdekker.std.maths.gcd
 import com.fwdekker.std.maths.isPrime
 import com.fwdekker.std.maths.lcm
@@ -10,6 +14,7 @@ import com.fwdekker.std.maths.toLongs
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.datatest.withData
+import io.kotest.matchers.be
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 
@@ -117,8 +122,8 @@ object PrimesTest : DescribeSpec({
 
     describe("factorize") {
         withData(
-            nameFn = { "${it.first} factorizes as ${it.second}" },
-            -1L to emptyList(),
+            nameFn = { "prime factors of ${it.first} are ${it.second}" },
+            -8L to emptyList(),
             0L to emptyList(),
             1L to emptyList(),
             2L to listOf(2L),
@@ -129,8 +134,48 @@ object PrimesTest : DescribeSpec({
             9L to listOf(3L, 3L),
             18L to listOf(2L, 3L, 3L),
             81L to listOf(3L, 3L, 3L, 3L),
-        ) { (value, factors) ->
-            value.factorize() should containExactlyElementsOf(factors)
+        ) { (value, expected) ->
+            value.factorize() should containExactlyElementsOf(expected)
+        }
+    }
+
+    describe("factorizeGroups") {
+        withData(
+            nameFn = { "prime factors of ${it.first} are ${it.second}" },
+            -8L to emptyMap(),
+            0L to emptyMap(),
+            1L to emptyMap(),
+            2L to mapOf(2L to 1),
+            3L to mapOf(3L to 1),
+            4L to mapOf(2L to 2),
+            5L to mapOf(5L to 1),
+            6L to mapOf(2L to 1, 3L to 1),
+            9L to mapOf(3L to 2),
+            18L to mapOf(2L to 1, 3L to 2),
+            81L to mapOf(3L to 4),
+        ) { (value, expected) ->
+            value.factorizeGroups().toList() should containExactlyElementsOf(expected.toList())
+        }
+    }
+
+    describe("divisors") {
+        withData(
+            nameFn = { "proper divisors of ${it.first} are ${it.second}" },
+            -8L to emptySet(),
+            0L to emptySet(),
+            1L to emptySet(),
+            2L to setOf(1L),
+            3L to setOf(1L),
+            4L to setOf(1L, 2L),
+            5L to setOf(1L),
+            6L to setOf(1L, 2L, 3L),
+            9L to setOf(1L, 3L),
+            18L to setOf(1L, 2L, 3L, 6L, 9L),
+            81L to setOf(1L, 3L, 9L, 27L),
+        ) { (value, expected) ->
+            value.divisors() should containExactlyElementsOf(expected)
+            value.divisorsCount() should be(expected.size)
+            value.divisorsSum() should be(expected.sum())
         }
     }
 
