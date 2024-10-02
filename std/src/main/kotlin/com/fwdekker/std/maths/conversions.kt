@@ -19,7 +19,13 @@ fun Pair<Number, Number>.toInts(): Pair<Int, Int> = map { it.toInt() }
 fun Triple<Number, Number, Number>.toInts(): Triple<Int, Int, Int> = map { it.toInt() }
 
 @JvmName("numbersToInts")
+fun Sequence<Number>.toInts(): Sequence<Int> = map {it.toInt()}
+
+@JvmName("numbersToInts")
 fun Iterable<Number>.toInts(): List<Int> = map { it.toInt() }
+
+@JvmName("numberPairsToInts")
+fun Sequence<Pair<Number, Number>>.toInts(): Sequence<Pair<Int, Int>> = map { it.toInts() }
 
 @JvmName("numberPairsToInts")
 fun Iterable<Pair<Number, Number>>.toInts(): List<Pair<Int, Int>> = map { it.toInts() }
@@ -33,7 +39,13 @@ fun Pair<Number, Number>.toLongs(): Pair<Long, Long> = map { it.toLong() }
 fun Triple<Number, Number, Number>.toLongs(): Triple<Long, Long, Long> = map { it.toLong() }
 
 @JvmName("numbersToLongs")
+fun Sequence<Number>.toLongs(): Sequence<Long> = map { it.toLong() }
+
+@JvmName("numbersToLongs")
 fun Iterable<Number>.toLongs(): List<Long> = map { it.toLong() }
+
+@JvmName("numberPairsToLongs")
+fun Sequence<Pair<Number, Number>>.toLongs(): Sequence<Pair<Long, Long>> = map { it.toLongs() }
 
 @JvmName("numberPairsToLongs")
 fun Iterable<Pair<Number, Number>>.toLongs(): List<Pair<Long, Long>> = map { it.toLongs() }

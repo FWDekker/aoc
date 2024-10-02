@@ -30,11 +30,11 @@ fun fibonacciBig(): Sequence<BigInteger> =
 
 
 /**
- * Returns an infinite sequence of all natural numbers, starting at 0.
+ * Returns an infinite sequence of all natural numbers, [start]ing from the given number.
  */
-fun naturalNumbers(): Sequence<Long> = generateSequence(0L) { it.inc() }
+fun naturalNumbers(start: Long = 0L): Sequence<Long> = generateSequence(start) { it.inc() }
 
-fun naturalNumbersBig(): Sequence<BigInteger> = generateSequence(BigInteger.ZERO) { it.inc()  }
+fun naturalNumbersBig(start: Long = 0L): Sequence<BigInteger> = generateSequence(start.toBigInteger()) { it.inc() }
 
 
 /**

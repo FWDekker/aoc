@@ -4,12 +4,6 @@ import com.fwdekker.std.collections.repeat
 
 
 /**
- * The alphabet.
- */
-const val alphabet = "abcdefghijklmnopqrstuvwxyz"
-
-
-/**
  * Returns the non-blank lines in this collection.
  */
 private fun Collection<String>.filterNotBlank(): List<String> = filterNot(String::isBlank)
@@ -34,11 +28,17 @@ fun String.toInts(separator: String): List<Int> = split(separator).filterNotBlan
 
 fun String.toInts(separator: Regex): List<Int> = split(separator).filterNotBlank().map { it.toInt() }
 
-fun Collection<String>.toInts(separator: Char): List<List<Int>> = map { it.toInts(separator) }
+fun Sequence<String>.toInts(separator: Char): Sequence<List<Int>> = map { it.toInts(separator) }
 
-fun Collection<String>.toInts(separator: String): List<List<Int>> = map { it.toInts(separator) }
+fun Sequence<String>.toInts(separator: String): Sequence<List<Int>> = map { it.toInts(separator) }
 
-fun Collection<String>.toInts(separator: Regex): List<List<Int>> = map { it.toInts(separator) }
+fun Sequence<String>.toInts(separator: Regex): Sequence<List<Int>> = map { it.toInts(separator) }
+
+fun Iterable<String>.toInts(separator: Char): List<List<Int>> = map { it.toInts(separator) }
+
+fun Iterable<String>.toInts(separator: String): List<List<Int>> = map { it.toInts(separator) }
+
+fun Iterable<String>.toInts(separator: Regex): List<List<Int>> = map { it.toInts(separator) }
 
 /**
  * Splits by [separator] and converts each entry to a [Long].
@@ -49,11 +49,17 @@ fun String.toLongs(separator: String): List<Long> = split(separator).filterNotBl
 
 fun String.toLongs(separator: Regex): List<Long> = split(separator).filterNotBlank().map { it.toLong() }
 
-fun Collection<String>.toLongs(separator: Char): List<List<Long>> = map { it.toLongs(separator) }
+fun Sequence<String>.toLongs(separator: Char): Sequence<List<Long>> = map { it.toLongs(separator) }
 
-fun Collection<String>.toLongs(separator: String): List<List<Long>> = map { it.toLongs(separator) }
+fun Sequence<String>.toLongs(separator: String): Sequence<List<Long>> = map { it.toLongs(separator) }
 
-fun Collection<String>.toLongs(separator: Regex): List<List<Long>> = map { it.toLongs(separator) }
+fun Sequence<String>.toLongs(separator: Regex): Sequence<List<Long>> = map { it.toLongs(separator) }
+
+fun Iterable<String>.toLongs(separator: Char): List<List<Long>> = map { it.toLongs(separator) }
+
+fun Iterable<String>.toLongs(separator: String): List<List<Long>> = map { it.toLongs(separator) }
+
+fun Iterable<String>.toLongs(separator: Regex): List<List<Long>> = map { it.toLongs(separator) }
 
 
 /**
