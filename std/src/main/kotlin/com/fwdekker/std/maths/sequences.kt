@@ -34,6 +34,8 @@ fun fibonacciBig(): Sequence<BigInteger> =
  */
 fun naturalNumbers(start: Long = 0L): Sequence<Long> = generateSequence(start) { it.inc() }
 
+fun naturalNumbersInt(start: Int = 0): Sequence<Int> = generateSequence(start) { it.inc() }
+
 fun naturalNumbersBig(start: Long = 0L): Sequence<BigInteger> = generateSequence(start.toBigInteger()) { it.inc() }
 
 
