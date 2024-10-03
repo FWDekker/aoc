@@ -43,11 +43,11 @@ fun <T, U> Iterable<T>.cartesian(that: Iterable<U>): List<Pair<T, U>> =
 /**
  * Returns all (not necessarily proper) subsets of [this].
  */
-fun <T> Collection<T>.powerSet(includeEmpty: Boolean = true): Collection<Collection<T>> =
-    powerSet(this).let { if (includeEmpty) it else it.drop(1) }
+fun <T> Collection<T>.powerSet(minSize: Int = 0, maxSize: Int = this.size): List<List<T>> =
+    powerSet(maxSize, this).filter { it.size >= minSize }
 
-private tailrec fun <T> powerSet(rem: Collection<T>, acc: List<List<T>> = listOf(emptyList())): List<List<T>> =
+private tailrec fun <T> powerSet(maxSize: Int, rem: Collection<T>, acc: List<List<T>> = listOf(emptyList())): List<List<T>> =
     when {
         rem.isEmpty() -> acc
-        else -> powerSet(rem.drop(1), acc + acc.map { it + rem.first() })
+        else -> powerSet(maxSize, rem.drop(1), acc + acc.filter { it.size < maxSize }.map { it + rem.first() })
     }
