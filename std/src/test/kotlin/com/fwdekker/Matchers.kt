@@ -12,8 +12,15 @@ fun <T> containExactlyElementsOf(expected: Collection<T>) =
     Matcher<Collection<T>> { actual ->
         MatcherResult(
             actual.size == expected.size && actual.zip(expected).all { (a, b) -> a == b },
-            { "List contained elements $actual but expected $expected." },
-            { "Both lists contained the same elements $actual." },
+            {
+                if (actual.size == expected.size && actual.toSet().zip(expected.toSet()).all { (a, b) -> a == b })
+                    "List contains all expected elements but in the wrong order. Expected: $expected. Actual: $actual."
+                else
+                    "" +
+                        "List does not contain exactly the expected elements in the same order. " +
+                        "Expected: $expected. Actual: $actual."
+            },
+            { "Both lists contained the same elements $actual in the same order." },
         )
     }
 
@@ -35,8 +42,8 @@ fun <T> containExactlyInAnyOrderElementsOf(expected: Collection<T>) =
 
         MatcherResult(
             actual.size == expected.size && actualGroups.all { (a, b) -> expectedGroups[a] == b },
-            { "List contained elements $actual but expected $expected." },
-            { "Both lists contained the same elements $actual." },
+            { "List has unexpected elements or is missing expected elements. Expected: $expected. Actual $actual." },
+            { "Both lists contained the same elements $actual in any order." },
         )
     }
 

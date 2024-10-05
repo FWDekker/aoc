@@ -1,5 +1,6 @@
 package com.fwdekker.std.maths
 
+import com.fwdekker.std.collections.swapAt
 import java.math.BigInteger
 
 
@@ -31,7 +32,15 @@ fun Int.choose(k: Int): BigInteger = toBigInteger().choose(k.toBigInteger())
 
 fun Long.choose(k: Long): BigInteger = toBigInteger().choose(k.toBigInteger())
 
-fun BigInteger.choose(k: BigInteger): BigInteger = this.factorial(k) / k.factorial()
+fun BigInteger.choose(k: BigInteger): BigInteger {
+    require(this >= BigInteger.ZERO && k >= BigInteger.ZERO) { "Both inputs must be non-negative." }
+
+    val overlap = min(BigInteger.ZERO, k * BigInteger.TWO - this)
+
+    return if (k > this) BigInteger.ZERO
+    else if (k == this) BigInteger.ONE
+    else this.factorial(k - overlap) / (k - overlap).factorial()
+}
 
 
 /**
@@ -39,6 +48,34 @@ fun BigInteger.choose(k: BigInteger): BigInteger = this.factorial(k) / k.factori
  */
 fun <T, U> Iterable<T>.cartesian(that: Iterable<U>): List<Pair<T, U>> =
     this.flatMap { a -> that.map { b -> Pair(a, b) } }
+
+/**
+ * Returns all possible permutations of [this] collection's elements.
+ *
+ * Uses the Steinhaus–Johnson–Trotter algorithm, with Even's speedup.
+ */
+fun <T : Comparable<T>> Collection<T>.permutations(): Sequence<List<T>> =
+    if (isEmpty()) emptySequence()
+    else sequence {
+        yield(toList())
+
+        val permutation = toMutableList()
+        val directions = indices.map { if (it == 0) 0 else -1 }.toMutableList()
+
+        while (true) {
+            val swapFrom = indices.filter { directions[it] != 0 }.maxByOrNull { permutation[it] } ?: return@sequence
+            val swapTo = swapFrom + directions[swapFrom]
+            val swapAfter = swapTo + directions[swapFrom]
+            val swapValue = permutation[swapFrom]
+
+            permutation.swapAt(swapFrom, swapTo)
+            directions.swapAt(swapFrom, swapTo)
+            if (swapTo == 0 || swapTo == size - 1 || permutation[swapAfter] > swapValue) directions[swapTo] = 0
+            indices.filter { permutation[it] > swapValue }.forEach { directions[it] = if (it < swapTo) 1 else -1 }
+
+            yield(permutation.toList())
+        }
+    }
 
 /**
  * Returns all (not necessarily proper) subsets of [this].

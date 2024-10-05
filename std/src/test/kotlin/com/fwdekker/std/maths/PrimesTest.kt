@@ -1,16 +1,6 @@
-package com.fwdekker.std
+package com.fwdekker.std.maths
 
 import com.fwdekker.containExactlyElementsOf
-import com.fwdekker.std.maths.divisors
-import com.fwdekker.std.maths.divisorsCount
-import com.fwdekker.std.maths.divisorsSum
-import com.fwdekker.std.maths.factorize
-import com.fwdekker.std.maths.factorizeGroups
-import com.fwdekker.std.maths.gcd
-import com.fwdekker.std.maths.isPrime
-import com.fwdekker.std.maths.lcm
-import com.fwdekker.std.maths.primes
-import com.fwdekker.std.maths.toLongs
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.datatest.withData

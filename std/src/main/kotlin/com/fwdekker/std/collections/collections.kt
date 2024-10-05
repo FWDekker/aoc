@@ -114,6 +114,20 @@ fun <T> Iterable<T>.cyclic(): Sequence<T> = asSequence().cyclic()
 
 
 /**
+ * Removes the element at [idx], and returns [this] list.
+ */
+fun <T> MutableList<T>.without(idx: Int): MutableList<T> = also { it.removeAt(idx) }
+
+/**
+ * Swaps the elements at [idx1] and [idx2], and returns [this] list.
+ */
+fun <T> MutableList<T>.swapAt(idx1: Int, idx2: Int): MutableList<T> {
+    this[idx1] = this[idx2].also { this[idx2] = this[idx1] }
+    return this
+}
+
+
+/**
  * Like `iterator`, but without [ConcurrentModificationException]s when elements are appended after the iterator has
  * been created.
  */
