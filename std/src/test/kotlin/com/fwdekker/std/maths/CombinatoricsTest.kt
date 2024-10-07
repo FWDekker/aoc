@@ -1,6 +1,7 @@
 package com.fwdekker.std.maths
 
 import com.fwdekker.containExactlyInAnyOrderElementsOf
+import com.fwdekker.std.collections.repeat
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.datatest.withData
@@ -143,48 +144,43 @@ object CombinatoricsTest : DescribeSpec({
             2 to listOf(emptyList(), listOf(1), listOf(2), listOf(1, 2)),
             3 to all,
         ) { (input, expected) ->
-            (1..input).toList().powerSet() should containExactlyInAnyOrderElementsOf(expected)
+            (1..input).toList().powerSet().toList() should containExactlyInAnyOrderElementsOf(expected)
         }
 
         withData(
             nameFn = { "all combinations of 1..3 with minimum size ${it.first}" },
-            -1 to all,
             0 to all,
             1 to listOf(listOf(1), listOf(2), listOf(3), listOf(1, 2), listOf(1, 3), listOf(2, 3), listOf(1, 2, 3)),
             2 to listOf(listOf(1, 2), listOf(1, 3), listOf(2, 3), listOf(1, 2, 3)),
             3 to listOf(listOf(1, 2, 3)),
         ) { (minSize, expected) ->
-            listOf(1, 2, 3).powerSet(minSize = minSize) should containExactlyInAnyOrderElementsOf(expected)
+            listOf(1, 2, 3).powerSet(minSize = minSize).toList() should containExactlyInAnyOrderElementsOf(expected)
         }
 
         withData(
             nameFn = { "all combinations of 1..3 with maximum size ${it.first}" },
-            -1 to listOf(emptyList()),
             0 to listOf(emptyList()),
             1 to listOf(emptyList(), listOf(1), listOf(2), listOf(3)),
             2 to listOf(emptyList(), listOf(1), listOf(2), listOf(3), listOf(1, 2), listOf(1, 3), listOf(2, 3)),
             3 to all,
-            4 to all,
         ) { (maxSize, expected) ->
-            listOf(1, 2, 3).powerSet(maxSize = maxSize) should containExactlyInAnyOrderElementsOf(expected)
+            listOf(1, 2, 3).powerSet(maxSize = maxSize).toList() should containExactlyInAnyOrderElementsOf(expected)
         }
 
         withData(
             nameFn = { "all combinations of 1..3 with exact size ${it.first}" },
-            -1 to listOf(emptyList()),
             0 to listOf(emptyList()),
             1 to listOf(listOf(1), listOf(2), listOf(3)),
             2 to listOf(listOf(1, 2), listOf(1, 3), listOf(2, 3)),
             3 to listOf(listOf(1, 2, 3)),
-            4 to emptyList(),
         ) { (size, expected) ->
-            listOf(1, 2, 3).powerSet(minSize = size, maxSize = size) should
+            listOf(1, 2, 3).powerSet(minSize = size, maxSize = size).toList() should
                 containExactlyInAnyOrderElementsOf(expected)
         }
 
         withData(
             nameFn = { "all combinations of 1..3 with size in range ${it.first.first}..${it.first.second}" },
-            (-1 to 2) to listOf(emptyList(), listOf(1), listOf(2), listOf(3), listOf(1, 2), listOf(1, 3), listOf(2, 3)),
+            (0 to 0) to listOf(emptyList()),
             (1 to 2) to listOf(listOf(1), listOf(2), listOf(3), listOf(1, 2), listOf(1, 3), listOf(2, 3)),
             (1 to 3) to listOf(
                 listOf(1),
@@ -196,9 +192,8 @@ object CombinatoricsTest : DescribeSpec({
                 listOf(1, 2, 3)
             ),
             (2 to 3) to listOf(listOf(1, 2), listOf(1, 3), listOf(2, 3), listOf(1, 2, 3)),
-            (3 to 4) to listOf(listOf(1, 2, 3)),
         ) { (range, expected) ->
-            listOf(1, 2, 3).powerSet(minSize = range.first, maxSize = range.second) should
+            listOf(1, 2, 3).powerSet(minSize = range.first, maxSize = range.second).toList() should
                 containExactlyInAnyOrderElementsOf(expected)
         }
     }
@@ -224,6 +219,13 @@ object CombinatoricsTest : DescribeSpec({
             )
         ) { (elements, expected) ->
             elements.toList().permutations().toList() should containExactlyInAnyOrderElementsOf(expected)
+        }
+
+        it("considers duplicated inputs as separate elements") {
+            val expected = listOf(listOf(0, 0, 1), listOf(0, 1, 0), listOf(1, 0, 0)).repeat(2)
+
+            listOf(0, 0, 1).permutations().toList() should containExactlyInAnyOrderElementsOf(expected)
+            listOf(0, 1, 0).permutations().toList() should containExactlyInAnyOrderElementsOf(expected)
         }
     }
 })

@@ -112,7 +112,7 @@ fun Int.divisors(): Set<Int> = toLong().divisors().toInts().toSet()
 
 fun Long.divisors(): Set<Long> =
     if (this <= 1L) emptySet()
-    else (listOf(1L) + factorize()).powerSet(minSize = 1).map { it.product() }.toSet().minus(this)
+    else (listOf(1L) + factorize()).powerSet(minSize = 1).map { it.product() }.sorted().toSet().minus(this)
 
 /**
  * Returns the number of [divisors]. More efficient than first calling [divisors] and then `size`!

@@ -1,5 +1,32 @@
 package com.fwdekker.std.maths
 
+import java.math.BigInteger
+
+
+/**
+ * A range of [BigInteger]s.
+ */
+class BigIntegerRange(
+    override val start: BigInteger,
+    override val endInclusive: BigInteger,
+) : ClosedRange<BigInteger>, Iterable<BigInteger> {
+    override operator fun iterator(): Iterator<BigInteger> =
+        iterator {
+            var current = start
+            while (current <= endInclusive) yield(current++)
+        }
+}
+
+/**
+ * Creates a [BigIntegerRange] from [this] up to and including [endInclusive].
+ */
+fun BigInteger.rangeTo(endInclusive: BigInteger): BigIntegerRange = BigIntegerRange(this, endInclusive)
+
+/**
+ * Creates a [BigIntegerRange] from [this] up to but excluding [endExclusive].
+ */
+fun BigInteger.rangeUntil(endExclusive: BigInteger): BigIntegerRange = BigIntegerRange(this, endExclusive.dec())
+
 
 /**
  * Splits this range into two parts signifying which elements are less than or equal to [value].
@@ -77,14 +104,20 @@ fun LongRange.overlaps(that: LongRange): Boolean =
  * Returns zero, one, or two ranges that together consist of all values in [this] that are not in [that].
  */
 fun IntRange.without(that: IntRange): List<IntRange> =
-    listOf(this.first..kotlin.math.min(this.last, that.first - 1), kotlin.math.max(this.first, that.last + 1)..this.last)
+    listOf(
+        this.first..kotlin.math.min(this.last, that.first - 1),
+        kotlin.math.max(this.first, that.last + 1)..this.last
+    )
         .filterNot { it.isEmpty() }
 
 /**
  * Returns zero, one, or two ranges that together consist of all values in [this] that are not in [that].
  */
 fun LongRange.without(that: LongRange): List<LongRange> =
-    listOf(this.first..kotlin.math.min(this.last, that.first - 1), kotlin.math.max(this.first, that.last + 1)..this.last)
+    listOf(
+        this.first..kotlin.math.min(this.last, that.first - 1),
+        kotlin.math.max(this.first, that.last + 1)..this.last
+    )
         .filterNot { it.isEmpty() }
 
 /**

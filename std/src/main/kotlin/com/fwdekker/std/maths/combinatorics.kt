@@ -2,6 +2,7 @@ package com.fwdekker.std.maths
 
 import com.fwdekker.std.collections.swapAt
 import java.math.BigInteger
+import java.util.BitSet
 
 
 /**
@@ -54,12 +55,12 @@ fun <T, U> Iterable<T>.cartesian(that: Iterable<U>): List<Pair<T, U>> =
  *
  * Uses the Steinhaus–Johnson–Trotter algorithm, with Even's speedup.
  */
-fun <T : Comparable<T>> Collection<T>.permutations(): Sequence<List<T>> =
+fun <T> List<T>.permutations(): Sequence<List<T>> =
     if (isEmpty()) emptySequence()
     else sequence {
         yield(toList())
 
-        val permutation = toMutableList()
+        val permutation = indices.toMutableList()
         val directions = indices.map { if (it == 0) 0 else -1 }.toMutableList()
 
         while (true) {
@@ -73,18 +74,25 @@ fun <T : Comparable<T>> Collection<T>.permutations(): Sequence<List<T>> =
             if (swapTo == 0 || swapTo == size - 1 || permutation[swapAfter] > swapValue) directions[swapTo] = 0
             indices.filter { permutation[it] > swapValue }.forEach { directions[it] = if (it < swapTo) 1 else -1 }
 
-            yield(permutation.toList())
+            yield(permutation.map { this@permutations[it] })
         }
     }
+
+fun <T> Collection<T>.permutations(): Sequence<List<T>> = toList().permutations()
 
 /**
  * Returns all (not necessarily proper) subsets of [this].
  */
-fun <T> Collection<T>.powerSet(minSize: Int = 0, maxSize: Int = this.size): List<List<T>> =
-    powerSet(maxSize, this).filter { it.size >= minSize }
+fun <T> List<T>.powerSet(minSize: Int = 0, maxSize: Int = this.size): Sequence<List<T>> {
+    require(minSize <= maxSize) { "Minimum size must be no more than maximum size." }
+    require(minSize >= 0) { "Minimum size must be non-negative." }
+    require(maxSize <= size) { "Maximum size must be at most collection size." }
 
-private tailrec fun <T> powerSet(maxSize: Int, rem: Collection<T>, acc: List<List<T>> = listOf(emptyList())): List<List<T>> =
-    when {
-        rem.isEmpty() -> acc
-        else -> powerSet(maxSize, rem.drop(1), acc + acc.filter { it.size < maxSize }.map { it + rem.first() })
-    }
+    return BigInteger.ZERO.rangeUntil(BigInteger.TWO.pow(size))
+        .asSequence()
+        .map { n -> BitSet.valueOf(n.toByteArray()).stream().mapToObj { this[it] }.toList() }
+        .filter { it.size in minSize..maxSize }
+}
+
+fun <T> Collection<T>.powerSet(minSize: Int = 0, maxSize: Int = this.size): Sequence<List<T>> =
+    toList().powerSet(minSize, maxSize)
