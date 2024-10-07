@@ -90,7 +90,7 @@ fun <T> List<T>.powerSet(minSize: Int = 0, maxSize: Int = this.size): Sequence<L
 
     return BigInteger.ZERO.rangeUntil(BigInteger.TWO.pow(size))
         .asSequence()
-        .map { n -> BitSet.valueOf(n.toByteArray()).stream().mapToObj { this[it] }.toList() }
+        .map { n -> n.toString(2).padStart(size, '0').withIndex().filter { (_, bit) -> bit == '1' }.map { (idx, _) -> this[idx] } }
         .filter { it.size in minSize..maxSize }
 }
 
