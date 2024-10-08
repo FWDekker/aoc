@@ -1,6 +1,6 @@
 package com.fwdekker.std.maths
 
-import com.fwdekker.containExactlyElementsOf
+import com.fwdekker.containExactlyInSameOrderElementsOf
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.datatest.withData
@@ -125,7 +125,7 @@ object PrimesTest : DescribeSpec({
             18L to listOf(2L, 3L, 3L),
             81L to listOf(3L, 3L, 3L, 3L),
         ) { (value, expected) ->
-            value.factorize() should containExactlyElementsOf(expected)
+            value.factorize() should containExactlyInSameOrderElementsOf(expected)
         }
     }
 
@@ -144,7 +144,7 @@ object PrimesTest : DescribeSpec({
             18L to mapOf(2L to 1, 3L to 2),
             81L to mapOf(3L to 4),
         ) { (value, expected) ->
-            value.factorizeGroups().toList() should containExactlyElementsOf(expected.toList())
+            value.factorizeGroups().toList() should containExactlyInSameOrderElementsOf(expected.toList())
         }
     }
 
@@ -163,7 +163,7 @@ object PrimesTest : DescribeSpec({
             18L to setOf(1L, 2L, 3L, 6L, 9L),
             81L to setOf(1L, 3L, 9L, 27L),
         ) { (value, expected) ->
-            value.divisors() should containExactlyElementsOf(expected)
+            value.divisors() should containExactlyInSameOrderElementsOf(expected)
             value.divisorsCount() should be(expected.size)
             value.divisorsSum() should be(expected.sum())
         }
@@ -172,13 +172,13 @@ object PrimesTest : DescribeSpec({
 
     describe("isPrime") {
         it("correctly classifies all integers from -1 to 100 into primes and composites") {
-            (-1L..100L).filter { it.isPrime() } should containExactlyElementsOf(knownPrimes)
+            (-1L..100L).filter { it.isPrime() } should containExactlyInSameOrderElementsOf(knownPrimes)
         }
     }
 
     describe("primes") {
         it("returns the first 25 primes") {
-            primes().take(25).toList() should containExactlyElementsOf(knownPrimes)
+            primes().take(25).toList() should containExactlyInSameOrderElementsOf(knownPrimes)
         }
     }
 })

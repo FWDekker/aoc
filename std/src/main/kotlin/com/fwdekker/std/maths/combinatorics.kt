@@ -2,7 +2,6 @@ package com.fwdekker.std.maths
 
 import com.fwdekker.std.collections.swapAt
 import java.math.BigInteger
-import java.util.BitSet
 
 
 /**
@@ -90,7 +89,12 @@ fun <T> List<T>.powerSet(minSize: Int = 0, maxSize: Int = this.size): Sequence<L
 
     return BigInteger.ZERO.rangeUntil(BigInteger.TWO.pow(size))
         .asSequence()
-        .map { n -> n.toString(2).padStart(size, '0').withIndex().filter { (_, bit) -> bit == '1' }.map { (idx, _) -> this[idx] } }
+        .map { n ->
+            n.toString(2).padStart(size, '0')
+                .withIndex()
+                .filter { (_, bit) -> bit == '1' }
+                .map { (idx, _) -> this[idx] }
+        }
         .filter { it.size in minSize..maxSize }
 }
 

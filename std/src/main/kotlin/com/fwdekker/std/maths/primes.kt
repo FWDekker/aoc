@@ -6,6 +6,21 @@ import kotlin.math.sqrt
 
 
 /**
+ * Returns the integer-rounded square root.
+ */
+fun floorSqrt(value: Int): Int = sqrt(value.toDouble()).toInt()
+
+fun floorSqrt(value: Long): Long = sqrt(value.toDouble()).toLong()
+
+/**
+ * Returns `true` if and only if [this] is exactly the square of an integer number.
+ */
+fun Int.isPerfectSquare(): Boolean = toLong().isPerfectSquare()
+
+fun Long.isPerfectSquare(): Boolean = floorSqrt(this).pow(2) == this
+
+
+/**
  * Returns the greatest common divisor of [a] and [b].
  *
  * Note that:
@@ -65,6 +80,7 @@ fun Iterable<Long>.lcm(): Long =
         if (zeros > 0) return 0L
         else filterNot { it == 0L }.reduce(::lcm)
     }
+
 
 /**
  * Returns the prime factors of [this].

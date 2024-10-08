@@ -1,6 +1,7 @@
 package com.fwdekker.std
 
 import com.fwdekker.std.collections.repeat
+import java.math.BigInteger
 
 
 /**
@@ -60,6 +61,27 @@ fun Iterable<String>.toLongs(separator: Char): List<List<Long>> = map { it.toLon
 fun Iterable<String>.toLongs(separator: String): List<List<Long>> = map { it.toLongs(separator) }
 
 fun Iterable<String>.toLongs(separator: Regex): List<List<Long>> = map { it.toLongs(separator) }
+
+/**
+ * Splits by [separator] and converts each entry to a [BigInteger].
+ */
+fun String.toBigIntegers(separator: Char): List<BigInteger> = toBigIntegers(separator.toString())
+
+fun String.toBigIntegers(separator: String): List<BigInteger> = split(separator).filterNotBlank().map { it.toBigInteger() }
+
+fun String.toBigIntegers(separator: Regex): List<BigInteger> = split(separator).filterNotBlank().map { it.toBigInteger() }
+
+fun Sequence<String>.toBigIntegers(separator: Char): Sequence<List<BigInteger>> = map { it.toBigIntegers(separator) }
+
+fun Sequence<String>.toBigIntegers(separator: String): Sequence<List<BigInteger>> = map { it.toBigIntegers(separator) }
+
+fun Sequence<String>.toBigIntegers(separator: Regex): Sequence<List<BigInteger>> = map { it.toBigIntegers(separator) }
+
+fun Iterable<String>.toBigIntegers(separator: Char): List<List<BigInteger>> = map { it.toBigIntegers(separator) }
+
+fun Iterable<String>.toBigIntegers(separator: String): List<List<BigInteger>> = map { it.toBigIntegers(separator) }
+
+fun Iterable<String>.toBigIntegers(separator: Regex): List<List<BigInteger>> = map { it.toBigIntegers(separator) }
 
 
 /**

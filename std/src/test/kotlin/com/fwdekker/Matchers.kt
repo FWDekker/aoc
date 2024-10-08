@@ -8,7 +8,7 @@ import io.kotest.matchers.should
 /**
  * Matcher asserting that the given collection contains exactly the same elements and in the same order as [expected].
  */
-fun <T> containExactlyElementsOf(expected: Collection<T>) =
+fun <T> containExactlyInSameOrderElementsOf(expected: Collection<T>) =
     Matcher<Collection<T>> { actual ->
         MatcherResult(
             actual.size == expected.size && actual.zip(expected).all { (a, b) -> a == b },
@@ -27,8 +27,8 @@ fun <T> containExactlyElementsOf(expected: Collection<T>) =
 /**
  * Asserts that the given collection contains exactly the same elements and in the same order as [expected].
  */
-fun <T> Collection<T>.shouldContainExactlyElementsOf(expected: Collection<T>): Collection<T> {
-    this should containExactlyElementsOf(expected)
+fun <T> Collection<T>.shouldContainExactlyInSameOrderElementsOf(expected: Collection<T>): Collection<T> {
+    this should containExactlyInSameOrderElementsOf(expected)
     return this
 }
 
