@@ -2,6 +2,7 @@ package com.fwdekker.std.maths
 
 import com.fwdekker.containExactlyInSameOrderElementsOf
 import com.fwdekker.std.toBigIntegers
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.datatest.withData
 import io.kotest.matchers.be
@@ -9,6 +10,7 @@ import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.resource.resourceAsString
 import io.kotest.matchers.should
+import io.kotest.matchers.shouldBe
 import java.math.BigInteger
 import kotlin.reflect.jvm.kotlinFunction
 
@@ -41,34 +43,77 @@ object SequencesTest : DescribeSpec({
 
 
     describe("SearchableSequence") {
-        it("does not contain values below the first value") {
-            naturalNumbersInt().searchable().contains(-1).shouldBeFalse()
+        describe("get") {
+            it("throws an exception for negative indices") {
+                shouldThrow<IllegalArgumentException> { naturalNumbersInt().searchable()[-1] }
+            }
+
+            it("returns the 0th element") {
+                naturalNumbersInt().searchable()[0] shouldBe 0
+            }
+
+            it("returns the 1st element") {
+                naturalNumbersInt().searchable()[1] shouldBe 1
+            }
+
+            it("returns the 1st element again") {
+                naturalNumbersInt().searchable()[1]
+                naturalNumbersInt().searchable()[1] shouldBe 1
+            }
+
+            it("does not traverse elements at previously seen indices") {
+                var iterations = 0
+                val searchable = naturalNumbersInt().map { iterations++; it }.searchable()
+
+                searchable[5]
+                iterations = 0
+
+                searchable[3]
+                iterations shouldBe 0
+            }
+
+            it("traverses elements only up to the requested index") {
+                var iterations = 0
+                val searchable = naturalNumbersInt().map { iterations++; it }.searchable()
+
+                searchable[3]
+                iterations = 0
+
+                searchable[5]
+                iterations shouldBe 2
+            }
         }
 
-        it("contains the first value in the sequence") {
-            naturalNumbersInt().searchable().contains(0).shouldBeTrue()
-        }
+        describe("contains") {
+            it("does not contain values below the first value") {
+                naturalNumbersInt().searchable().contains(-1).shouldBeFalse()
+            }
 
-        it("contains the second value in the sequence") {
-            naturalNumbersInt().searchable().contains(1).shouldBeTrue()
-        }
+            it("contains the first value in the sequence") {
+                naturalNumbersInt().searchable().contains(0).shouldBeTrue()
+            }
 
-        it("contains the first value in the sequence after searching for the second") {
-            val searchable = naturalNumbersInt().searchable()
+            it("contains the second value in the sequence") {
+                naturalNumbersInt().searchable().contains(1).shouldBeTrue()
+            }
 
-            searchable.contains(1)
-            searchable.contains(0).shouldBeTrue()
-        }
+            it("contains the first value in the sequence after searching for the second") {
+                val searchable = naturalNumbersInt().searchable()
 
-        it("traverses each element in the sequence only when checking for multiple elements") {
-            var iterations = 0
-            val searchable = naturalNumbersInt().map { iterations++; it }.searchable()
+                searchable.contains(1)
+                searchable.contains(0).shouldBeTrue()
+            }
 
-            searchable.contains(6)
-            searchable.contains(9)
-            searchable.contains(3)
+            it("traverses each element in the sequence only once when checking for multiple elements") {
+                var iterations = 0
+                val searchable = naturalNumbersInt().map { iterations++; it }.searchable()
 
-            iterations should be(10)
+                searchable.contains(6)
+                searchable.contains(9)
+                searchable.contains(3)
+
+                iterations should be(10)
+            }
         }
     }
 }) {

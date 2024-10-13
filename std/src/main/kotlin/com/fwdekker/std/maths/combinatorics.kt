@@ -46,8 +46,8 @@ fun BigInteger.choose(k: BigInteger): BigInteger {
 /**
  * Returns all possible combinations of elements in [this] and [that].
  */
-fun <T, U> Iterable<T>.cartesian(that: Iterable<U>): List<Pair<T, U>> =
-    this.flatMap { a -> that.map { b -> Pair(a, b) } }
+fun <T, U> Iterable<T>.cartesian(that: Iterable<U>): Sequence<Pair<T, U>> =
+    asSequence().flatMap { a -> that.map { b -> Pair(a, b) } }
 
 /**
  * Returns all possible permutations of [this] collection's elements.

@@ -121,7 +121,7 @@ object CombinatoricsTest : DescribeSpec({
             (listOf(1, 2, 3) to listOf(4, 5, 6)) to
                 listOf(1 to 4, 1 to 5, 1 to 6, 2 to 4, 2 to 5, 2 to 6, 3 to 4, 3 to 5, 3 to 6),
         ) { (inputs, expected) ->
-            inputs.first.cartesian(inputs.second) should containExactlyInAnyOrderElementsOf(expected)
+            inputs.first.cartesian(inputs.second).toList() should containExactlyInAnyOrderElementsOf(expected)
         }
     }
 

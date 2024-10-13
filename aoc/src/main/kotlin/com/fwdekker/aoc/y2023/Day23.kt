@@ -3,8 +3,8 @@ package com.fwdekker.aoc.y2023
 import com.fwdekker.aoc.Day
 import com.fwdekker.std.grid.Chart
 import com.fwdekker.std.grid.Coords
+import com.fwdekker.std.grid.allCoords
 import com.fwdekker.std.grid.cardinals
-import com.fwdekker.std.grid.cols
 import com.fwdekker.std.grid.contains
 import com.fwdekker.std.grid.east
 import com.fwdekker.std.grid.firstRow
@@ -12,11 +12,9 @@ import com.fwdekker.std.grid.get
 import com.fwdekker.std.grid.lastRow
 import com.fwdekker.std.grid.lastRowIndex
 import com.fwdekker.std.grid.north
-import com.fwdekker.std.grid.rows
 import com.fwdekker.std.grid.south
 import com.fwdekker.std.grid.toChart
 import com.fwdekker.std.grid.west
-import com.fwdekker.std.maths.cartesian
 import com.fwdekker.std.read
 import java.util.PriorityQueue
 
@@ -27,8 +25,7 @@ class Day23(resource: String = resource(2023, 23)) : Day() {
     private val start = Coords(0, chart.firstRow.indexOf('.'))
     private val end = Coords(chart.lastRowIndex, chart.lastRow.indexOf('.'))
     private val junctions =
-        chart.rows.cartesian(chart.cols)
-            .map { (row, col) -> Coords(row, col) }
+        chart.allCoords
             .filter { it in chart && chart[it] != '#' }
             .filter { chart.dryNeighborsOf(it).size > 2 }
             .let { it + listOf(start, end) }

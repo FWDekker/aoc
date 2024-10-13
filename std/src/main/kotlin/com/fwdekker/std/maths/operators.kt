@@ -141,12 +141,12 @@ fun <T> Iterable<T>.productOf(transform: (T) -> BigDecimal): BigDecimal = map(tr
 /**
  * Calculates [this] to the power of some non-negative [exponent].
  */
-fun Int.pow(exponent: Int): Int = toLong().pow(exponent).toIntExact()
+fun Int.pow(exponent: Int): Int = toBigInteger().pow(exponent).toIntExact()
 
 fun Long.pow(exponent: Int): Long {
     require(exponent >= 0) { "Cannot calculate negative exponent on integer number." }
 
-    return toDouble().pow(exponent.toDouble()).toLong()
+    return toBigInteger().pow(exponent).toLongExact()
 }
 
 

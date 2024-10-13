@@ -8,16 +8,16 @@ import kotlin.math.sqrt
 /**
  * Returns the integer-rounded square root.
  */
-fun floorSqrt(value: Int): Int = sqrt(value.toDouble()).toInt()
+fun floorSqrt(value: Int): Int = value.toBigInteger().sqrt().toInt()
 
-fun floorSqrt(value: Long): Long = sqrt(value.toDouble()).toLong()
+fun floorSqrt(value: Long): Long = value.toBigInteger().sqrt().toLong()
 
 /**
  * Returns `true` if and only if [this] is exactly the square of an integer number.
  */
 fun Int.isPerfectSquare(): Boolean = toLong().isPerfectSquare()
 
-fun Long.isPerfectSquare(): Boolean = floorSqrt(this).pow(2) == this
+fun Long.isPerfectSquare(): Boolean = floorSqrt(this).let { it * it } == this
 
 
 /**

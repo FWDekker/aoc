@@ -73,17 +73,42 @@ fun triangleNumbersBigInt(): Sequence<BigInteger> =
  */
 class SearchableSequence<T : Comparable<T>>(base: Sequence<T>) {
     private val iterator = base.iterator()
-    private val iterated = mutableSetOf<T>()
+    private val asList = mutableListOf<T>()
+    private val asSet = mutableSetOf<T>()
+    private lateinit var max: T
 
+
+    /**
+     * Returns the [index]th element in the [Sequence].
+     */
+    operator fun get(index: Int): T {
+        require(index >= 0) { "Index must be non-negative." }
+
+        while (index >= asList.size) iterate()
+
+        return asList[index]
+    }
 
     /**
      * Returns `true` if and only if the underlying [Sequence] eventually returns [element].
      */
     operator fun contains(element: T): Boolean {
-        while (iterated.lastOrNull().let { it == null || it < element })
-            iterated += iterator.next()
+        if (asSet.isEmpty()) iterate()
+        while (element > max) iterate()
 
-        return element in iterated
+        return element in asSet
+    }
+
+
+    /**
+     * Iterates the sequence to the next element, and updates data structures where necessary.
+     */
+    private fun iterate() {
+        val next = iterator.next()
+
+        asList += next
+        asSet += next
+        max = next
     }
 }
 
