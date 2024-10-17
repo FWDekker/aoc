@@ -69,9 +69,10 @@ fun triangleNumbersBigInt(): Sequence<BigInteger> =
 
 
 /**
- * Allows efficiently searching through an infinite [Sequence] of non-decreasing values by caching intermediate values.
+ * Allows efficiently iterating and searching through an infinite [Sequence] of non-decreasing values by caching
+ * intermediate values.
  */
-class SearchableSequence<T : Comparable<T>>(base: Sequence<T>) {
+class CachedSequence<T : Comparable<T>>(base: Sequence<T>) : Sequence<T> {
     private val iterator = base.iterator()
     private val asList = mutableListOf<T>()
     private val asSet = mutableSetOf<T>()
@@ -84,7 +85,7 @@ class SearchableSequence<T : Comparable<T>>(base: Sequence<T>) {
     operator fun get(index: Int): T {
         require(index >= 0) { "Index must be non-negative." }
 
-        while (index >= asList.size) iterate()
+        while (index >= asList.size) step()
 
         return asList[index]
     }
@@ -93,26 +94,36 @@ class SearchableSequence<T : Comparable<T>>(base: Sequence<T>) {
      * Returns `true` if and only if the underlying [Sequence] eventually returns [element].
      */
     operator fun contains(element: T): Boolean {
-        if (asSet.isEmpty()) iterate()
-        while (element > max) iterate()
+        if (asSet.isEmpty()) step()
+        while (element > max) step()
 
         return element in asSet
     }
 
+    /**
+     * Iterates through the underlying sequence, using cached results where possible.
+     */
+    override fun iterator(): Iterator<T> =
+        iterator {
+            asList.forEach { yield(it) }
+            while (true) yield(step())
+        }
+
 
     /**
-     * Iterates the sequence to the next element, and updates data structures where necessary.
+     * Steps the sequence to the next element, and updates data structures where necessary.
      */
-    private fun iterate() {
+    private fun step(): T {
         val next = iterator.next()
 
         asList += next
         asSet += next
         max = next
+        return next
     }
 }
 
 /**
- * Creates a [SearchableSequence] from this [Sequence].
+ * Creates a [CachedSequence] from this [Sequence].
  */
-fun <T : Comparable<T>> Sequence<T>.searchable(): SearchableSequence<T> = SearchableSequence(this)
+fun <T : Comparable<T>> Sequence<T>.cached(): CachedSequence<T> = CachedSequence(this)

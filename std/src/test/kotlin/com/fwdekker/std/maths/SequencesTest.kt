@@ -45,25 +45,25 @@ object SequencesTest : DescribeSpec({
     describe("SearchableSequence") {
         describe("get") {
             it("throws an exception for negative indices") {
-                shouldThrow<IllegalArgumentException> { naturalNumbersInt().searchable()[-1] }
+                shouldThrow<IllegalArgumentException> { naturalNumbersInt().cached()[-1] }
             }
 
             it("returns the 0th element") {
-                naturalNumbersInt().searchable()[0] shouldBe 0
+                naturalNumbersInt().cached()[0] shouldBe 0
             }
 
             it("returns the 1st element") {
-                naturalNumbersInt().searchable()[1] shouldBe 1
+                naturalNumbersInt().cached()[1] shouldBe 1
             }
 
             it("returns the 1st element again") {
-                naturalNumbersInt().searchable()[1]
-                naturalNumbersInt().searchable()[1] shouldBe 1
+                naturalNumbersInt().cached()[1]
+                naturalNumbersInt().cached()[1] shouldBe 1
             }
 
             it("does not traverse elements at previously seen indices") {
                 var iterations = 0
-                val searchable = naturalNumbersInt().map { iterations++; it }.searchable()
+                val searchable = naturalNumbersInt().map { iterations++; it }.cached()
 
                 searchable[5]
                 iterations = 0
@@ -74,7 +74,7 @@ object SequencesTest : DescribeSpec({
 
             it("traverses elements only up to the requested index") {
                 var iterations = 0
-                val searchable = naturalNumbersInt().map { iterations++; it }.searchable()
+                val searchable = naturalNumbersInt().map { iterations++; it }.cached()
 
                 searchable[3]
                 iterations = 0
@@ -86,19 +86,19 @@ object SequencesTest : DescribeSpec({
 
         describe("contains") {
             it("does not contain values below the first value") {
-                naturalNumbersInt().searchable().contains(-1).shouldBeFalse()
+                naturalNumbersInt().cached().contains(-1).shouldBeFalse()
             }
 
             it("contains the first value in the sequence") {
-                naturalNumbersInt().searchable().contains(0).shouldBeTrue()
+                naturalNumbersInt().cached().contains(0).shouldBeTrue()
             }
 
             it("contains the second value in the sequence") {
-                naturalNumbersInt().searchable().contains(1).shouldBeTrue()
+                naturalNumbersInt().cached().contains(1).shouldBeTrue()
             }
 
             it("contains the first value in the sequence after searching for the second") {
-                val searchable = naturalNumbersInt().searchable()
+                val searchable = naturalNumbersInt().cached()
 
                 searchable.contains(1)
                 searchable.contains(0).shouldBeTrue()
@@ -106,7 +106,7 @@ object SequencesTest : DescribeSpec({
 
             it("traverses each element in the sequence only once when checking for multiple elements") {
                 var iterations = 0
-                val searchable = naturalNumbersInt().map { iterations++; it }.searchable()
+                val searchable = naturalNumbersInt().map { iterations++; it }.cached()
 
                 searchable.contains(6)
                 searchable.contains(9)

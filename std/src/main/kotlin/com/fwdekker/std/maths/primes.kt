@@ -90,7 +90,7 @@ fun Int.factorize(): List<Int> = toLong().factorize().toInts()
 fun Long.factorize(): List<Long> =
     sequence {
         var remaining = this@factorize
-        primes()
+        primes
             .takeWhile { remaining > 1L }
             .forEach {
                 while (remaining % it == 0L) {
@@ -109,7 +109,7 @@ fun Long.factorizeGroups(): Map<Long, Int> {
     val factors = mutableMapOf<Long, Int>()
 
     var remaining = this
-    primes()
+    primes
         .takeWhile { remaining > 1L }
         .forEach { factor ->
             while (remaining % factor == 0L) {
@@ -167,10 +167,13 @@ fun Long.isPrime(): Boolean {
     return true
 }
 
+
 /**
- * Returns an infinite sequence of prime numbers.
+ * An infinite sequence of primes.
+ *
+ * Results are cached for your performance.
  */
-fun primes(): Sequence<Long> =
+val primes =
     sequence {
         yield(2L)
         yieldAll(
@@ -180,4 +183,4 @@ fun primes(): Sequence<Long> =
                 at
             }
         )
-    }
+    }.cached()
