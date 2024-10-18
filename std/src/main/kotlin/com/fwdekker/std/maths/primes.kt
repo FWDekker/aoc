@@ -173,7 +173,7 @@ fun Long.isPrime(): Boolean {
  *
  * Results are cached for your performance.
  */
-val primes =
+val primes: CachedSequence<Long> =
     sequence {
         yield(2L)
         yieldAll(

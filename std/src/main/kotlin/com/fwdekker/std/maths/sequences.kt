@@ -105,8 +105,15 @@ class CachedSequence<T : Comparable<T>>(base: Sequence<T>) : Sequence<T> {
      */
     override fun iterator(): Iterator<T> =
         iterator {
-            asList.forEach { yield(it) }
-            while (true) yield(step())
+            var i = asList.size
+            yieldAll(asList)
+
+            while (true) {
+                if (i < asList.size) yield(asList[i])
+                else yield(step())
+
+                i++
+            }
         }
 
 
