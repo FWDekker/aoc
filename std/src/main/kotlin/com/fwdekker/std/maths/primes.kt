@@ -169,7 +169,7 @@ fun Long.isPrime(): Boolean {
 
 
 /**
- * An infinite sequence of primes.
+ * An infinite sequence of primes, starting at 2.
  *
  * Results are cached for your performance.
  */
