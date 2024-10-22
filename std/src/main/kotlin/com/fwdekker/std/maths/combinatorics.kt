@@ -1,6 +1,7 @@
 package com.fwdekker.std.maths
 
 import com.fwdekker.std.collections.swapAt
+import com.fwdekker.std.foldSelf
 import java.math.BigInteger
 
 
@@ -48,6 +49,21 @@ fun BigInteger.choose(k: BigInteger): BigInteger {
  */
 fun <T, U> Iterable<T>.cartesian(that: Iterable<U>): Sequence<Pair<T, U>> =
     asSequence().flatMap { a -> that.map { b -> Pair(a, b) } }
+
+/**
+ * Returns all possible ways of choosing exactly [amount] elements from [this], with repetition.
+ */
+fun <T> List<T>.combinations(amount: Int): Sequence<List<T>> {
+    require(amount >= 0) { "Cannot choose $amount elements from a list." }
+
+    return if (amount == 0) emptySequence()
+    else asSequence()
+        .let { base ->
+            base.map { listOf(it) }.foldSelf(amount - 1) { all -> all.flatMap { combo -> base.map { combo + it } } }
+        }
+}
+
+fun <T> Collection<T>.combinations(amount: Int): Sequence<List<T>> = toList().combinations(amount)
 
 /**
  * Returns all possible permutations of [this] collection's elements.
