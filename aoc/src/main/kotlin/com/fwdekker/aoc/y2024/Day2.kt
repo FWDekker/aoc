@@ -16,7 +16,7 @@ class Day2(resource: String = resource(2024, 2)) : Day() {
     override fun part1(): Int = reports.count { it.isSafe() }
 
     override fun part2(): Int =
-        reports.count { report -> report.indices.any { idx -> report.without(idx).isSafe() } }
+        reports.count { report -> report.isSafe() || report.indices.any { idx -> report.without(idx).isSafe() } }
 
 
     private fun List<Int>.isSafe(): Boolean {
