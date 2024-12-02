@@ -116,3 +116,9 @@ fun <T> List<T>.powerSet(minSize: Int = 0, maxSize: Int = this.size): Sequence<L
 
 fun <T> Collection<T>.powerSet(minSize: Int = 0, maxSize: Int = this.size): Sequence<List<T>> =
     toList().powerSet(minSize, maxSize)
+
+
+/**
+ * Returns the number of occurrences for each element.
+ */
+fun <T> Collection<T>.histogram(): Map<T, Int> = groupBy { it }.mapValues { it.value.size }

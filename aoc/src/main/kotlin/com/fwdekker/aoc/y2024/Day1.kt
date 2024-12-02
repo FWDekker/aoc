@@ -5,6 +5,7 @@ import com.fwdekker.std.collections.asPair
 import com.fwdekker.std.collections.firsts
 import com.fwdekker.std.collections.seconds
 import com.fwdekker.std.linesNotBlank
+import com.fwdekker.std.maths.histogram
 import com.fwdekker.std.read
 import com.fwdekker.std.toInts
 import kotlin.math.absoluteValue
@@ -20,7 +21,7 @@ class Day1(resource: String = resource(2024, 1)) : Day() {
         lefts.sorted().zip(rights.sorted()).sumOf { (a, b) -> (a - b).absoluteValue }
 
     override fun part2(): Int {
-        val rightCounts = rights.groupBy { it }.mapValues { it.value.size }
+        val rightCounts = rights.histogram()
         return lefts.sumOf { left -> left * rightCounts.getValue(left) }
     }
 }
