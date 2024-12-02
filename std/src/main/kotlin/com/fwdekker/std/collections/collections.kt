@@ -116,7 +116,7 @@ fun <T> Iterable<T>.cyclic(): Sequence<T> = asSequence().cyclic()
 /**
  * Removes the element at [idx], and returns [this] list.
  */
-fun <T> MutableList<T>.without(idx: Int): MutableList<T> = also { it.removeAt(idx) }
+fun <T> List<T>.without(idx: Int): MutableList<T> = toMutableList().also { it.removeAt(idx) }
 
 /**
  * Swaps the elements at [idx1] and [idx2], and returns [this] list.
