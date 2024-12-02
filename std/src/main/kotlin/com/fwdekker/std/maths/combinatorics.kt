@@ -46,12 +46,30 @@ fun BigInteger.choose(k: BigInteger): BigInteger {
 
 /**
  * Returns all possible combinations of elements in [this] and [that].
+ *
+ * To perform the Cartesian product of something with itself, see [combinations].
  */
 fun <T, U> Iterable<T>.cartesian(that: Iterable<U>): Sequence<Pair<T, U>> =
-    asSequence().flatMap { a -> that.map { b -> Pair(a, b) } }
+    asSequence().cartesian(that)
+
+fun <T, U> Sequence<T>.cartesian(that: Iterable<U>): Sequence<Pair<T, U>> =
+    flatMap { a -> that.map { b -> Pair(a, b) } }
+
+/**
+ * Returns all possible combinations of elements in [this], [that], and [other].
+ *
+ * To perform the Cartesian product of something with itself, see [combinations].
+ */
+fun <T, U, V> Iterable<T>.cartesian(that: Iterable<U>, other: Iterable<V>): Sequence<Triple<T, U, V>> =
+    asSequence().cartesian(that, other)
+
+fun <T, U, V> Sequence<T>.cartesian(that: Iterable<U>, other: Iterable<V>): Sequence<Triple<T, U, V>> =
+    flatMap { a -> that.flatMap { b -> other.map { c -> Triple(a, b, c) } } }
 
 /**
  * Returns all possible ways of choosing exactly [amount] elements from [this], with repetition.
+ *
+ * If [amount] is `2`, this is the same as doing [cartesian] on [this] with itself.
  */
 fun <T> List<T>.combinations(amount: Int): Sequence<List<T>> {
     require(amount >= 0) { "Cannot choose $amount elements from a list." }

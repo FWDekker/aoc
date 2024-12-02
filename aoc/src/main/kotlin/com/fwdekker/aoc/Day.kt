@@ -1,5 +1,7 @@
 package com.fwdekker.aoc
 
+import kotlin.time.measureTimedValue
+
 
 /**
  * Convenience class for invoking the code for any particular day and part with a given resource.
@@ -9,8 +11,10 @@ abstract class Day {
      * Runs and prints both parts.
      */
     fun run() {
-        println("Part one: ${part1()}")
-        println("Part two: ${part2()}")
+        measureTimedValue { part1() }
+            .also { println("Part one: ${it.value} (in ${it.duration.inWholeMilliseconds} ms)") }
+        measureTimedValue { part2() }
+            .also { println("Part two: ${it.value} (in ${it.duration.inWholeMilliseconds} ms)") }
     }
 
     /**
@@ -31,12 +35,12 @@ abstract class Day {
         /**
          * Shorthand for returning the resource for the given [year] and [day].
          *
-         * Setting [sample] to `0` returns the final difficult input, whereas all other values return easier sample
+         * Setting [sample] to `null` returns the final difficult input, whereas all other values return easier sample
          * inputs.
          */
-        fun resource(year: Int, day: Int, sample: Int = 0) =
+        fun resource(year: Int, day: Int, sample: Int? = null) =
             "/y$year/Day${day}"
-                .let { if (sample != 0) "${it}Sample${sample}" else it }
+                .let { if (sample != null) "${it}Sample${sample}" else it }
                 .let { "${it}.txt" }
     }
 }
