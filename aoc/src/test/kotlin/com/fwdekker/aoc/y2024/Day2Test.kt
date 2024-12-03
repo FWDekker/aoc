@@ -8,7 +8,6 @@ import io.kotest.core.annotation.Tags
 /**
  * Tests for [Day2].
  */
-@Tags("XX")
 object Day2Test : DayTest(
     ::Day2,
     listOf(
