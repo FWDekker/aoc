@@ -68,7 +68,7 @@ class Day23(resource: String = resource(2023, 23)) : Day() {
 
     private fun findShortestDistances(
         from: Coords,
-        to: Iterable<Coords>,
+        to: Sequence<Coords>,
         getNeighbors: (Coords) -> Iterable<Coords>,
     ): Map<Coords, Int> {
         val distances = mutableMapOf<Coords, Int>().withDefault { Integer.MAX_VALUE }

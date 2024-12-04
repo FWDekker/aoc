@@ -62,7 +62,8 @@ val <T> Grid<T>.lastColIndex: Int get() = this[0].lastIndex
 /**
  * All pairs of coordinates in the grid.
  */
-val <T> Grid<T>.allCoords: List<Coords> get() = rows.map { row -> cols.map { col -> Coords(col, row) } }.flatten()
+val <T> Grid<T>.allCoords: Sequence<Coords> get() =
+    rows.asSequence().flatMap { row -> cols.map { col -> Coords(row, col) } }
 
 
 /**

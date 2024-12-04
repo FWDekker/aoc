@@ -68,6 +68,9 @@ sealed class Direction {
     abstract val antiDiagonal: Boolean
 
 
+    /**
+     * Holds constants.
+     */
     companion object {
         /**
          * The eight cardinal directions.
