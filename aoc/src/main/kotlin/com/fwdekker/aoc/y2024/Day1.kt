@@ -22,7 +22,7 @@ class Day1(resource: String = resource(2024, 1)) : Day() {
 
     override fun part2(): Int {
         val rightCounts = rights.histogram()
-        return lefts.sumOf { left -> left * rightCounts.getValue(left) }
+        return lefts.sumOf { left -> left * rightCounts.getOrDefault(left, 0) }
     }
 }
 
