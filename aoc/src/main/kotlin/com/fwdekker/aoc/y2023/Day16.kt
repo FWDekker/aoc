@@ -34,8 +34,10 @@ class Day16(resource: String = resource(2023, 16)) : Day() {
             '.' -> listOf(from.go { ahead })
             '/' -> listOf(from.go { flipNE })
             '\\' -> listOf(from.go { flipNW })
-            '|' -> if (from.direction.vertical) listOf(from.go { ahead }) else from.go({ left }, { right })
-            '-' -> if (from.direction.horizontal) listOf(from.go { ahead }) else from.go({ left }, { right })
+            '|' -> if (from.direction.vertical)
+                listOf(from.go { ahead }) else listOf(from.go { left }, from.go { right })
+            '-' -> if (from.direction.horizontal)
+                listOf(from.go { ahead }) else listOf(from.go { left }, from.go { right })
             else -> emptyList()
         }
 

@@ -12,22 +12,30 @@ data class Heading(val coords: Coords, val direction: Direction) {
 
 
     /**
-     * Turns and moves to [direction].
+     * Faces towards [direction] without moving.
      */
-    fun go(direction: Direction): Heading = Heading(coords.move(direction), direction)
+    fun face(direction: Direction): Heading = go(direction, distance = 0)
 
     /**
-     * Turns and moves to the result of applying [transform] to [direction].
+     * Faces towards the result of applying [transform] to [direction] without moving.
      */
-    fun go(transform: Direction.() -> Direction): Heading = go(transform(direction))
+    fun face(transform: Direction.() -> Direction): Heading = go(transform, distance = 0)
 
     /**
-     * Turns and moves to each of the [directions].
+     * Turns to [direction] and sets [distance] steps.
      */
-    fun go(vararg directions: Direction): List<Heading> = directions.map { go(it) }
+    fun go(direction: Direction = this.direction, distance: Int = 1): Heading =
+        Heading(coords.move(direction, distance), direction)
 
     /**
-     * Turns and moves to each result of applying the [transforms] to [direction].
+     * Turns to the result of applying [transform] to [direction] and sets one step.
      */
-    fun go(vararg transforms: Direction.() -> Direction): List<Heading> = transforms.map { go(it) }
+    fun go(transform: Direction.() -> Direction): Heading =
+        go(transform, 1)
+
+    /**
+     * Turns to the result of applying [transform] to [direction] and sets [distance] steps.
+     */
+    fun go(transform: Direction.() -> Direction, distance: Int): Heading =
+        go(transform(direction), distance)
 }

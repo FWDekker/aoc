@@ -1,6 +1,7 @@
 package com.fwdekker.std.grid
 
 import com.fwdekker.std.collections.getMod
+import com.fwdekker.std.runningFoldSelf
 
 
 /**
@@ -147,11 +148,23 @@ fun <T> Grid<T>.canMove(coords: Coords, direction: Direction, distance: Int = 1)
     coords.move(direction, distance) in this
 
 /**
+ * @see canMove
+ */
+fun <T> Grid<T>.canMove(heading: Heading, distance: Int = 1): Boolean =
+    canMove(heading.coords, heading.direction, distance)
+
+/**
  * Returns all elements on the line piece from [coords] up to and including [coords] plus [distance] steps in the given
  * [direction].
  */
 fun <T> Grid<T>.getLine(coords: Coords, direction: Direction, distance: Int = 1): List<T> =
-    (0..distance).map { this[coords.move(direction, it)] }
+    coords.runningFoldSelf(distance) { it.move(direction) }.map { get(it) }
+
+/**
+ * @see getLine
+ */
+fun <T> Grid<T>.getLine(heading: Heading, distance: Int = 1): List<T> =
+    getLine(heading.coords, heading.direction, distance)
 
 
 /**

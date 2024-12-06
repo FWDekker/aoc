@@ -92,6 +92,6 @@ val Coords.cardinals: List<Coords> get() = Cardinal.entries.map { move(it) }
 val Coords.ordinals: List<Coords> get() = Ordinal.entries.map { move(it) }
 
 /**
- * Returns the neighboring coordinates in all four cardinal and ordinal directions.
+ * Returns the neighboring coordinates in all four cardinal and all four ordinal directions.
  */
 val Coords.principals: List<Coords> get() = Direction.entries.map { move(it) }

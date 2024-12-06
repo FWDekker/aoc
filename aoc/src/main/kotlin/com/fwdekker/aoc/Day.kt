@@ -1,5 +1,8 @@
 package com.fwdekker.aoc
 
+import com.fwdekker.std.grid.Cardinal
+import com.fwdekker.std.grid.Direction
+import com.fwdekker.std.grid.Ordinal
 import kotlin.time.measureTimedValue
 
 
@@ -10,7 +13,10 @@ abstract class Day {
     /**
      * Runs and prints both parts.
      */
+    @Suppress("unused")
     fun run() {
+        Cardinal; Ordinal; Direction  // TODO: Remove workaround for KT-59723
+
         measureTimedValue { part1() }
             .also { println("Part one: ${it.value} (in ${it.duration.inWholeMilliseconds} ms)") }
         measureTimedValue { part2() }

@@ -1,3 +1,4 @@
+@file:Suppress("unused")
 package com.fwdekker.std.collections
 
 import com.fwdekker.std.maths.wrapMod
@@ -93,7 +94,7 @@ fun <T> List<T>.asPair(): Pair<T, T> = Pair(this[0], this[1])
 fun <T> List<T>.asTriple(): Triple<T, T, T> = Triple(this[0], this[1], this[2])
 
 /**
- * Zips [first] with [second].
+ * Zips [Pair.first] with [Pair.second].
  */
 fun <A, B> Pair<Iterable<A>, Iterable<B>>.zipped(): List<Pair<A, B>> = first zip second
 
@@ -111,6 +112,18 @@ fun <T> Iterable<T>.repeat(amount: Int): List<T> = asSequence().repeat(amount).t
 fun <T> Sequence<T>.cyclic(): Sequence<T> = sequence { while (true) yieldAll(this@cyclic) }
 
 fun <T> Iterable<T>.cyclic(): Sequence<T> = asSequence().cyclic()
+
+/**
+ * Returns `true` if an element occurs more than once, or `false` if all elements are unique.
+ *
+ * This method may not terminate if the sequence is infinitely long.
+ */
+fun <T> Sequence<T>.isDistinct(): Boolean {
+    val seen = mutableSetOf<T>()
+    return any { !seen.add(it) }
+}
+
+fun <T> Iterable<T>.isDistinct(): Boolean = asSequence().isDistinct()
 
 
 /**

@@ -4,7 +4,6 @@ import com.fwdekker.std.collections.map
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.experimental.ExperimentalTypeInference
-import kotlin.math.pow
 
 
 /**
@@ -40,27 +39,45 @@ operator fun Pair<BigDecimal, BigDecimal>.plus(that: Pair<BigDecimal, BigDecimal
  * Takes the sum of all elements.
  */
 @JvmName("bigIntSum")
-fun Iterable<BigInteger>.sum(): BigInteger = fold(BigInteger.ZERO) { acc, it -> acc + it }
+fun Sequence<BigInteger>.sum(): BigInteger = fold(BigInteger.ZERO) { acc, it -> acc + it }
+
+@JvmName("bigIntSum")
+fun Iterable<BigInteger>.sum(): BigInteger = asSequence().sum()
 
 @JvmName("bigDecSum")
-fun Iterable<BigDecimal>.sum(): BigDecimal = fold(BigDecimal.ZERO) { acc, it -> acc + it }
+fun Sequence<BigDecimal>.sum(): BigDecimal = fold(BigDecimal.ZERO) { acc, it -> acc + it }
+
+@JvmName("bigDecSum")
+fun Iterable<BigDecimal>.sum(): BigDecimal = asSequence().sum()
 
 /**
  * Takes the component-wise sum of all elements.
  */
 @JvmName("intPairSum")
-fun Iterable<Pair<Int, Int>>.sum(): Pair<Int, Int> = fold(Pair(0, 0)) { acc, it -> acc + it }
+fun Sequence<Pair<Int, Int>>.sum(): Pair<Int, Int> = fold(Pair(0, 0)) { acc, it -> acc + it }
+
+@JvmName("intPairSum")
+fun Iterable<Pair<Int, Int>>.sum(): Pair<Int, Int> = asSequence().sum()
 
 @JvmName("longPairSum")
-fun Iterable<Pair<Long, Long>>.sum(): Pair<Long, Long> = fold(Pair(0L, 0L)) { acc, it -> acc + it }
+fun Sequence<Pair<Long, Long>>.sum(): Pair<Long, Long> = fold(Pair(0L, 0L)) { acc, it -> acc + it }
+
+@JvmName("longPairSum")
+fun Iterable<Pair<Long, Long>>.sum(): Pair<Long, Long> = asSequence().sum()
 
 @JvmName("bigIntPairSum")
-fun Iterable<Pair<BigInteger, BigInteger>>.sum(): Pair<BigInteger, BigInteger> =
+fun Sequence<Pair<BigInteger, BigInteger>>.sum(): Pair<BigInteger, BigInteger> =
     fold(Pair(BigInteger.ZERO, BigInteger.ZERO)) { acc, it -> acc + it }
 
+@JvmName("bigIntPairSum")
+fun Iterable<Pair<BigInteger, BigInteger>>.sum(): Pair<BigInteger, BigInteger> = asSequence().sum()
+
 @JvmName("bigDecPairSum")
-fun Iterable<Pair<BigDecimal, BigDecimal>>.sum(): Pair<BigDecimal, BigDecimal> =
+fun Sequence<Pair<BigDecimal, BigDecimal>>.sum(): Pair<BigDecimal, BigDecimal> =
     fold(Pair(BigDecimal.ZERO, BigDecimal.ZERO)) { acc, it -> acc + it }
+
+@JvmName("bigDecPairSum")
+fun Iterable<Pair<BigDecimal, BigDecimal>>.sum(): Pair<BigDecimal, BigDecimal> = asSequence().sum()
 
 
 /**
@@ -86,33 +103,57 @@ operator fun Pair<BigDecimal, BigDecimal>.times(that: Pair<BigDecimal, BigDecima
  * Takes the product of all elements.
  */
 @JvmName("intProduct")
+fun Sequence<Int>.product(): Long = toLongs().product()
+
+@JvmName("intProduct")
 fun Iterable<Int>.product(): Long = toLongs().product()
 
 @JvmName("longProduct")
-fun Iterable<Long>.product(): Long = reduce(Long::times)
+fun Sequence<Long>.product(): Long = reduce(Long::times)
+
+@JvmName("longProduct")
+fun Iterable<Long>.product(): Long = asSequence().product()
 
 @JvmName("bigIntProduct")
-fun Iterable<BigInteger>.product(): BigInteger = reduce(BigInteger::times)
+fun Sequence<BigInteger>.product(): BigInteger = reduce(BigInteger::times)
+
+@JvmName("bigIntProduct")
+fun Iterable<BigInteger>.product(): BigInteger = asSequence().product()
 
 @JvmName("bigDecProduct")
-fun Iterable<BigDecimal>.product(): BigDecimal = reduce(BigDecimal::times)
+fun Sequence<BigDecimal>.product(): BigDecimal = reduce(BigDecimal::times)
+
+@JvmName("bigDecProduct")
+fun Iterable<BigDecimal>.product(): BigDecimal = asSequence().product()
 
 /**
  * Takes the pair-wise product of all elements.
  */
 @JvmName("intProduct")
-fun Iterable<Pair<Int, Int>>.product(): Pair<Long, Long> = toLongs().product()
+fun Sequence<Pair<Int, Int>>.product(): Pair<Long, Long> = toLongs().product()
+
+@JvmName("intProduct")
+fun Iterable<Pair<Int, Int>>.product(): Pair<Long, Long> = asSequence().product()
 
 @JvmName("longProduct")
-fun Iterable<Pair<Long, Long>>.product(): Pair<Long, Long> = fold(Pair(1L, 1L)) { acc, it -> acc * it }
+fun Sequence<Pair<Long, Long>>.product(): Pair<Long, Long> = fold(Pair(1L, 1L)) { acc, it -> acc * it }
+
+@JvmName("longProduct")
+fun Iterable<Pair<Long, Long>>.product(): Pair<Long, Long> = asSequence().product()
 
 @JvmName("bigIntProduct")
-fun Iterable<Pair<BigInteger, BigInteger>>.product(): Pair<BigInteger, BigInteger> =
+fun Sequence<Pair<BigInteger, BigInteger>>.product(): Pair<BigInteger, BigInteger> =
     fold(Pair(BigInteger.ONE, BigInteger.ONE)) { acc, it -> acc * it }
 
+@JvmName("bigIntProduct")
+fun Iterable<Pair<BigInteger, BigInteger>>.product(): Pair<BigInteger, BigInteger> = asSequence().product()
+
 @JvmName("bigDecProduct")
-fun Iterable<Pair<BigDecimal, BigDecimal>>.product(): Pair<BigDecimal, BigDecimal> =
+fun Sequence<Pair<BigDecimal, BigDecimal>>.product(): Pair<BigDecimal, BigDecimal> =
     fold(Pair(BigDecimal.ONE, BigDecimal.ONE)) { acc, it -> acc * it }
+
+@JvmName("bigDecProduct")
+fun Iterable<Pair<BigDecimal, BigDecimal>>.product(): Pair<BigDecimal, BigDecimal> = asSequence().product()
 
 /**
  * Shorthand for invoking [map] and then [product].
@@ -120,7 +161,17 @@ fun Iterable<Pair<BigDecimal, BigDecimal>>.product(): Pair<BigDecimal, BigDecima
 @JvmName("intProductOf")
 @OptIn(ExperimentalTypeInference::class)
 @OverloadResolutionByLambdaReturnType
+fun <T> Sequence<T>.productOf(transform: (T) -> Int): Long = map(transform).product()
+
+@JvmName("intProductOf")
+@OptIn(ExperimentalTypeInference::class)
+@OverloadResolutionByLambdaReturnType
 fun <T> Iterable<T>.productOf(transform: (T) -> Int): Long = map(transform).product()
+
+@JvmName("longProductOf")
+@OptIn(ExperimentalTypeInference::class)
+@OverloadResolutionByLambdaReturnType
+fun <T> Sequence<T>.productOf(transform: (T) -> Long): Long = map(transform).product()
 
 @JvmName("longProductOf")
 @OptIn(ExperimentalTypeInference::class)
@@ -130,7 +181,17 @@ fun <T> Iterable<T>.productOf(transform: (T) -> Long): Long = map(transform).pro
 @JvmName("bigIntProductOf")
 @OptIn(ExperimentalTypeInference::class)
 @OverloadResolutionByLambdaReturnType
+fun <T> Sequence<T>.productOf(transform: (T) -> BigInteger): BigInteger = map(transform).product()
+
+@JvmName("bigIntProductOf")
+@OptIn(ExperimentalTypeInference::class)
+@OverloadResolutionByLambdaReturnType
 fun <T> Iterable<T>.productOf(transform: (T) -> BigInteger): BigInteger = map(transform).product()
+
+@JvmName("bigDecProductOf")
+@OptIn(ExperimentalTypeInference::class)
+@OverloadResolutionByLambdaReturnType
+fun <T> Sequence<T>.productOf(transform: (T) -> BigDecimal): BigDecimal = map(transform).product()
 
 @JvmName("bigDecProductOf")
 @OptIn(ExperimentalTypeInference::class)
