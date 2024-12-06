@@ -178,7 +178,7 @@ object PrimesTest : DescribeSpec({
 
     describe("primes") {
         it("returns the first 25 primes") {
-            primes().take(25).toList() should containExactlyInSameOrderElementsOf(knownPrimes)
+            primes.take(25).toList() should containExactlyInSameOrderElementsOf(knownPrimes)
         }
     }
 })

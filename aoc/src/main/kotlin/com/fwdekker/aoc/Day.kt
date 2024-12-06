@@ -13,10 +13,7 @@ abstract class Day {
     /**
      * Runs and prints both parts.
      */
-    @Suppress("unused")
     fun run() {
-        Cardinal; Ordinal; Direction  // TODO: Remove workaround for KT-59723
-
         measureTimedValue { part1() }
             .also { println("Part one: ${it.value} (in ${it.duration.inWholeMilliseconds} ms)") }
         measureTimedValue { part2() }
@@ -38,6 +35,10 @@ abstract class Day {
      * Holds constants.
      */
     companion object {
+        @Suppress("unused")
+        private val ignoreMe = Triple(Cardinal, Ordinal, Direction)  // TODO: Remove workaround for KT-59723
+
+
         /**
          * Shorthand for returning the resource for the given [year] and [day].
          *

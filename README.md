@@ -50,4 +50,6 @@ gradlew test
 gradlew :aoc:test
 # Run tests tagged with "Foo" in subproject 'aoc'
 gradlew :aoc:test -Pkotest.tags="Foo"
+# Run all tests for AoC 2024
+gradlew test --tests "com.fwdekker.aoc.y2024.*"
 ```
