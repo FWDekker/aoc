@@ -2,3 +2,6 @@
 	path = euler
 	url = git@github.com:FWDekker/project-euler.git
 	branch = main
+[submodule "aoc/src/main/resources"]
+	path = aoc/src/main/resources
+	url = git@github.com:FWDekker/aoc-inputs.git

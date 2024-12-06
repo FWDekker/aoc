@@ -1,10 +1,10 @@
 # Advent of Code
-My solutions to the [Advent of Code](https://adventofcode.com/).
-[The source code is here.](https://github.com/FWDekker/aoc/tree/main/aoc/src/main/kotlin/com/fwdekker/aoc)
+My solutions to the [Advent of Code](https://adventofcode.com/), years 2023 and 2024.
+* [The source code is here.](https://github.com/FWDekker/aoc/tree/main/aoc/src/main/kotlin/com/fwdekker/aoc)
+* [My puzzle inputs are here.](https://github.com/FWDekker/aoc-inputs) (In a private repo.)
 
 Also includes my solutions for [Project Euler](https://projecteuler.net/).
-[The source code is here.](https://github.com/FWDekker/project-euler)
-(It's in a private repo.)
+* [The source code is here.](https://github.com/FWDekker/project-euler) (In a private repo.)
 
 ## Git submodules
 Project Euler does not allow sharing solutions.
