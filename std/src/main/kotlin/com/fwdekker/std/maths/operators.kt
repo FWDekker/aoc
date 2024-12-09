@@ -119,6 +119,25 @@ operator fun Pair<BigDecimal, BigDecimal>.times(that: Pair<BigDecimal, BigDecima
     Pair(this.first * that.first, this.second * that.second)
 
 /**
+ * Takes the component-wise division of the pairs.
+ */
+@JvmName("intPairDiv")
+operator fun Pair<Int, Int>.div(that: Pair<Int, Int>): Pair<Int, Int> =
+    Pair(this.first / that.first, this.second / that.second)
+
+@JvmName("longPairDiv")
+operator fun Pair<Long, Long>.div(that: Pair<Long, Long>): Pair<Long, Long> =
+    Pair(this.first / that.first, this.second / that.second)
+
+@JvmName("bigIntPairDiv")
+operator fun Pair<BigInteger, BigInteger>.div(that: Pair<BigInteger, BigInteger>): Pair<BigInteger, BigInteger> =
+    Pair(this.first / that.first, this.second / that.second)
+
+@JvmName("bigDecPairDiv")
+operator fun Pair<BigDecimal, BigDecimal>.div(that: Pair<BigDecimal, BigDecimal>): Pair<BigDecimal, BigDecimal> =
+    Pair(this.first / that.first, this.second / that.second)
+
+/**
  * Takes the product of all elements.
  */
 @JvmName("intProduct")

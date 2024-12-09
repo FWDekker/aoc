@@ -2,6 +2,7 @@ package com.fwdekker.std.maths
 
 import com.fwdekker.std.collections.swapAt
 import com.fwdekker.std.foldSelf
+import com.fwdekker.std.toDigits
 import java.math.BigInteger
 
 
@@ -114,21 +115,28 @@ fun <T> List<T>.permutations(): Sequence<List<T>> =
 fun <T> Collection<T>.permutations(): Sequence<List<T>> = toList().permutations()
 
 /**
- * Returns all (not necessarily proper) subsets of [this].
+ * Returns all possible ways of partitioning [this] into [partitions] partitions.
+ *
+ * Each element in the sequence is a list. Each list has a size equal to the size of [this], with each element an
+ * integer in the range `0..<partitions`, mapping the elements of [this] to the assigned partitions.
+ */
+fun <T> List<T>.orderedPartitions(partitions: Int): Sequence<List<Int>> =
+    BigInteger.ZERO.rangeUntil(partitions.toBigInteger().pow(size))
+        .asSequence()
+        .map { partition -> partition.toString(partitions).padStart(size, '0').toDigits() }
+
+fun <T> Collection<T>.orderedPartitions(partitions: Int): Sequence<List<Int>> = toList().orderedPartitions(partitions)
+
+/**
+ * Returns all (not necessarily proper) subsets of [this], except those outside the range `minSize..maxSize`.
  */
 fun <T> List<T>.powerSet(minSize: Int = 0, maxSize: Int = this.size): Sequence<List<T>> {
     require(minSize <= maxSize) { "Minimum size must be no more than maximum size." }
     require(minSize >= 0) { "Minimum size must be non-negative." }
     require(maxSize <= size) { "Maximum size must be at most collection size." }
 
-    return BigInteger.ZERO.rangeUntil(BigInteger.TWO.pow(size))
-        .asSequence()
-        .map { n ->
-            n.toString(2).padStart(size, '0')
-                .withIndex()
-                .filter { (_, bit) -> bit == '1' }
-                .map { (idx, _) -> this[idx] }
-        }
+    return orderedPartitions(2)
+        .map { it.withIndex().filter { (_, bit) -> bit == 1 }.map { (idx, _) -> this[idx] } }
         .filter { it.size in minSize..maxSize }
 }
 

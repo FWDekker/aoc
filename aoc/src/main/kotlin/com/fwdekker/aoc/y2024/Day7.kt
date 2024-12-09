@@ -3,10 +3,11 @@ package com.fwdekker.aoc.y2024
 import com.fwdekker.aoc.Day
 import com.fwdekker.std.collections.firsts
 import com.fwdekker.std.linesNotBlank
-import com.fwdekker.std.maths.powerSet
+import com.fwdekker.std.maths.orderedPartitions
 import com.fwdekker.std.maths.sum
 import com.fwdekker.std.read
 import com.fwdekker.std.toBigIntegers
+import java.math.BigInteger
 
 
 class Day7(resource: String = resource(2024, 7)) : Day() {
@@ -14,28 +15,35 @@ class Day7(resource: String = resource(2024, 7)) : Day() {
         read(resource).linesNotBlank().map { it.split(':') }.map { it[0].toBigInteger() to it[1].toBigIntegers(' ') }
 
 
-    override fun part1() =
-        equations.filter { (total, operands) ->
-            (0..(operands.size - 2)).toList().powerSet().any { additions ->
-                operands.reduceIndexed { idx, acc, operand ->
-                    if ((idx - 1) in additions) acc + operand
-                    else acc * operand
-                } == total
-            }
-        }.firsts().sum()
+    override fun part1() = calibrate(operatorCount = 2)
 
-    override fun part2() =
-        equations.filter { (total, operands) ->
-            (0..(operands.size - 2)).toList().powerSet().any { notConcatenation ->
-                notConcatenation.powerSet().any { multiplications ->
-                    operands.reduceIndexed { idx, acc, operand ->
-                        if ((idx - 1) in multiplications) acc * operand
-                        else if ((idx - 1) in notConcatenation) acc + operand
-                        else "$acc$operand".toBigInteger()
-                    } == total
+    override fun part2() = calibrate(operatorCount = 3)
+
+
+    private fun calibrate(operatorCount: Int) =
+        equations
+            .filter { (total, operands) ->
+                (0..operands.size - 2).toList().orderedPartitions(operatorCount)
+                    .any { operators ->
+                        operands[0] == operators.indices.fold(total) { acc, idx ->
+                            val operand = operands[operands.lastIndex - idx]
+                            when (operators[idx]) {
+                                0 ->
+                                    if (acc < operand) return@any false
+                                    else acc - operand
+
+                                1 ->
+                                    if (acc % operand != BigInteger.ZERO) return@any false
+                                    else acc / operand
+
+                                else ->
+                                    if (!acc.toString().endsWith(operand.toString())) return@any false
+                                    else acc / BigInteger.TEN.pow(operand.toString().length)
+                            }
+                        }
                 }
             }
-        }.firsts().sum()
+            .firsts().sum()
 }
 
 

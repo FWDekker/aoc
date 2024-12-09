@@ -1,5 +1,6 @@
 package com.fwdekker.std.maths
 
+import com.fwdekker.std.collections.map
 import kotlin.math.abs
 import kotlin.math.floor
 import kotlin.math.sqrt
@@ -32,6 +33,10 @@ fun gcd(a: Int, b: Int): Int = gcd(a.toLong(), b.toLong()).toInt()
 
 tailrec fun gcd(a: Long, b: Long): Long = if (b == 0L) abs(a) else gcd(b, a % b)
 
+fun Pair<Int, Int>.gcd(): Int = gcd(first, second)
+
+fun Pair<Long, Long>.gcd(): Long = gcd(first, second)
+
 /**
  * Returns the greatest common divisor of all elements in [this] list.
  *
@@ -59,6 +64,10 @@ fun lcm(a: Long, b: Long): Long {
     return abs(a * (b / gcd(a, b)))
 }
 
+fun Pair<Int, Int>.lcm(): Int = lcm(first, second)
+
+fun Pair<Long, Long>.lcm(): Long = lcm(first, second)
+
 /**
  * Returns the least common multiple of all elements in [this] list.
  *
@@ -80,6 +89,15 @@ fun Iterable<Long>.lcm(): Long =
         if (zeros > 0) return 0L
         else filterNot { it == 0L }.reduce(::lcm)
     }
+
+/**
+ * Simplifies the ratio expressed by this pair by dividing both elements by their [gcd].
+ */
+@JvmName("intPairSimplifyRatio")
+fun Pair<Int, Int>.simplifyRatio() = gcd().let { gcd -> map { it / gcd } }
+
+@JvmName("longPairSimplifyRatio")
+fun Pair<Long, Long>.simplifyRatio() = gcd().let { gcd -> map { it / gcd } }
 
 
 /**

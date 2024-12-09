@@ -46,7 +46,6 @@ class Day9(resource: String = resource(2024, 9)) : Day() {
 
         val all = files.zip(frees.take(files.size)).flatMap { it.toList() }.flatten().dropLastWhile { it == -1 }
         return all.withIndex().sumOf { (idx, value) -> idx * value.toLong() }
-        // sample2 should give 60
     }
 
     override fun part2(): Long {

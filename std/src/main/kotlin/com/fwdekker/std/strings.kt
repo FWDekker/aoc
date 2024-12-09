@@ -21,6 +21,11 @@ fun String.sections(separator: String = "\n\n"): List<List<String>> = split(sepa
 
 
 /**
+ * Interprets each [Char] as a digit and converts it to an [Int].
+ */
+fun String.toDigits(): List<Int> = map { it.digitToInt() }
+
+/**
  * Splits by [separator] and converts each entry to an [Int].
  */
 fun String.toInts(separator: Char): List<Int> = toInts(separator.toString())
