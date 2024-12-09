@@ -5,19 +5,17 @@ import com.fwdekker.std.collections.map
 import com.fwdekker.std.collections.mapFirst
 import com.fwdekker.std.collections.mapSecond
 import com.fwdekker.std.collections.repeat
+import com.fwdekker.std.collections.unzip
 import com.fwdekker.std.read
 import com.fwdekker.std.toInts
 
 
 class Day9(resource: String = resource(2024, 9)) : Day() {
-    private val disk = read(resource).toInts("")
+    private val diskMap = read(resource).toInts("")
 
 
     override fun part1(): Long {
-        val (files, frees) = disk.withIndex().partition { (idx, _) -> idx % 2 == 0 }
-            .map { list -> list.map { it.value } }
-            .mapFirst { files -> files.mapIndexed { idx, it -> listOf(idx).repeat(it) }.toMutableList() }
-            .mapSecond { free -> free.map { listOf(-1).repeat(it) }.toMutableList() }
+        val (files, frees) = blocks()
 
         frees.indices.forEach { freeIdx ->
             while (true) {
@@ -25,48 +23,58 @@ class Day9(resource: String = resource(2024, 9)) : Day() {
                     break
 
                 val free = frees[freeIdx]
-                val freeUsed = free.takeWhile { it != -1 }
-                val freeAvailable = free.size - freeUsed.size
+                val used = free.takeWhile { it != -1 }
+                val available = free.size - used.size
                 val file = files.last()
 
-                if (file.size == freeAvailable) {
+                if (file.size == available) {
                     files.removeLast()
-                    frees[freeIdx] = freeUsed + file
+                    frees[freeIdx] = used + file
                     break
-                } else if (file.size < freeAvailable) {
+                } else if (file.size < available) {
                     files.removeLast()
-                    frees[freeIdx] = freeUsed + file + free.drop(freeUsed.size + file.size)
+                    frees[freeIdx] = used + file + free.drop(used.size + file.size)
                 } else {
-                    files[files.lastIndex] = file.drop(freeAvailable)
-                    frees[freeIdx] = freeUsed + file.take(freeAvailable)
+                    files[files.lastIndex] = file.drop(available)
+                    frees[freeIdx] = used + file.take(available)
                     break
                 }
             }
         }
 
-        val all = files.zip(frees.take(files.size)).flatMap { it.toList() }.flatten().dropLastWhile { it == -1 }
-        return all.withIndex().sumOf { (idx, value) -> idx * value.toLong() }
+        return files.unzip(frees).flatten().checksum()
     }
 
     override fun part2(): Long {
-        val (files, frees) = disk.withIndex().partition { (idx, _) -> idx % 2 == 0 }
-            .map { list -> list.map { it.value } }
-            .mapFirst { files -> files.mapIndexed { idx, it -> listOf(idx).repeat(it) }.toMutableList() }
-            .mapSecond { free -> free.map { listOf(-1).repeat(it) }.toMutableList() }
+        val (files, frees) = blocks()
 
         files.indices.reversed().forEach { fileIdx ->
             val file = files[fileIdx]
-            val freeIdx = frees.indexOfFirst { free -> free.size >= file.size && -1 in free && free.count { it == -1 } >= file.size }
-            if (freeIdx < 0) return@forEach
-            if (freeIdx >= fileIdx) return@forEach
 
-            files[fileIdx] = file.map { -1 }
-            frees[freeIdx] = frees[freeIdx].takeWhile { it != -1 } + file + frees[freeIdx].drop(frees[freeIdx].takeWhile { it != -1 }.size + file.size)
+            val freeIdx = frees.indexOfFirst { free ->
+                free.size >= file.size && -1 in free && free.count { it == -1 } >= file.size
+            }
+            if (freeIdx !in 0..<fileIdx) return@forEach
+            val free = frees[freeIdx]
+            val used = free.count { it != -1 }
+
+            files[fileIdx] = List(file.size) { -1 }
+            frees[freeIdx] = free.take(used) + file + free.drop(used + file.size)
         }
 
-        val all = files.zip(frees.take(files.size)).flatMap { it.toList() }.flatten()
-        return all.withIndex().filter { it.value != -1 }.sumOf { (idx, value) -> idx * value.toLong() }
+        return files.unzip(frees).flatten().checksum()
     }
+
+
+    private fun blocks(): Pair<MutableList<List<Int>>, MutableList<List<Int>>> =
+        diskMap.withIndex()
+            .partition { (idx, _) -> idx % 2 == 0 }
+            .map { list -> list.map { it.value } }
+            .mapFirst { files -> files.mapIndexed { id, len -> listOf(id).repeat(len) }.toMutableList() }
+            .mapSecond { free -> free.map { len -> listOf(-1).repeat(len) }.toMutableList() }
+
+    private fun Collection<Int>.checksum(): Long =
+        withIndex().filter { (_, it) -> it != -1 }.sumOf { (id, value) -> id * value.toLong() }
 }
 
 

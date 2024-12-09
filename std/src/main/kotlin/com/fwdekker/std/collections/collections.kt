@@ -1,6 +1,7 @@
 @file:Suppress("unused")
 package com.fwdekker.std.collections
 
+import com.fwdekker.std.maths.min
 import com.fwdekker.std.maths.wrapMod
 import kotlin.experimental.ExperimentalTypeInference
 
@@ -137,6 +138,18 @@ fun <T> List<T>.without(idx: Int): MutableList<T> = toMutableList().also { it.re
 fun <T> MutableList<T>.swapAt(idx1: Int, idx2: Int): MutableList<T> {
     this[idx1] = this[idx2].also { this[idx2] = this[idx1] }
     return this
+}
+
+
+/**
+ * Merges [this] with [that] by selecting elements from both collections in an alternating fashion, starting with
+ * [this].
+ *
+ * If the collections have different sizes, then the unmatched part of the longer collection is simply appended.
+ */
+fun <T> Collection<T>.unzip(that: Collection<T>): List<T> {
+    val common = min(this.size, that.size)
+    return this.take(common).zip(that.take(common)).flatMap { it.toList() } + this.drop(common) + that.drop(common)
 }
 
 

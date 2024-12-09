@@ -2,14 +2,12 @@ package com.fwdekker.aoc.y2024
 
 import com.fwdekker.aoc.Day
 import com.fwdekker.aoc.DayTest
-import io.kotest.core.annotation.Tags
 import java.math.BigInteger
 
 
 /**
  * Tests for [Day7].
  */
-@Tags("XX")
 object Day7Test : DayTest(
     ::Day7,
     listOf(

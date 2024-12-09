@@ -2,13 +2,11 @@ package com.fwdekker.aoc.y2024
 
 import com.fwdekker.aoc.Day
 import com.fwdekker.aoc.DayTest
-import io.kotest.core.annotation.Tags
 
 
 /**
  * Tests for [Day9].
  */
-@Tags("XX")
 object Day9Test : DayTest(
     ::Day9,
     listOf(
