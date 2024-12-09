@@ -36,6 +36,25 @@ operator fun Pair<BigDecimal, BigDecimal>.plus(that: Pair<BigDecimal, BigDecimal
     Pair(this.first + that.first, this.second + that.second)
 
 /**
+ * Takes the component-wise subtraction of the pairs.
+ */
+@JvmName("intPairMinus")
+operator fun Pair<Int, Int>.minus(that: Pair<Int, Int>): Pair<Int, Int> =
+    Pair(this.first - that.first, this.second - that.second)
+
+@JvmName("longPairMinus")
+operator fun Pair<Long, Long>.minus(that: Pair<Long, Long>): Pair<Long, Long> =
+    Pair(this.first - that.first, this.second - that.second)
+
+@JvmName("bigIntPairMinus")
+operator fun Pair<BigInteger, BigInteger>.minus(that: Pair<BigInteger, BigInteger>): Pair<BigInteger, BigInteger> =
+    Pair(this.first - that.first, this.second - that.second)
+
+@JvmName("bigDecPairMinus")
+operator fun Pair<BigDecimal, BigDecimal>.minus(that: Pair<BigDecimal, BigDecimal>): Pair<BigDecimal, BigDecimal> =
+    Pair(this.first - that.first, this.second - that.second)
+
+/**
  * Takes the sum of all elements.
  */
 @JvmName("bigIntSum")

@@ -12,12 +12,12 @@ import com.fwdekker.std.grid.lastColIndex
 import com.fwdekker.std.grid.lastRowIndex
 import com.fwdekker.std.grid.northEast
 import com.fwdekker.std.grid.northWest
-import com.fwdekker.std.linesNotBlank
+import com.fwdekker.std.grid.toChart
 import com.fwdekker.std.read
 
 
 class Day4(resource: String = resource(2024, 4)) : Day() {
-    private val puzzle = read(resource).linesNotBlank().map { it.toList() }
+    private val puzzle = read(resource).toChart()
 
 
     override fun part1(): Int =
