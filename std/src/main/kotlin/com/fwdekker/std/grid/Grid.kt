@@ -1,7 +1,9 @@
+@file:Suppress("unused")
 package com.fwdekker.std.grid
 
 import com.fwdekker.std.collections.getMod
 import com.fwdekker.std.runningFoldSelf
+import java.util.PriorityQueue
 
 
 /**
@@ -137,8 +139,12 @@ fun <T> Grid<T>.coordsOf(cell: T): Coords =
 /**
  * Returns all [Coords] at which [cell] is found.
  */
-fun <T> Grid<T>.allCoordsOf(cell: T): List<Coords> =
-    rows.flatMap { row -> this[row].withIndex().filter { (_, it) -> it == cell }.map { (col, _) -> Coords(row, col) } }
+fun <T> Grid<T>.allCoordsOf(cell: T): Sequence<Coords> = allCoords.filter { this[it] == cell }
+
+/**
+ * Returns all [Coords] at which the value satisfies the [selector].
+ */
+fun <T> Grid<T>.allCoordsOf(selector: (T) -> Boolean): Sequence<Coords> = allCoords.filter { selector(this[it]) }
 
 
 /**

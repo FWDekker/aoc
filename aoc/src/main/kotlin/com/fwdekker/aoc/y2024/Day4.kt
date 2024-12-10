@@ -5,6 +5,7 @@ import com.fwdekker.std.grid.Direction
 import com.fwdekker.std.grid.SouthEast
 import com.fwdekker.std.grid.SouthWest
 import com.fwdekker.std.grid.allCoords
+import com.fwdekker.std.grid.allCoordsOf
 import com.fwdekker.std.grid.canMove
 import com.fwdekker.std.grid.get
 import com.fwdekker.std.grid.getLine
@@ -21,8 +22,7 @@ class Day4(resource: String = resource(2024, 4)) : Day() {
 
 
     override fun part1(): Int =
-        puzzle.allCoords
-            .filter { coords -> puzzle[coords] == 'X' }
+        puzzle.allCoordsOf('X')
             .sumOf { coords ->
                 Direction.entries
                     .filter { puzzle.canMove(coords, it, 3) }

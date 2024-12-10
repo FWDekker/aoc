@@ -3,7 +3,7 @@ package com.fwdekker.aoc.y2024
 import com.fwdekker.aoc.Day
 import com.fwdekker.std.collections.firsts
 import com.fwdekker.std.collections.map
-import com.fwdekker.std.grid.allCoords
+import com.fwdekker.std.grid.allCoordsOf
 import com.fwdekker.std.grid.contains
 import com.fwdekker.std.grid.get
 import com.fwdekker.std.grid.toChart
@@ -41,8 +41,7 @@ class Day8(resource: String = resource(2024, 8)) : Day() {
 
 
     private fun antennaPairs(): Sequence<List<Pair<Int, Int>>> =
-        chart.allCoords
-            .filter { chart[it] != '.' }
+        chart.allCoordsOf { it != '.' }
             .associateWith { chart[it] }
             .toList()
             .combinations(2)

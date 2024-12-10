@@ -3,7 +3,7 @@ package com.fwdekker.aoc.y2023
 import com.fwdekker.aoc.Day
 import com.fwdekker.std.grid.Chart
 import com.fwdekker.std.grid.Coords
-import com.fwdekker.std.grid.allCoords
+import com.fwdekker.std.grid.allCoordsOf
 import com.fwdekker.std.grid.cardinals
 import com.fwdekker.std.grid.contains
 import com.fwdekker.std.grid.east
@@ -25,8 +25,7 @@ class Day23(resource: String = resource(2023, 23)) : Day() {
     private val start = Coords(0, chart.firstRow.indexOf('.'))
     private val end = Coords(chart.lastRowIndex, chart.lastRow.indexOf('.'))
     private val junctions =
-        chart.allCoords
-            .filter { it in chart && chart[it] != '#' }
+        chart.allCoordsOf { it != '#' }
             .filter { chart.dryNeighborsOf(it).size > 2 }
             .let { it + listOf(start, end) }
 

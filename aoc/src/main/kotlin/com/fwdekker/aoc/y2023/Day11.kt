@@ -20,7 +20,7 @@ class Day11(resource: String = resource(2023, 11)) : Day() {
 
     private val expandX = chart.rows.filter { x -> chart[x].all { it == '.' } }.toLongs()
     private val expandY = chart.cols.filter { y -> chart.all { it[y] == '.' } }.toLongs()
-    private val galaxies = chart.allCoordsOf('#')
+    private val galaxies = chart.allCoordsOf('#').toList()
     private val pairs = galaxies.cartesian(galaxies)
 
 
