@@ -184,3 +184,11 @@ fun <T, R> MutableList<T>.appendingFold(initial: R, operation: (MutableList<T>, 
     appendOnEach { self, it -> acc = operation(self, acc, it) }
     return acc
 }
+
+
+fun <K, V> MutableMap<K, V>.with(key: K, value: V): MutableMap<K, V> = this.also { put(key, value) }
+
+/**
+ * Folds the elements of this map.
+ */
+fun <K, V, R> Map<K, V>.fold(initial: R, operation: (acc: R, Pair<K, V>) -> R): R = toList().fold(initial, operation)

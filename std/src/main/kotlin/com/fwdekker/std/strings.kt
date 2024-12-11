@@ -106,3 +106,9 @@ fun String.sortedDescending(): String =
  */
 fun String.repeat(amount: Int, separator: String = ""): String =
     listOf(this).repeat(amount).joinToString(separator = separator)
+
+
+/**
+ * Splits this string into two parts at [index].
+ */
+fun String.splitAtIndex(index: Int): Pair<String, String> = take(index) to drop(index)
