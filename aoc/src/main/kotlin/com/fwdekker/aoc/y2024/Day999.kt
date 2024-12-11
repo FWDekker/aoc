@@ -4,6 +4,7 @@ import com.fwdekker.aoc.Day
 import com.fwdekker.std.read
 
 
+// See https://adventofcode.com/2024/day/999
 class Day999(resource: String = resource(2024, 999)) : Day() {
     private val input = read(resource)
 

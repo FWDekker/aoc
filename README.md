@@ -1,5 +1,6 @@
 # Advent of Code
 My solutions to the [Advent of Code](https://adventofcode.com/), years 2023 and 2024.
+* [Usage instructions are here.](https://github.com/FWDekker/aoc/blob/main/aoc/README.md)
 * [The source code is here.](https://github.com/FWDekker/aoc/tree/main/aoc/src/main/kotlin/com/fwdekker/aoc)
 * [My puzzle inputs are here.](https://github.com/FWDekker/aoc-inputs) (In a private repo.)
 
@@ -7,12 +8,16 @@ Also includes my solutions for [Project Euler](https://projecteuler.net/).
 * [The source code is here.](https://github.com/FWDekker/project-euler) (In a private repo.)
 
 ## Git submodules
-Project Euler does not allow sharing solutions.
-Therefore, the code for Project Euler is [stored in a private repository](https://github.com/FWDekker/project-euler).
-This repository is included as a [git submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules).
-In other words, this repository contains a link to a specific commit in that other repository.
+Advent of Code does not allow sharing puzzle inputs, and Project Euler does not allow sharing solutions.
+Therefore, these are stored in separate, private repositories.
+These repositories are included as [git submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules).
+In other words: Where needed, this repository contains a link to a specific commit in another repository.
 
-Note the following usage instructions.
+If you do not have access to that repository, you can still clone this project as normal and inspect my solutions.
+However, to run my Advent of Code solutions, you will have to provide your own puzzle inputs.
+For further information, check [the instructions in the Advent of Code submodule](https://github.com/FWDekker/aoc/blob/main/aoc/README.md).
+
+In general, the following usage instructions apply.
 ```shell
 # Clone without submodules
 git clone git@github.com:FWDekker/aoc.git
@@ -25,15 +30,12 @@ git submodule update --init --recursive
 git submodule update --recursive --remote
 ```
 
-To commit changes you've made in the `euler/` directory, run
-```shell
-cd euler; git commit
-```
-Now, the root repository will be outdated, since the local repository inside `euler/` no longer matches the commit referred to by the root repository.
-Therefore, you'll have to commit the changes there as well (but don't fret if you forget).
+If you have made changes in a submodule rooted at `dir/`, you have to `cd dir` before you can `git commit`.
+After doing so, the root repository will be outdated, since it still points to a specific commit, not to the head of your specific branch.
+You will have to update the submodule reference manually using a plain `git add dir` from within the root repository.
 
 ## Gradle sub-projects
-To allow code Advent of Code and Project Euler to be built separately, but still use a common codebase, the repository has been structured using [Gradle subprojects](https://docs.gradle.org/current/userguide/intro_multi_project_builds.html).
+To allow Advent of Code and Project Euler to be built separately, but still use a common codebase, the repository has been structured using [Gradle subprojects](https://docs.gradle.org/current/userguide/intro_multi_project_builds.html).
 This repository has the following subprojects:
 * [`buildSrc`](https://github.com/FWDekker/aoc/tree/main/buildSrc): Common build logic for all subprojects.
 * [`std`](https://github.com/FWDekker/aoc/tree/main/std): Utility and helper functions for other subprojects.
@@ -44,6 +46,11 @@ Check their respective `README.md`s for more information.
 
 You can run tasks as follows:
 ```shell
+# Run day 4 of Advent of Code year 2023
+gradlew :aoc:run -Pday=2023.4
+# Run problem 19 of Euler Project
+gradlew :euler:run -Pproblem=19
+
 # Run all tests in all subprojects
 gradlew test
 # Run all tests in subproject 'aoc'
