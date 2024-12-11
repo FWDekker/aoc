@@ -125,7 +125,7 @@ object PrimesTest : DescribeSpec({
             18L to listOf(2L, 3L, 3L),
             81L to listOf(3L, 3L, 3L, 3L),
         ) { (value, expected) ->
-            value.factorize() should containExactlyInSameOrderElementsOf(expected)
+            value.factorize().toList() should containExactlyInSameOrderElementsOf(expected)
         }
     }
 
