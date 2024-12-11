@@ -218,7 +218,7 @@ object CombinatoricsTest : DescribeSpec({
                 listOf(4, 2, 3, 1), listOf(4, 3, 1, 2), listOf(4, 3, 2, 1),
             )
         ) { (elements, expected) ->
-            elements.toList().permutations().toList() should containExactlyInAnyOrderElementsOf(expected)
+            elements.permutations().toList() should containExactlyInAnyOrderElementsOf(expected)
         }
 
         it("considers duplicated inputs as separate elements") {

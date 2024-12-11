@@ -82,7 +82,7 @@ fun <T> List<T>.combinations(amount: Int): Sequence<List<T>> {
         }
 }
 
-fun <T> Collection<T>.combinations(amount: Int): Sequence<List<T>> = toList().combinations(amount)
+fun <T> Iterable<T>.combinations(amount: Int): Sequence<List<T>> = toList().combinations(amount)
 
 /**
  * Returns all possible permutations of [this] collection's elements.
@@ -112,7 +112,7 @@ fun <T> List<T>.permutations(): Sequence<List<T>> =
         }
     }
 
-fun <T> Collection<T>.permutations(): Sequence<List<T>> = toList().permutations()
+fun <T> Iterable<T>.permutations(): Sequence<List<T>> = toList().permutations()
 
 /**
  * Returns all possible ways of partitioning [this] into [partitions] partitions.

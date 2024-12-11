@@ -90,6 +90,11 @@ fun Iterable<String>.toBigIntegers(separator: Regex): List<List<BigInteger>> = m
 
 
 /**
+ * Returns `true` if and only if this string is a palindrome.
+ */
+fun String.isPalindrome(): Boolean = this == this.reversed()
+
+/**
  * Sorts the characters in the string.
  */
 fun String.sorted(): String =

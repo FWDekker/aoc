@@ -1,9 +1,13 @@
+@file:Suppress("unused")
+
 package com.fwdekker.std.maths
 
 import com.fwdekker.std.collections.map
+import java.util.BitSet
 import kotlin.math.abs
 import kotlin.math.floor
 import kotlin.math.sqrt
+import kotlin.streams.toList
 
 
 /**
@@ -103,9 +107,9 @@ fun Pair<Long, Long>.simplifyRatio() = gcd().let { gcd -> map { it / gcd } }
 /**
  * Returns the prime factors of [this].
  */
-fun Int.factorize(): List<Int> = toLong().factorize().toInts()
+fun Int.factorize(): Sequence<Int> = toLong().factorize().toInts()
 
-fun Long.factorize(): List<Long> =
+fun Long.factorize(): Sequence<Long> =
     sequence {
         var remaining = this@factorize
         primes
@@ -116,7 +120,7 @@ fun Long.factorize(): List<Long> =
                     remaining /= it
                 }
             }
-    }.toList()
+    }
 
 /**
  * Returns the prime factors of [this] in a map with the number of occurrences of each factor.
@@ -202,3 +206,22 @@ val primes: CachedSequence<Long> =
             }
         )
     }.cached()
+
+/**
+ * Calculates all primes up to and including [n], stores these into the cached [primes], and then returns [primes].
+ *
+ * Uses the (slightly optimised) Sieve of Eratosthenes.
+ *
+ * This method is considerably faster only starting at around [n] of at least `100_000`.
+ */
+// TODO: Use the Sieve of Atkin instead.
+fun seededPrimes(n: Int): CachedSequence<Long> {
+    val sieve = BitSet(n + 1).apply { flip(2, n) }
+
+    (2..floorSqrt(n))
+        .filter { sieve[it] }
+        .forEach { number -> (number.pow(2)..<n).step(number).forEach { sieve[it] = false } }
+
+    primes.insert(sieve.stream().toList().toLongs())
+    return primes
+}

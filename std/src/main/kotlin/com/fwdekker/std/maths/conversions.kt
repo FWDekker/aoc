@@ -39,7 +39,7 @@ fun Pair<Number, Number>.toInts(): Pair<Int, Int> = map { it.toInt() }
 fun Triple<Number, Number, Number>.toInts(): Triple<Int, Int, Int> = map { it.toInt() }
 
 @JvmName("numbersToInts")
-fun Sequence<Number>.toInts(): Sequence<Int> = map {it.toInt()}
+fun Sequence<Number>.toInts(): Sequence<Int> = map { it.toInt() }
 
 @JvmName("numbersToInts")
 fun Iterable<Number>.toInts(): List<Int> = map { it.toInt() }

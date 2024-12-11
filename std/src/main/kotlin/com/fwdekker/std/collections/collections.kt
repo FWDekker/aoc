@@ -33,6 +33,17 @@ fun <T> Collection<T>.sumOfIndexed(transform: (Int, T) -> Long): Long =
     withIndex().sumOf { (idx, element) -> transform(idx, element) }
 
 /**
+ * Shorthand for invoking [filter] and then [sum].
+ */
+fun Sequence<Int>.sumIf(predicate: (Int) -> Boolean): Int = filter(predicate).sum()
+
+fun Iterable<Int>.sumIf(predicate: (Int) -> Boolean): Int = filter(predicate).sum()
+
+fun Sequence<Long>.sumIf(predicate: (Long) -> Boolean): Long = filter(predicate).sum()
+
+fun Iterable<Long>.sumIf(predicate: (Long) -> Boolean): Long = filter(predicate).sum()
+
+/**
  * Returns the left-folded addition of all contained maps.
  */
 fun <K, V> Iterable<Map<K, V>>.sum() = fold(emptyMap<K, V>()) { acc, it -> acc + it }
@@ -52,6 +63,11 @@ fun <A, B> Iterable<Pair<A, B>>.firsts(): List<A> = map { it.first }
  * Returns the second element of each pair.
  */
 fun <A, B> Iterable<Pair<A, B>>.seconds(): List<B> = map { it.second }
+
+/**
+ * Like [List.all], but for [Pair]s.
+ */
+fun <A> Pair<A, A>.both(predicate: (A) -> Boolean): Boolean = predicate(first) && predicate(second)
 
 /**
  * Maps both entries using [transform].
@@ -115,7 +131,7 @@ fun <T> Sequence<T>.cyclic(): Sequence<T> = sequence { while (true) yieldAll(thi
 fun <T> Iterable<T>.cyclic(): Sequence<T> = asSequence().cyclic()
 
 /**
- * Returns `true` if an element occurs more than once, or `false` if all elements are unique.
+ * Returns `false` if an element occurs more than once, or `true` if all elements are unique.
  *
  * This method may not terminate if the sequence is infinitely long.
  */
@@ -186,6 +202,9 @@ fun <T, R> MutableList<T>.appendingFold(initial: R, operation: (MutableList<T>, 
 }
 
 
+/**
+ * Returns [this] map after mapping [key] to [value].
+ */
 fun <K, V> MutableMap<K, V>.with(key: K, value: V): MutableMap<K, V> = this.also { put(key, value) }
 
 /**
