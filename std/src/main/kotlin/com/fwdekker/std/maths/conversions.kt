@@ -1,6 +1,8 @@
+@file:Suppress("unused")
 package com.fwdekker.std.maths
 
 import com.fwdekker.std.collections.map
+import java.math.BigDecimal
 import java.math.BigInteger
 
 
@@ -111,3 +113,33 @@ fun Sequence<Triple<Number, Number, Number>>.toBigInteger(): Sequence<Triple<Big
 @JvmName("numberTriplesToBigIntegers")
 fun Iterable<Triple<Number, Number, Number>>.toBigInteger(): List<Triple<BigInteger, BigInteger, BigInteger>> =
     map { it.toBigIntegers() }
+
+
+/**
+ * Converts all numbers to [BigDecimal]s.
+ */
+private fun Number.toBigDec(): BigDecimal = toLong().toBigDecimal()
+
+fun Pair<Number, Number>.toBigDecimals(): Pair<BigDecimal, BigDecimal> = map { it.toBigDec() }
+
+fun Triple<Number, Number, Number>.toBigDecimals(): Triple<BigDecimal, BigDecimal, BigDecimal> = map { it.toBigDec() }
+
+@JvmName("numbersToBigDecimals")
+fun Sequence<Number>.toBigDecimals(): Sequence<BigDecimal> = map { it.toBigDec() }
+
+@JvmName("numbersToBigDecimals")
+fun Iterable<Number>.toBigDecimals(): List<BigDecimal> = map { it.toBigDec() }
+
+@JvmName("numberPairsToBigDecimals")
+fun Sequence<Pair<Number, Number>>.toBigDecimals(): Sequence<Pair<BigDecimal, BigDecimal>> = map { it.toBigDecimals() }
+
+@JvmName("numberPairsToBigDecimals")
+fun Iterable<Pair<Number, Number>>.toBigDecimals(): List<Pair<BigDecimal, BigDecimal>> = map { it.toBigDecimals() }
+
+@JvmName("numberTriplesToBigDecimals")
+fun Sequence<Triple<Number, Number, Number>>.toBigDecimal(): Sequence<Triple<BigDecimal, BigDecimal, BigDecimal>> =
+    map { it.toBigDecimals() }
+
+@JvmName("numberTriplesToBigDecimals")
+fun Iterable<Triple<Number, Number, Number>>.toBigDecimal(): List<Triple<BigDecimal, BigDecimal, BigDecimal>> =
+    map { it.toBigDecimals() }
