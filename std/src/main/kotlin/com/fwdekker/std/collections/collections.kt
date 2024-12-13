@@ -83,22 +83,75 @@ fun <A, T> Triple<A, A, A>.map(transform: (A) -> T): Triple<T, T, T> =
 /**
  * Maps only the first entry using [transform].
  */
-fun <A, B, T> Pair<A, B>.mapFirst(transform: (A) -> T): Pair<T, B> = Pair(transform(first), second)
+fun <A, B, T> Pair<A, B>.mapFirst(transform: (A) -> T): Pair<T, B> =
+    Pair(transform(first), second)
+
+fun <A, B, C, T> Triple<A, B, C>.mapFirst(transform: (A) -> T): Triple<T, B, C> =
+    Triple(transform(first), second, third)
 
 /**
- * Maps the first entry in each pair using [transform].
+ * Maps the first entry in each tuple using [transform].
  */
-fun <A, B, T> Iterable<Pair<A, B>>.mapFirsts(transform: (A) -> T): List<Pair<T, B>> = map { it.mapFirst(transform) }
+@JvmName("sequencePairMapFirsts")
+fun <A, B, T> Sequence<Pair<A, B>>.mapFirsts(transform: (A) -> T): Sequence<Pair<T, B>> =
+    map { it.mapFirst(transform) }
+
+@JvmName("iterablePairMapFirsts")
+fun <A, B, T> Iterable<Pair<A, B>>.mapFirsts(transform: (A) -> T): List<Pair<T, B>> =
+    map { it.mapFirst(transform) }
+
+@JvmName("sequenceTripleMapFirsts")
+fun <A, B, C, T> Sequence<Triple<A, B, C>>.mapFirsts(transform: (A) -> T): Sequence<Triple<T, B, C>> =
+    map { it.mapFirst(transform) }
+
+@JvmName("iterableTripleMapFirsts")
+fun <A, B, C, T> Iterable<Triple<A, B, C>>.mapFirsts(transform: (A) -> T): List<Triple<T, B, C>> =
+    map { it.mapFirst(transform) }
 
 /**
  * Maps only the second entry using [transform].
  */
-fun <A, B, T> Pair<A, B>.mapSecond(transform: (B) -> T): Pair<A, T> = Pair(first, transform(second))
+fun <A, B, T> Pair<A, B>.mapSecond(transform: (B) -> T): Pair<A, T> =
+    Pair(first, transform(second))
+
+fun <A, B, C, T> Triple<A, B, C>.mapSecond(transform: (B) -> T): Triple<A, T, C> =
+    Triple(first, transform(second), third)
 
 /**
- * Maps the second entry in each pair using [transform].
+ * Maps the second entry in each tuple using [transform].
  */
-fun <A, B, T> Iterable<Pair<A, B>>.mapSeconds(transform: (B) -> T): List<Pair<A, T>> = map { it.mapSecond(transform) }
+@JvmName("sequencePairMapSeconds")
+fun <A, B, T> Sequence<Pair<A, B>>.mapSeconds(transform: (B) -> T): Sequence<Pair<A, T>> =
+    map { it.mapSecond(transform) }
+
+@JvmName("iterablePairMapSeconds")
+fun <A, B, T> Iterable<Pair<A, B>>.mapSeconds(transform: (B) -> T): List<Pair<A, T>> =
+    map { it.mapSecond(transform) }
+
+@JvmName("sequenceTripleMapSeconds")
+fun <A, B, C, T> Sequence<Triple<A, B, C>>.mapSeconds(transform: (B) -> T): Sequence<Triple<A, T, C>> =
+    map { it.mapSecond(transform) }
+
+@JvmName("iterableTripleMapSeconds")
+fun <A, B, C, T> Iterable<Triple<A, B, C>>.mapSeconds(transform: (B) -> T): List<Triple<A, T, C>> =
+    map { it.mapSecond(transform) }
+
+/**
+ * Maps only the third entry using [transform].
+ */
+fun <A, B, C, T> Triple<A, B, C>.mapThird(transform: (C) -> T): Triple<A, B, T> =
+    Triple(first, second, transform(third))
+
+/**
+ * Maps the third entry in each tuple using [transform].
+ */
+@JvmName("sequenceTripleMapThirds")
+fun <A, B, C, T> Sequence<Triple<A, B, C>>.mapThirds(transform: (C) -> T): Sequence<Triple<A, B, T>> =
+    map { it.mapThird(transform) }
+
+@JvmName("iterableTripleMapThirds")
+fun <A, B, C, T> Iterable<Triple<A, B, C>>.mapThirds(transform: (C) -> T): List<Triple<A, B, T>> =
+    map { it.mapThird(transform) }
 
 /**
  * Returns a pair containing the first two elements.
