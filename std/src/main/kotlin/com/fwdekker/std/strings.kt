@@ -47,6 +47,13 @@ fun Iterable<String>.toInts(separator: String): List<List<Int>> = map { it.toInt
 fun Iterable<String>.toInts(separator: Regex): List<List<Int>> = map { it.toInts(separator) }
 
 /**
+ * Returns all integers found in the string.
+ */
+fun String.allInts(): List<Int> = Regex("-?(?=\\d)?\\d+").findAll(this).map { it.value.toInt() }.toList()
+
+fun List<String>.allInts(): List<List<Int>> = map { it.allInts() }
+
+/**
  * Splits by [separator] and converts each entry to a [Long].
  */
 fun String.toLongs(separator: Char): List<Long> = toLongs(separator.toString())

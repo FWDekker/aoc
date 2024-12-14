@@ -16,5 +16,5 @@ fun <T> T.foldSelfIndexed(repeats: Int, transform: (Int, T) -> T): T =
 /**
  * Monadically invokes [transform] for [repeats] times and returns all intermediate results.
  */
-fun <T> T.runningFoldSelf(repeats: Int, transform: (T) -> T): List<T> =
-    (1..repeats).runningFold(this) { temp, _ -> transform(temp) }
+fun <T> T.runningFoldSelf(repeats: Int, transform: (T) -> T): Sequence<T> =
+    (1..repeats).asSequence().runningFold(this) { temp, _ -> transform(temp) }

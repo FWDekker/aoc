@@ -163,13 +163,13 @@ fun <T> Grid<T>.canMove(heading: Heading, distance: Int = 1): Boolean =
  * Returns all elements on the line piece from [coords] up to and including [coords] plus [distance] steps in the given
  * [direction].
  */
-fun <T> Grid<T>.getLine(coords: Coords, direction: Direction, distance: Int = 1): List<T> =
+fun <T> Grid<T>.getLine(coords: Coords, direction: Direction, distance: Int = 1): Sequence<T> =
     coords.runningFoldSelf(distance) { it.move(direction) }.map { get(it) }
 
 /**
  * @see getLine
  */
-fun <T> Grid<T>.getLine(heading: Heading, distance: Int = 1): List<T> =
+fun <T> Grid<T>.getLine(heading: Heading, distance: Int = 1): Sequence<T> =
     getLine(heading.coords, heading.direction, distance)
 
 
