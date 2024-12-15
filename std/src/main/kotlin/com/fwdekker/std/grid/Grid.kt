@@ -3,7 +3,6 @@ package com.fwdekker.std.grid
 
 import com.fwdekker.std.collections.getMod
 import com.fwdekker.std.runningFoldSelf
-import java.util.PriorityQueue
 
 
 /**
@@ -12,6 +11,8 @@ import java.util.PriorityQueue
  * If not all lines have the same length, use [padRows] to turn the rough, ragged array into one with four smooth sides.
  */
 typealias Grid<T> = List<List<T>>
+
+typealias MutableGrid<T> = List<MutableList<T>>
 
 typealias Row<T> = List<T>
 
@@ -119,6 +120,13 @@ operator fun <T> Grid<T>.contains(coords: Coords): Boolean = coords.row in rows 
  * Returns the cell at [coords].
  */
 operator fun <T> Grid<T>.get(coords: Coords): T = this[coords.row][coords.col]
+
+/**
+ * Writes [value] into the cell at [coords].
+ */
+operator fun <T> MutableGrid<T>.set(coords: Coords, value: T) {
+    this[coords.row][coords.col] = value
+}
 
 /**
  * Returns the cell at [coords], or `null` if there is no cell at those coordinates.
