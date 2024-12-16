@@ -4,16 +4,16 @@ import com.fwdekker.aoc.Day
 import com.fwdekker.std.collections.fold
 import com.fwdekker.std.collections.map
 import com.fwdekker.std.foldSelf
-import com.fwdekker.std.read
 import com.fwdekker.std.sections
 import com.fwdekker.std.splitAtIndex
 import com.fwdekker.std.toLongs
 
 
-class Day11(resource: String = resource(2024, 11)) : Day() {
-    private val input = read(resource).sections()
-    private val blinks = input[0][0].toInt()
-    private val stones = input[1][0].toLongs(' ')
+// See https://adventofcode.com/2024/day/11
+class Day11(sample: Int? = null) : Day(year = 2024, day = 11, sample = sample) {
+    private val sections = input.sections()
+    private val blinks = sections[0][0].toInt()
+    private val stones = sections[1][0].toLongs(' ')
 
 
     override fun part1(): Long = blink(blinks, stones).values.sum()

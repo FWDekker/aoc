@@ -11,12 +11,11 @@ import com.fwdekker.std.grid.coordsOf
 import com.fwdekker.std.grid.get
 import com.fwdekker.std.grid.toChart
 import com.fwdekker.std.maths.Graph
-import com.fwdekker.std.read
 
 
 // See https://adventofcode.com/2024/day/16
-class Day16(resource: String = resource(2024, 16)) : Day() {
-    private val chart = read(resource).toChart()
+class Day16(sample: Int? = null) : Day(year = 2024, day = 16, sample = sample) {
+    private val chart = input.toChart()
     private val start = Heading(chart.coordsOf('S'), East)
     private val ends = chart.coordsOf('E').let { end -> Cardinal.entries.map { Heading(end, it) } }
 

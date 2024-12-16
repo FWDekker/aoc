@@ -27,3 +27,17 @@ tasks.test {
         includeEngines("kotest")
     }
 }
+
+// Export test fixtures for other projects, see https://stackoverflow.com/a/61682321/
+configurations {
+    create("test")
+}
+
+tasks.register<Jar>("testArchive") {
+    archiveBaseName.set("std-test")
+    from(project.the<SourceSetContainer>()["test"].output)
+}
+
+artifacts {
+    add("test", tasks["testArchive"])
+}

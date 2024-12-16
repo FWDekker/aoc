@@ -4,7 +4,6 @@ import com.fwdekker.aoc.Day
 import com.fwdekker.std.collections.asTriple
 import com.fwdekker.std.linesNotBlank
 import com.fwdekker.std.maths.cartesian
-import com.fwdekker.std.read
 import com.fwdekker.std.toLongs
 import java.math.BigDecimal
 import java.math.MathContext
@@ -16,12 +15,13 @@ private typealias LMatrix = List<LVec>
 private typealias BDMatrix = List<List<BigDecimal>>
 
 
+// See https://adventofcode.com/2023/day/24
 class Day24(
-    resource: String = resource(2023, 24),
+    sample: Int? = null,
     private val coordinateRange: LongRange = 200000000000000L..400000000000000L,
-) : Day() {
+) : Day(year = 2023, day = 24, sample = sample) {
     private val stones =
-        read(resource).linesNotBlank()
+        input.linesNotBlank()
             .map { line -> line.split(Regex("\\s+@\\s+")).map { coords -> coords.toLongs(Regex(",\\s+")) } }
 
 

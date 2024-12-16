@@ -1,56 +1,34 @@
 package com.fwdekker.aoc
 
-import com.fwdekker.std.grid.Cardinal
-import com.fwdekker.std.grid.Direction
-import com.fwdekker.std.grid.Ordinal
-import kotlin.time.TimeSource
-import kotlin.time.measureTimedValue
+import com.fwdekker.std.Challenge
 
 
 /**
  * Convenience class for invoking the code for any particular day and part with a given resource.
+ *
+ * @param year the year of advent of code this day belongs to
+ * @param day the day of advent of code this object corresponds to
+ * @param sample the sample number to solve for, or `null` to use the full problem
  */
-abstract class Day {
-    private val time = TimeSource.Monotonic
-    private val mark = TimeSource.Monotonic.markNow()
+abstract class Day(val year: Int? = null, val day: Int? = null, val sample: Int? = null) : Challenge(2) {
+    override val resource: String get() = resource(year!!, day!!, sample)
 
 
-    /**
-     * Runs and prints both parts and the time it took to execute them.
-     */
-    fun run() {
-        println("Instantiation: Complete. (${(time.markNow() - mark).inWholeMilliseconds} ms)")
-        measureTimedValue { part1() }
-            .also { println("Part one: ${it.value} (in ${it.duration.inWholeMilliseconds} ms)") }
-        measureTimedValue { part2() }
-            .also { println("Part two: ${it.value} (in ${it.duration.inWholeMilliseconds} ms)") }
-    }
+    override fun runPart(number: Int): Any =
+        when (number) {
+            1 -> part1()
+            2 -> part2()
+            else -> error("Invalid part number $number.")
+        }
 
-    /**
-     * Returns the output for the first part of this day.
-     */
     abstract fun part1(): Any
 
-    /**
-     * Returns the output for the second part of this day.
-     */
     abstract fun part2(): Any
 
 
-    /**
-     * Holds constants.
-     */
     companion object {
-        @Suppress("unused")
-        private val ignoreMe = Triple(Cardinal, Ordinal, Direction)  // TODO: Remove workaround for KT-59723
-
-
-        /**
-         * Shorthand for returning the resource for the given [year] and [day].
-         *
-         * Setting [sample] to `null` returns the final difficult input, whereas all other values return easier sample
-         * inputs.
-         */
+        @Deprecated("Use non-static zero-parameter call instead.", replaceWith = ReplaceWith("resource()"))
+        // TODO: Once no classes use this method anymore, make class fields `year` and `day` non-nullable
         fun resource(year: Int, day: Int, sample: Int? = null) =
             "/y$year/Day${day}"
                 .let { if (sample != null) "${it}Sample${sample}" else it }

@@ -7,7 +7,7 @@ My solutions to the [Advent of Code](https://adventofcode.com/), years 2023 and 
 Also includes my solutions for [Project Euler](https://projecteuler.net/).
 * [The source code is here.](https://github.com/FWDekker/project-euler) (In a private repo.)
 
-## Git submodules
+## Git submodules (aka: How to clone)
 Advent of Code does not allow sharing puzzle inputs, and Project Euler does not allow sharing solutions.
 Therefore, these are stored in separate, private repositories.
 These repositories are included as [git submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules).
@@ -34,7 +34,7 @@ If you have made changes in a submodule rooted at `dir/`, you have to `cd dir` b
 After doing so, the root repository will be outdated, since it still points to a specific commit, not to the head of your specific branch.
 You will have to update the submodule reference manually using a plain `git add dir` from within the root repository.
 
-## Gradle sub-projects
+## Gradle sub-projects (aka: How to run)
 To allow Advent of Code and Project Euler to be built separately, but still use a common codebase, the repository has been structured using [Gradle subprojects](https://docs.gradle.org/current/userguide/intro_multi_project_builds.html).
 This repository has the following subprojects:
 * [`buildSrc`](https://github.com/FWDekker/aoc/tree/main/buildSrc): Common build logic for all subprojects.
@@ -59,4 +59,6 @@ gradlew :aoc:test
 gradlew :aoc:test -Pkotest.tags="Foo"
 # Run all tests for AoC 2024
 gradlew test --tests "com.fwdekker.aoc.y2024.*"
+# Run all tests for AoC 2024 (not fully implemented yet)
+gradlew :aoc:test -Pkotest.tags="2024"
 ```

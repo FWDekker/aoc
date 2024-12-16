@@ -1,12 +1,11 @@
 package com.fwdekker.aoc.y2024
 
 import com.fwdekker.aoc.Day
-import com.fwdekker.std.read
 
 
 // See https://adventofcode.com/2024/day/999
-class Day999(resource: String = resource(2024, 999)) : Day() {
-    private val input = read(resource)
+class Day999(sample: Int? = null) : Day(year = 2024, day = 999, sample = sample) {
+    private val string = input
 
 
     override fun part1() = 0

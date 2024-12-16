@@ -20,15 +20,14 @@ import com.fwdekker.std.grid.row
 import com.fwdekker.std.grid.set
 import com.fwdekker.std.grid.west
 import com.fwdekker.std.maths.Graph
-import com.fwdekker.std.read
 import com.fwdekker.std.sections
 
 
 // See https://adventofcode.com/2024/day/15
-class Day15(resource: String = resource(2024, 15)) : Day() {
-    private val input = read(resource).sections()
-    private val chart = input[0].map { it.toList() }
-    private val moves = input[1].joinToString("")
+class Day15(sample: Int? = null) : Day(year = 2024, day = 15, sample = sample) {
+    private val sections = input.sections()
+    private val chart = sections[0].map { it.toList() }
+    private val moves = sections[1].joinToString("")
 
 
     override fun part1(): Long = chart.map { it.toMutableList() }.releaseFish()
