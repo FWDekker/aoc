@@ -3,13 +3,12 @@ package com.fwdekker.aoc.y2023
 import com.fwdekker.aoc.Day
 import com.fwdekker.std.linesNotBlank
 import com.fwdekker.std.maths.overlaps
-import com.fwdekker.std.read
 import com.fwdekker.std.toInts
 
 
-class Day22(resource: String = resource(2023, 22)) : Day() {
-    private val lines = read(resource).linesNotBlank()
-    private val stack = lines.asSequence()
+// See https://adventofcode.com/2023/day/22
+class Day22(sample: Int? = null) : Day(year = 2023, day = 22, sample = sample) {
+    private val stack = input.linesNotBlank().asSequence()
         .map { line -> line.split('~').map { coords -> coords.toInts(',') } }
         .map { (from, to) -> (from zip to).map { it.first..it.second } }
         .map { (xs, ys, zs) -> Brick(xs, ys, zs) }

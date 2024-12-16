@@ -2,8 +2,11 @@
 package com.fwdekker.std.collections
 
 import com.fwdekker.std.maths.min
+import com.fwdekker.std.maths.sum
 import com.fwdekker.std.maths.wrapMod
+import java.math.BigInteger
 import kotlin.experimental.ExperimentalTypeInference
+import kotlin.time.Duration
 
 
 /**
@@ -18,35 +21,11 @@ fun <T> List<T>.getMod(index: Int): T = this[index.wrapMod(size)]
 
 
 /**
- * Shorthand for invoking [withIndex] and then [sumOf].
- */
-@JvmName("intSumOfIndexed")
-@OptIn(ExperimentalTypeInference::class)
-@OverloadResolutionByLambdaReturnType
-fun <T> Collection<T>.sumOfIndexed(transform: (Int, T) -> Int): Int =
-    withIndex().sumOf { (idx, element) -> transform(idx, element) }
-
-@JvmName("longSumOfIndexed")
-@OptIn(ExperimentalTypeInference::class)
-@OverloadResolutionByLambdaReturnType
-fun <T> Collection<T>.sumOfIndexed(transform: (Int, T) -> Long): Long =
-    withIndex().sumOf { (idx, element) -> transform(idx, element) }
-
-/**
- * Shorthand for invoking [filter] and then [sum].
- */
-fun Sequence<Int>.sumIf(predicate: (Int) -> Boolean): Int = filter(predicate).sum()
-
-fun Iterable<Int>.sumIf(predicate: (Int) -> Boolean): Int = filter(predicate).sum()
-
-fun Sequence<Long>.sumIf(predicate: (Long) -> Boolean): Long = filter(predicate).sum()
-
-fun Iterable<Long>.sumIf(predicate: (Long) -> Boolean): Long = filter(predicate).sum()
-
-/**
  * Returns the left-folded addition of all contained maps.
  */
-fun <K, V> Iterable<Map<K, V>>.sum() = fold(emptyMap<K, V>()) { acc, it -> acc + it }
+fun <K, V> Sequence<Map<K, V>>.sum(): Map<K, V> = fold(emptyMap()) { acc, it -> acc + it }
+
+fun <K, V> Iterable<Map<K, V>>.sum(): Map<K, V> = fold(emptyMap()) { acc, it -> acc + it }
 
 
 /**
@@ -57,17 +36,59 @@ fun <A, B> Pair<A, B>.swap(): Pair<B, A> = Pair(second, first)
 /**
  * Returns the first element of each pair.
  */
+@JvmName("pairFirsts")
+fun <A, B> Sequence<Pair<A, B>>.firsts(): Sequence<A> = map { it.first }
+
+@JvmName("pairFirsts")
 fun <A, B> Iterable<Pair<A, B>>.firsts(): List<A> = map { it.first }
 
 /**
  * Returns the second element of each pair.
  */
+@JvmName("pairSeconds")
+fun <A, B> Sequence<Pair<A, B>>.seconds(): Sequence<B> = map { it.second }
+
+@JvmName("pairSeconds")
 fun <A, B> Iterable<Pair<A, B>>.seconds(): List<B> = map { it.second }
+
+/**
+ * Returns the first element of each triple.
+ */
+@JvmName("tripleFirsts")
+fun <A, B, C> Sequence<Triple<A, B, C>>.firsts(): Sequence<A> = map { it.first }
+
+@JvmName("tripleFirsts")
+fun <A, B, C> Iterable<Triple<A, B, C>>.firsts(): List<A> = map { it.first }
+
+/**
+ * Returns the second element of each triple.
+ */
+@JvmName("tripleSeconds")
+fun <A, B, C> Sequence<Triple<A, B, C>>.seconds(): Sequence<B> = map { it.second }
+
+@JvmName("tripleSeconds")
+fun <A, B, C> Iterable<Triple<A, B, C>>.seconds(): List<B> = map { it.second }
+
+/**
+ * Returns the second element of each triple.
+ */
+@JvmName("tripleThirds")
+fun <A, B, C> Sequence<Triple<A, B, C>>.thirds(): Sequence<C> = map { it.third }
+
+@JvmName("tripleThirds")
+fun <A, B, C> Iterable<Triple<A, B, C>>.thirds(): List<C> = map { it.third }
 
 /**
  * Like [List.all], but for [Pair]s.
  */
-fun <A> Pair<A, A>.both(predicate: (A) -> Boolean): Boolean = predicate(first) && predicate(second)
+fun <A> Pair<A, A>.both(predicate: (A) -> Boolean): Boolean =
+    predicate(first) && predicate(second)
+
+/**
+ * Like [List.all], but for [Triple]s.
+ */
+fun <A> Triple<A, A, A>.all(predicate: (A) -> Boolean): Boolean =
+    predicate(first) && predicate(second) && predicate(third)
 
 /**
  * Maps both entries using [transform].

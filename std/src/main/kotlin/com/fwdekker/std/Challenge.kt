@@ -3,12 +3,15 @@ package com.fwdekker.std
 import com.fwdekker.std.grid.Cardinal
 import com.fwdekker.std.grid.Direction
 import com.fwdekker.std.grid.Ordinal
+import kotlin.time.Duration
 import kotlin.time.TimeSource
 import kotlin.time.measureTimedValue
 
 
 /**
  * Convenience class for invoking the code for any particular challenge with a file resource.
+ *
+ * @property partCount The number of parts that this challenge consists of.
  */
 abstract class Challenge(private val partCount: Int) {
     /**
@@ -36,23 +39,30 @@ abstract class Challenge(private val partCount: Int) {
 
 
     /**
-     * Runs each part, and prints its output and the elapsed time.
-     */
-    fun run() {
-        println("Instantiation: Complete. (${(time.markNow() - mark).inWholeMilliseconds} ms)")
-
-        (0..<partCount).forEach { partNumber ->
-            val partName = if (partCount == 1) "Solution" else "Part $partNumber"
-
-            measureTimedValue { runPart(partNumber) }
-                .also { println("$partName: ${it.value} (in ${it.duration.inWholeMilliseconds} ms)") }
-        }
-    }
-
-    /**
-     * Runs the part with given [number].
+     * Runs the part with given 1-indexed [number].
      */
     abstract fun runPart(number: Int): Any
+
+    /**
+     * Runs each part and associates it with its duration and outputs. The 0th part is the instantiation of this object,
+     * of which the output value is always the string `"Complete"`.
+     */
+    fun timeParts(): Sequence<PartResult> =
+        sequence {
+            yield(PartResult("Instantiation", "Complete", time.markNow() - mark))
+            (1..partCount).forEach { partNumber ->
+                val partName = if (partCount == 1) "Solution" else "Part $partNumber"
+                yield(measureTimedValue { runPart(partNumber) }.let { PartResult(partName, it.value, it.duration) })
+            }
+        }
+
+    /**
+     * Runs each part, and prints its output and the elapsed time.
+     */
+    fun run() =
+        timeParts().forEach { (name, value, duration) ->
+            println("$name: $value (${duration.ms} ms).")
+        }
 
 
     /**
@@ -68,3 +78,8 @@ abstract class Challenge(private val partCount: Int) {
         private val ignoreMe = Triple(Cardinal, Ordinal, Direction)
     }
 }
+
+/**
+ * The result of running a part of a [Challenge].
+ */
+data class PartResult(val name: String, val result: Any, val duration: Duration)

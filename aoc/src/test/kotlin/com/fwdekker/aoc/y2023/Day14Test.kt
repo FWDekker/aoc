@@ -1,19 +1,17 @@
 package com.fwdekker.aoc.y2023
 
-import com.fwdekker.aoc.Day
-import com.fwdekker.aoc.Day.Companion.resource
-import com.fwdekker.aoc.DayTest
+import com.fwdekker.std.ChallengeTest
+import com.fwdekker.std.case
+import io.kotest.core.annotation.Tags
 
 
-/**
- * Tests for [Day14].
- */
-object Day14Test : DayTest(
+@Tags("2023")
+object Day14Test : ChallengeTest(
     ::Day14,
     listOf(
-        Triple(resource(2023, 14, sample = 1), Day::part1, 136),
-        Triple(resource(2023, 14, sample = 1), Day::part2, 64),
-        Triple(resource(2023, 14), Day::part1, 103614),
-        Triple(resource(2023, 14), Day::part2, 83790),
+        case(part = 1, sample = 1) to 136,
+        case(part = 2, sample = 1) to 64,
+        case(part = 1) to 103614,
+        case(part = 2) to 83790,
     )
 )

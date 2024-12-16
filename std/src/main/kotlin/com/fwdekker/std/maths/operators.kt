@@ -1,9 +1,12 @@
+@file:Suppress("unused")
 package com.fwdekker.std.maths
 
 import com.fwdekker.std.collections.map
+import com.fwdekker.std.collections.sum
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.experimental.ExperimentalTypeInference
+import kotlin.time.Duration
 
 
 /**
@@ -69,6 +72,12 @@ fun Sequence<BigDecimal>.sum(): BigDecimal = fold(BigDecimal.ZERO) { acc, it -> 
 @JvmName("bigDecSum")
 fun Iterable<BigDecimal>.sum(): BigDecimal = asSequence().sum()
 
+@JvmName("durationSum")
+fun Sequence<Duration>.sum(): Duration = fold(Duration.ZERO) { acc, it -> acc + it }
+
+@JvmName("durationSum")
+fun Iterable<Duration>.sum(): Duration = fold(Duration.ZERO) { acc, it -> acc + it }
+
 /**
  * Takes the component-wise sum of all elements.
  */
@@ -97,6 +106,65 @@ fun Sequence<Pair<BigDecimal, BigDecimal>>.sum(): Pair<BigDecimal, BigDecimal> =
 
 @JvmName("bigDecPairSum")
 fun Iterable<Pair<BigDecimal, BigDecimal>>.sum(): Pair<BigDecimal, BigDecimal> = asSequence().sum()
+
+/**
+ * Shorthand for invoking [map] and then [sum].
+ */
+@JvmName("intSumOf")
+@OptIn(ExperimentalTypeInference::class)
+@OverloadResolutionByLambdaReturnType
+fun <T> Collection<T>.sumOf(transform: (T) -> Int): Int = map(transform).sum()
+
+@JvmName("longSumOf")
+@OptIn(ExperimentalTypeInference::class)
+@OverloadResolutionByLambdaReturnType
+fun <T> Collection<T>.sumOf(transform: (T) -> Long): Long = map(transform).sum()
+
+@JvmName("bigIntSumOf")
+@OptIn(ExperimentalTypeInference::class)
+@OverloadResolutionByLambdaReturnType
+fun <T> Collection<T>.sumOf(transform: (T) -> BigInteger): BigInteger = map(transform).sum()
+
+@JvmName("durationIntSumOf")
+@OptIn(ExperimentalTypeInference::class)
+@OverloadResolutionByLambdaReturnType
+fun <T> Collection<T>.sumOf(transform: (T) -> Duration): Duration = map(transform).sum()
+
+/**
+ * Shorthand for invoking [withIndex] and then [sumOf].
+ */
+@JvmName("intSumOfIndexed")
+@OptIn(ExperimentalTypeInference::class)
+@OverloadResolutionByLambdaReturnType
+fun <T> Collection<T>.sumOfIndexed(transform: (Int, T) -> Int): Int =
+    withIndex().sumOf { (idx, element) -> transform(idx, element) }
+
+@JvmName("longSumOfIndexed")
+@OptIn(ExperimentalTypeInference::class)
+@OverloadResolutionByLambdaReturnType
+fun <T> Collection<T>.sumOfIndexed(transform: (Int, T) -> Long): Long =
+    withIndex().sumOf { (idx, element) -> transform(idx, element) }
+
+@JvmName("bigIntSumOfIndexed")
+@OptIn(ExperimentalTypeInference::class)
+@OverloadResolutionByLambdaReturnType
+fun <T> Collection<T>.sumOfIndexed(transform: (Int, T) -> BigInteger): BigInteger =
+    withIndex().sumOf { (idx, element) -> transform(idx, element) }
+
+/**
+ * Shorthand for invoking [filter] and then [sum].
+ */
+fun Sequence<Int>.sumIf(predicate: (Int) -> Boolean): Int = filter(predicate).sum()
+
+fun Iterable<Int>.sumIf(predicate: (Int) -> Boolean): Int = filter(predicate).sum()
+
+fun Sequence<Long>.sumIf(predicate: (Long) -> Boolean): Long = filter(predicate).sum()
+
+fun Iterable<Long>.sumIf(predicate: (Long) -> Boolean): Long = filter(predicate).sum()
+
+fun Sequence<BigInteger>.sumIf(predicate: (BigInteger) -> Boolean): BigInteger = filter(predicate).sum()
+
+fun Iterable<BigInteger>.sumIf(predicate: (BigInteger) -> Boolean): BigInteger = filter(predicate).sum()
 
 
 /**

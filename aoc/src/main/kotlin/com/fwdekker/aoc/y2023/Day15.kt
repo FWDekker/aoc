@@ -1,12 +1,12 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
-import com.fwdekker.std.collections.sumOfIndexed
-import com.fwdekker.std.read
+import com.fwdekker.std.maths.sumOfIndexed
 
 
-class Day15(resource: String = resource(2023, 15)) : Day() {
-    private val instructions = read(resource).split(',')
+// See https://adventofcode.com/2023/day/15
+class Day15(sample: Int? = null) : Day(year = 2023, day = 15, sample = sample) {
+    private val instructions = input.split(',')
 
 
     override fun part1(): Int =

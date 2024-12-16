@@ -1,18 +1,18 @@
 package com.fwdekker.aoc.y2023
 
 import com.fwdekker.aoc.Day
-import com.fwdekker.std.collections.sumOfIndexed
 import com.fwdekker.std.foldSelf
 import com.fwdekker.std.grid.Chart
 import com.fwdekker.std.grid.rotateCCW
 import com.fwdekker.std.grid.rotateCW
 import com.fwdekker.std.grid.toChart
-import com.fwdekker.std.read
+import com.fwdekker.std.maths.sumOfIndexed
 import com.fwdekker.std.sortedDescending
 
 
-class Day14(resource: String = resource(2023, 14)) : Day() {
-    private val chart = read(resource).toChart()
+// See https://adventofcode.com/2023/day/14
+class Day14(sample: Int? = null) : Day(year = 2023, day = 14, sample = sample) {
+    private val chart = input.toChart()
 
 
     override fun part1(): Int = chart.rotateCCW().tiltWest().rotateCW().calcLoad()
