@@ -3,6 +3,7 @@ package com.fwdekker.aoc
 import com.fwdekker.std.grid.Cardinal
 import com.fwdekker.std.grid.Direction
 import com.fwdekker.std.grid.Ordinal
+import kotlin.time.TimeSource
 import kotlin.time.measureTimedValue
 
 
@@ -10,10 +11,15 @@ import kotlin.time.measureTimedValue
  * Convenience class for invoking the code for any particular day and part with a given resource.
  */
 abstract class Day {
+    private val time = TimeSource.Monotonic
+    private val mark = TimeSource.Monotonic.markNow()
+
+
     /**
-     * Runs and prints both parts.
+     * Runs and prints both parts and the time it took to execute them.
      */
     fun run() {
+        println("Instantiation: Complete. (${(time.markNow() - mark).inWholeMilliseconds} ms)")
         measureTimedValue { part1() }
             .also { println("Part one: ${it.value} (in ${it.duration.inWholeMilliseconds} ms)") }
         measureTimedValue { part2() }

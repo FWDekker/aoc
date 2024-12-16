@@ -83,7 +83,6 @@ class Day15(resource: String = resource(2024, 15)) : Day() {
     }
 
 
-    @OptIn(ExperimentalStdlibApi::class)
     private class MoveGraph(private val chart: MutableGrid<Char>, private val direction: Cardinal) : Graph<Coords>() {
         override val nodes: Collection<Coords> get() = chart.allCoords.toList()
 
