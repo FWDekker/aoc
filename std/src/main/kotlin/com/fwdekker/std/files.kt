@@ -7,4 +7,4 @@ package com.fwdekker.std
 fun read(path: String): String =
     {}.javaClass.getResource(path)
         ?.readText()?.trim()
-        ?: error("Could not resource $path.")
+        ?: error("Could not find resource $path.")
