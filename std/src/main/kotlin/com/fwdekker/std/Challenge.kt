@@ -41,7 +41,7 @@ abstract class Challenge(private val partCount: Int) {
     /**
      * Runs the part with given 1-indexed [number].
      */
-    abstract fun runPart(number: Int): Any
+    abstract fun runPart(number: Int): Any?
 
     /**
      * Runs each part and associates it with its duration and outputs. The 0th part is the instantiation of this object,
@@ -82,4 +82,4 @@ abstract class Challenge(private val partCount: Int) {
 /**
  * The result of running a part of a [Challenge].
  */
-data class PartResult(val name: String, val result: Any, val duration: Duration)
+data class PartResult(val name: String, val result: Any?, val duration: Duration)

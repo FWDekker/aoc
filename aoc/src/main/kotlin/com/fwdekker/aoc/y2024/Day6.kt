@@ -1,7 +1,7 @@
 package com.fwdekker.aoc.y2024
 
 import com.fwdekker.aoc.Day
-import com.fwdekker.std.collections.isDistinct
+import com.fwdekker.std.collections.allDistinct
 import com.fwdekker.std.grid.Coords
 import com.fwdekker.std.grid.Heading
 import com.fwdekker.std.grid.North
@@ -26,7 +26,7 @@ class Day6(resource: String = resource(2024, 6)) : Day() {
         return coords.withIndex()
             .filter { (_, it) -> it != start }
             .filter { (idx, it) -> it !in coords.take(idx) }
-            .count { (idx, it) -> patrol(route[idx - 1], it).isDistinct() }
+            .count { (idx, it) -> patrol(route[idx - 1], it).allDistinct() }
     }
 
 

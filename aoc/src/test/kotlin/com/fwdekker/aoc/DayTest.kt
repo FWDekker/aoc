@@ -13,7 +13,7 @@ import io.kotest.matchers.shouldBe
  * @constructor
  */
 @Deprecated("Use 'ChallengeTest' instead.", replaceWith = ReplaceWith("ChallengeTest"))
-abstract class DayTest(day: (String) -> Day, tests: Collection<Triple<String, (Day) -> Any, Any>>) : FunSpec({
+abstract class DayTest(day: (String) -> Day, tests: Collection<Triple<String, (Day) -> Any?, Any?>>) : FunSpec({
     withData(
         nameFn = { (file, part, expected) -> "($file, ${if (part == Day::part1) "part 1" else "part 2"}) = $expected" },
         tests

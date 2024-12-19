@@ -2,11 +2,7 @@
 package com.fwdekker.std.collections
 
 import com.fwdekker.std.maths.min
-import com.fwdekker.std.maths.sum
 import com.fwdekker.std.maths.wrapMod
-import java.math.BigInteger
-import kotlin.experimental.ExperimentalTypeInference
-import kotlin.time.Duration
 
 
 /**
@@ -207,14 +203,26 @@ fun <T> Iterable<T>.cyclic(): Sequence<T> = asSequence().cyclic()
 /**
  * Returns `false` if an element occurs more than once, or `true` if all elements are unique.
  *
- * This method may not terminate if the sequence is infinitely long.
+ * This method does not terminate if the sequence is infinitely long.
  */
-fun <T> Sequence<T>.isDistinct(): Boolean {
+fun <T> Sequence<T>.allDistinct(): Boolean {
     val seen = mutableSetOf<T>()
-    return any { !seen.add(it) }
+    return none { seen.add(it) }
 }
 
-fun <T> Iterable<T>.isDistinct(): Boolean = asSequence().isDistinct()
+fun <T> Iterable<T>.allDistinct(): Boolean = asSequence().allDistinct()
+
+/**
+ * Returns `true` if all elements are equal, or `false` if not all elements are equal.
+ *
+ * This method does not terminate if the sequence is infinitely long.
+ */
+fun <T> Sequence<T>.noneDistinct(): Boolean {
+    val first = take(1).first()
+    return drop(1).all { it == first }
+}
+
+fun <T> Iterable<T>.noneDistinct(): Boolean = asSequence().allDistinct()
 
 
 /**

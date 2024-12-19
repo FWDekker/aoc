@@ -14,16 +14,16 @@ abstract class Day(val year: Int? = null, val day: Int? = null, val sample: Int?
     override val resource: String get() = resource(year!!, day!!, sample)
 
 
-    override fun runPart(number: Int): Any =
+    override fun runPart(number: Int): Any? =
         when (number) {
             1 -> part1()
             2 -> part2()
             else -> error("Invalid part number $number.")
         }
 
-    abstract fun part1(): Any
+    abstract fun part1(): Any?
 
-    abstract fun part2(): Any
+    abstract fun part2(): Any?
 
 
     companion object {
