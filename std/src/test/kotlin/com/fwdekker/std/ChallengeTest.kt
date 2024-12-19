@@ -20,9 +20,14 @@ abstract class ChallengeTest(
         val (part, sample) = input
         challenge(sample).runPart(part) shouldBe expected
     }
-})
-
-/**
- * A test case for [ChallengeTest].
- */
-fun case(part: Int = 1, sample: Int? = null): Pair<Int, Int?> = Pair(part, sample)
+}) {
+    /**
+     * Holds constants.
+     */
+    companion object {
+        /**
+         * A test case for [ChallengeTest].
+         */
+        fun case(part: Int = 1, sample: Int? = null): Pair<Int, Int?> = Pair(part, sample)
+    }
+}

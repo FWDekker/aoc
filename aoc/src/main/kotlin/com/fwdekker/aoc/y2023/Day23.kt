@@ -15,12 +15,12 @@ import com.fwdekker.std.grid.north
 import com.fwdekker.std.grid.south
 import com.fwdekker.std.grid.toChart
 import com.fwdekker.std.grid.west
-import com.fwdekker.std.read
 import java.util.PriorityQueue
 
 
-class Day23(resource: String = resource(2023, 23)) : Day() {
-    private val chart = read(resource).toChart()
+// See https://adventofcode.com/2023/day/23
+class Day23(sample: Int? = null) : Day(year = 2023, day = 23, sample = sample) {
+    private val chart = input.toChart()
 
     private val start = Coords(0, chart.firstRow.indexOf('.'))
     private val end = Coords(chart.lastRowIndex, chart.lastRow.indexOf('.'))

@@ -8,16 +8,15 @@ import com.fwdekker.std.collections.map
 import com.fwdekker.std.collections.mapThirds
 import com.fwdekker.std.collections.seconds
 import com.fwdekker.std.maths.plus
-import com.fwdekker.std.read
 import java.math.BigInteger
 import java.math.MathContext
 import java.math.RoundingMode
 
 
 // See https://adventofcode.com/2024/day/13
-class Day13(resource: String = resource(2024, 13)) : Day() {
+class Day13(sample: Int? = null) : Day(year = 2024, day = 13, sample = sample) {
     private val mc = MathContext.DECIMAL128
-    private val machines = read(resource)
+    private val machines = input
         .let { file -> Regex("\\d+").findAll(file).map { it.value.toBigInteger() } }
         .chunked(6)
         .map { machine -> machine.chunked(2).map { it.asPair() }.asTriple() }

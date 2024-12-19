@@ -1,19 +1,17 @@
 package com.fwdekker.aoc.y2024
 
-import com.fwdekker.aoc.Day
-import com.fwdekker.aoc.DayTest
-import io.kotest.core.annotation.Ignored
+import com.fwdekker.std.ChallengeTest
+import com.fwdekker.std.case
+import io.kotest.core.annotation.Tags
 import java.math.BigInteger
 
 
-/**
- * Tests for [Day13].
- */
-object Day13Test : DayTest(
+@Tags("2024")
+object Day13Test : ChallengeTest(
     ::Day13,
     listOf(
-        Triple(Day.resource(2024, 13, sample = 1), Day::part1, BigInteger("480")),
-        Triple(Day.resource(2024, 13), Day::part1, BigInteger("29517")),
-        Triple(Day.resource(2024, 13), Day::part2, BigInteger("103570327981381")),
+        case(part = 1, sample = 1) to BigInteger("480"),
+        case(part = 1) to BigInteger("29517"),
+        case(part = 2) to BigInteger("103570327981381"),
     )
 )
