@@ -1,4 +1,5 @@
 @file:Suppress("unused")
+
 package com.fwdekker.std.collections
 
 import com.fwdekker.std.maths.min
@@ -238,6 +239,16 @@ fun <T> MutableList<T>.swapAt(idx1: Int, idx2: Int): MutableList<T> {
     return this
 }
 
+/**
+ * Associates each element by its index in the list, with the index being the key.
+ */
+fun <T> List<T>.associateByIndex(): Map<Int, T> = withIndex().associateBy({ it.index }, { it.value })
+
+/**
+ * Associates each element with its index in the list, with the index being the value.
+ */
+fun <T> List<T>.associateWithIndex(): Map<T, Int> = withIndex().associateBy({ it.value }, { it.index })
+
 
 /**
  * Merges [this] with [that] by selecting elements from both collections in an alternating fashion, starting with
@@ -283,13 +294,28 @@ fun <T, R> MutableList<T>.appendingFold(initial: R, operation: (MutableList<T>, 
     return acc
 }
 
-
 /**
  * Returns [this] map after mapping [key] to [value].
  */
 fun <K, V> MutableMap<K, V>.with(key: K, value: V): MutableMap<K, V> = this.also { put(key, value) }
 
+
 /**
  * Folds the elements of this map.
  */
 fun <K, V, R> Map<K, V>.fold(initial: R, operation: (acc: R, Pair<K, V>) -> R): R = toList().fold(initial, operation)
+
+
+/**
+ * A map that accesses an underlying [map] without requiring boring `null` checks.
+ *
+ * For example, instead of `map["key"]!!`, just write `map["key"]`.
+ */
+class NeverNullMap<K, V : Any>(private val map: Map<K, V>) : Map<K, V> by map {
+    override fun get(key: K): V = map[key]!!
+}
+
+/**
+ * Returns a [NeverNullMap] that wraps around `this`.
+ */
+fun <K, V : Any> Map<K, V>.neverNull(): NeverNullMap<K, V> = NeverNullMap(this)
