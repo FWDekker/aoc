@@ -9,11 +9,11 @@ import com.fwdekker.std.grid.canMove
 import com.fwdekker.std.grid.coordsOf
 import com.fwdekker.std.grid.get
 import com.fwdekker.std.grid.toChart
-import com.fwdekker.std.read
 
 
-class Day6(resource: String = resource(2024, 6)) : Day() {
-    private val chart = read(resource).toChart()
+// See https://adventofcode.com/2024/day/6
+class Day6(sample: Int? = null) : Day(year = 2024, day = 6, sample = sample) {
+    private val chart = input.toChart()
     private val start = chart.coordsOf('^')
 
 

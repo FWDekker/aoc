@@ -208,7 +208,7 @@ fun <T> Iterable<T>.cyclic(): Sequence<T> = asSequence().cyclic()
  */
 fun <T> Sequence<T>.allDistinct(): Boolean {
     val seen = mutableSetOf<T>()
-    return none { seen.add(it) }
+    return all { seen.add(it) }
 }
 
 fun <T> Iterable<T>.allDistinct(): Boolean = asSequence().allDistinct()
@@ -223,7 +223,7 @@ fun <T> Sequence<T>.noneDistinct(): Boolean {
     return drop(1).all { it == first }
 }
 
-fun <T> Iterable<T>.noneDistinct(): Boolean = asSequence().allDistinct()
+fun <T> Iterable<T>.noneDistinct(): Boolean = asSequence().noneDistinct()
 
 
 /**
