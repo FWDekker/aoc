@@ -198,7 +198,8 @@ class Day21(sample: Int? = null) : Day(year = 2024, day = 21, sample = sample) {
 
     override fun part1() = calculateComplexity(2)
 
-    override fun part2() = calculateComplexity(2)
+    // TODO: Implement this; current implementation does not finish
+    override fun part2() = calculateComplexity(25)
 
 
     private fun codeToKeys(pad: NeverNullMap<Char, NeverNullMap<Char, List<String>>>, code: String): List<String> =
