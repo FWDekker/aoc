@@ -1,4 +1,5 @@
 @file:Suppress("unused")
+
 package com.fwdekker.std.maths
 
 import com.fwdekker.std.collections.mapSecond
@@ -111,6 +112,63 @@ abstract class Graph<N : Any> {
      */
     fun shortestPaths(): Map<Pair<N, N>, List<N>?> =
         nodes.map { start -> shortestPaths(start).map { (start to it.key) to it.value }.toMap() }.sum()
+
+
+    private val allShortestPathsCache = mutableMapOf<Pair<N, N>, List<List<N>>>()
+
+    fun allShortestPaths(start: N, end: N): List<List<N>> {
+        return allShortestPathsCache.getOrPut(start to end) {
+            val distances = mutableMapOf<N, Long>().withDefault { Long.MAX_VALUE }
+            distances[start] = 0L
+
+            val parents = mutableMapOf<N, MutableList<N>>().withDefault { mutableListOf() }
+            parents[start] = mutableListOf()
+
+            val queue = ArrayDeque<N>()
+            queue += start
+
+            while (queue.isNotEmpty()) {
+                val u = queue.removeFirst()
+
+                getNeighbours(u).forEach { v ->
+                    val newDistance = distances.getValue(u) + getWeight(u, v)
+                    if (newDistance < distances.getValue(v)) {
+                        distances[v] = newDistance
+                        queue += v
+                        parents.getOrPut(v) { mutableListOf() }.apply {
+                            clear()
+                            add(u)
+                        }
+                    } else if (newDistance == distances.getValue(v)) {
+                        parents.getOrPut(v) { mutableListOf() }.add(u)
+                    }
+                }
+            }
+
+            val paths = mutableListOf<List<N>>()
+            findPaths(paths, mutableListOf(), parents, start, end)
+            paths
+        }
+    }
+
+    private fun findPaths(
+        paths: MutableList<List<N>>,
+        path: MutableList<N>,
+        parents: MutableMap<N, MutableList<N>>,
+        start: N,
+        end: N
+    ) {
+        if (start == end) {
+            paths.add((path.toList() + start).asReversed())
+            return
+        }
+
+        for (parent in parents.getValue(end)) {
+            path.add(end)
+            findPaths(paths, path, parents, start, parent)
+            path.removeLast()
+        }
+    }
 
     /**
      * Runs Dijkstra's algorithm on the graph, starting at [start].

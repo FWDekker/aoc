@@ -59,10 +59,7 @@ abstract class Challenge(private val partCount: Int) {
     /**
      * Runs each part, and prints its output and the elapsed time.
      */
-    fun run() =
-        timeParts().forEach { (name, value, duration) ->
-            println("$name: $value (${duration.ms} ms).")
-        }
+    fun run() = timeParts().forEach { (name, value, duration) -> println("$name: $value (${duration.ms} ms).") }
 
 
     /**
